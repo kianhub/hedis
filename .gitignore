@@ -1,0 +1,21 @@
+# Dependencies
+node_modules/
+
+# Environment files
+.env
+
+# macOS
+.DS_Store
+
+# Logs
+*.log
+
+# Pipeline artifacts
+pipeline/react-natives/*/node_modules/
+pipeline/react-natives/*/*.hbc
+pipeline/react-natives/*/*_out_*.js
+pipeline/rns.zip
+pipeline/pipeline_progress.json
+
+# Local development artifacts
+Auto Run Docs/
