@@ -1,0 +1,76 @@
+# Go specific
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+/vendor/
+/Godeps/
+
+# Go build and test cache
+.go/
+
+# Go workspace file
+go.work
+go.work.sum
+
+# Downloaded definition files from Hermes
+#/pkg/utils/defversions/function_builtins_src/Builtins-*.def
+#/pkg/utils/defversions/hermes_bytecode_src/BytecodeList-*.def
+#/pkg/utils/defversions/hermes_bytecode_src/BytecodeVersion-*.h
+#/pkg/utils/defversions/regex_bytecode_src/RegexBytecode-*.h
+
+# Binary output
+/bin/
+/hermes-decompiler
+/hermes-dec
+/linux-hedis
+
+# {Input, Output} files
+/input
+/output
+/match-results/
+/app_bundles/
+
+# Dependency directories (remove if you're using go modules with vendor)
+/pkg/mod/
+
+# IDE specific files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Build artifacts
+dist/
+build/
+
+# Debug files
+debug
+
+# Local configuration files
+*.local.yaml
+*.local.yml
+*.local.json
+*.local.conf
+
+# Environment files
+.env
+.env.local
+
+# Logs
+*.log
+
+# macOS specific
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Temp files
+tmp/
+temp/
