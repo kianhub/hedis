@@ -1,0 +1,15 @@
+{
+  "name": "dependency-resolver",
+  "version": "1.0.0",
+  "description": "",
+  "main": "resolve.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "semver": "^7.7.1"
+  }
+}
