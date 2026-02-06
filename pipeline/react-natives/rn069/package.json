@@ -1,0 +1,53 @@
+{
+  "name": "rn069",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "android": "react-native run-android",
+    "ios": "react-native run-ios",
+    "start": "react-native start",
+    "test": "jest",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "@ahmedrowaihi/react-native-i18n-storage": "^2.0.5",
+    "@animatereactnative/marquee": "^0.5.2",
+    "@animatereactnative/stagger": "^0.3.0",
+    "@appandflow/expo-image-cropping": "^0.2.2",
+    "@appandflow/react-native-google-autocomplete": "^2.1.0",
+    "@appandflow/react-native-magic-scroll": "^0.1.36",
+    "@aws-amplify/auth": "^6.9.1",
+    "@aws-amplify/datastore": "^5.0.9",
+    "@baronha/react-native-multiple-image-picker": "^2.2.3",
+    "@baronha/react-native-photo-editor": "^1.1.6",
+    "@better-auth/expo": "^1.2.9",
+    "@bittingz/expo-widgets": "^3.0.0",
+    "@breeffy/calendars": "^0.9.0",
+    "@breeffy/pickers": "^0.9.0",
+    "@brijen/react-native-multistep": "^1.0.0",
+    "@bugsnag/expo": "^7.9.2",
+    "@codeherence/react-native-header": "^0.9.0",
+    "@config-plugins/react-native-blob-util": "^9.0.0",
+    "@config-plugins/react-native-pdf": "^9.0.0",
+    "@corasan/image-compressor": "^0.3.3",
+    "@datadog/mobile-react-native": "^2.8.2",
+    "@dietime/react-native-date-picker": "^1.2.1",
+    "@draftbit/ui": "^52.1.9",
+    "react": "18.0.0",
+    "react-native": "0.69.12",
+    "react-native-maps": "^1.11.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.9",
+    "@babel/runtime": "^7.12.5",
+    "@react-native-community/eslint-config": "^2.0.0",
+    "babel-jest": "^26.6.3",
+    "eslint": "^7.32.0",
+    "jest": "^26.6.3",
+    "metro-react-native-babel-preset": "^0.70.3",
+    "react-test-renderer": "18.0.0"
+  },
+  "jest": {
+    "preset": "react-native"
+  }
+}
