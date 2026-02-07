@@ -326,6 +326,24 @@ func (h *HBCReader) alignOverPadding(amount int) {
 	}
 }
 
+// ReadHeader parses the Hermes bytecode file header from h.FileBuffer and
+// populates h.Header with all section counts, sizes, and flags.
+//
+// The method reads from position 0 in two passes. The first pass extracts the
+// magic number, bytecode version, source hash, and file length. For bytecode
+// version >= 75 it then verifies the file's SHA1 integrity by comparing a
+// computed hash of the file body against the trailing 20-byte SHA1 footer.
+// The second pass re-reads from position 0 to populate all remaining header
+// fields, including version-conditional sections (BigInt fields for bcv >= 87,
+// FunctionSourceCount for bcv >= 84) and the packed flags byte containing
+// StaticBuiltins, CjsModulesStaticallyResolved, and HasAsync. After reading,
+// it aligns the file cursor to a 32-byte boundary for subsequent section reads.
+//
+// ReadHeader must be called before InitParserModule and is normally invoked
+// indirectly via ReadWholeFile. The FileBuffer must already be set.
+//
+// Returns an error if the file cannot be read, contains an invalid header,
+// or fails SHA1 verification (bcv >= 75).
 func (h *HBCReader) ReadHeader() error {
 	h.FileBuffer.Seek(0, io.SeekStart)
 
