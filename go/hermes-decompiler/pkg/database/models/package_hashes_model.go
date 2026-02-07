@@ -37,6 +37,12 @@ type FunctionObjectHashModel struct {
 	ContentAR2         FunctionObjectDataModel `bson:"ar2"`
 }
 
+// FunctionObjectDataModel holds a single IR representation of a function as both its raw
+// pipe-delimited string (Raw) and its SHA256 hex digest (Hash). Each FunctionObjectHashModel
+// contains three instances of this struct—Structural, ContentAR1, and ContentAR2—corresponding
+// to the three IR fingerprints produced by FunctionObject.ToIR. Both fields use omitempty and
+// will be empty when the source function yields no tokens for that IR level (e.g. a function
+// with no string literals produces an empty ContentAR1).
 type FunctionObjectDataModel struct {
 	Raw  string `bson:"raw,omitempty"`
 	Hash string `bson:"hash,omitempty"`
