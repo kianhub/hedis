@@ -272,6 +272,12 @@ type HBCReader struct {
 	ParserModule *ParserModule // contains instruction defs for bcv
 }
 
+// NewHBCReader creates an HBCReader with initialized internal maps for
+// exception handlers and debug offsets. The returned reader is ready to
+// parse an HBC file by calling ReadWholeFile with an io.ReadSeeker.
+//
+// The ParserModule field is left nil and will be set automatically by
+// ReadWholeFile (via InitParserModule) once the bytecode version is known.
 func NewHBCReader() *HBCReader {
 	return &HBCReader{
 		FunctionIDToExcHandlers:  make(map[int][]ExceptionHandlerInfo),
