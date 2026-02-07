@@ -29,12 +29,19 @@ const (
 	ProhibitNone
 )
 
+// StringKind classifies each entry in the Hermes string table. The kind is
+// stored as a run-length-encoded section in the HBC file (see ReadStringKinds)
+// and determines how downstream consumers interpret the string: plain String
+// values are literal constants, Identifier values are variable/property names,
+// and Predefined values were built-in identifiers before Hermes v0.3.0 merged
+// them into Identifier (bcv >= 71 uses a single bit for kind, encoding only
+// String vs Identifier).
 type StringKind int
 
 const (
-	String StringKind = iota
-	Identifier
-	Predefined // unused since v0.3.0 - merged with 'Identifier'
+	String     StringKind = iota // literal string constant
+	Identifier                   // variable or property name
+	Predefined                   // unused since v0.3.0 - merged with Identifier
 )
 
 // HBCHeader represents the file header of a Hermes bytecode (.hbc) file.
