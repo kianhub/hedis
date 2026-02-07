@@ -174,6 +174,14 @@ type SmallFunctionHeader struct {
 	Unused                 uint8 // 2 bits
 }
 
+// LargeFunctionHeader is the full-width 32-byte function header used when a
+// SmallFunctionHeader's bit-packed fields cannot represent the required values.
+// When SmallFunctionHeader.Overflowed is true, its Offset and InfoOffset fields
+// encode a 41-bit seek address (InfoOffset<<16 | Offset) to locate this
+// structure in the bytecode file. All numeric fields are full uint32 values
+// rather than the bit-packed subsets used in SmallFunctionHeader. The flags
+// byte (ProhibitInvoke through Unused) uses the same layout as
+// SmallFunctionHeader.
 type LargeFunctionHeader struct {
 	Offset                 uint32
 	ParamCount             uint32
