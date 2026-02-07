@@ -14,6 +14,14 @@ const (
 	LSH_ROWS  = 4  // MINHASH_SIZE / LSH_BANDS (128/32 = 4)
 )
 
+// MinHasher estimates Jaccard similarity between token sets using locality-sensitive
+// hashing (LSH). It maintains NumHashes independent universal hash functions of the
+// form h(x) = (a*x + b) % p, where a and b are random coefficients and p is a
+// Mersenne prime (2^31 − 1). Each call to ComputeSignature produces a fixed-length
+// signature by keeping the minimum hash value per function across all input tokens
+// (hashed via xxhash). Signatures can be compared with JaccardSimilarity for an
+// approximate similarity score, or partitioned into LSH bands with ComputeLSHBand
+// for efficient candidate-pair identification in large corpora.
 type MinHasher struct {
 	NumHashes int      // number of hash functions (signature size)
 	Seeds     []uint64 // seeds for each hash function
@@ -22,6 +30,14 @@ type MinHasher struct {
 	Prime     uint64   // large prime number
 }
 
+// NewMinHasher creates a MinHasher with numHashes independent universal hash
+// functions for computing MinHash signatures. Each hash function h(x) = (a*x + b) % p
+// uses randomly generated coefficients a (in [1, p)) and b (in [0, p)), where p is the
+// Mersenne prime 2^31 − 1. The numHashes parameter controls the signature length and
+// determines the accuracy/speed trade-off: higher values produce more accurate Jaccard
+// similarity estimates at the cost of larger signatures and longer computation. A
+// typical value is 128 (MINHASH_SIZE). Seeds are generated from the current time, so
+// each MinHasher instance produces distinct signatures.
 func NewMinHasher(numHashes int) *MinHasher {
 	rand.New(rand.NewSource(time.Now().UnixNano()))
 
