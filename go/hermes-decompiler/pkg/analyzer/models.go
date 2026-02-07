@@ -55,6 +55,15 @@ type LSHBand struct {
 	FunctionIDs []primitive.ObjectID `bson:"function_ids"`
 }
 
+// MatchResult holds the outcome of comparing a query function's fingerprint against
+// a candidate FunctionSignature in the database. Score is the overall similarity
+// (0.0–1.0), while StructuralSimilarity, ContentIR1Similarity, ContentIR2Similarity,
+// and CombinedSimilarity break the comparison down by IR level — structural captures
+// opcode-sequence similarity, content IR1 covers non-identifier strings, content IR2
+// covers identifiers and object references, and combined merges all three. IR1 and
+// IR2 similarity fields are omitempty because the corresponding IR may be empty for
+// functions that lack string literals or identifier references. CandidateID links
+// back to the matched FunctionSignature's MongoDB ObjectID.
 type MatchResult struct {
 	CandidateID          primitive.ObjectID `bson:"candidate_id"`
 	PackageName          string             `bson:"package_name"`
