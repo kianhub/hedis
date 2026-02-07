@@ -63,7 +63,14 @@ func NewMinHasher(numHashes int) *MinHasher {
 	}
 }
 
-// ComputeSignature computes MinHash signature for a slice of tokens
+// ComputeSignature computes a fixed-length MinHash signature for a set of string
+// tokens. Each token is base-hashed via xxhash, then passed through all NumHashes
+// universal hash functions h(x) = (a*x + b) % p. The signature retains the minimum
+// hash value seen per function across all input tokens, producing a []uint64 of
+// length NumHashes. For empty input, every position is set to math.MaxUint64
+// (indicating no tokens were observed). The resulting signature can be compared
+// with JaccardSimilarity for approximate set similarity, or partitioned into bands
+// with ComputeLSHBand for efficient candidate-pair retrieval.
 func (mh *MinHasher) ComputeSignature(tokens []string) []uint64 {
 	if len(tokens) == 0 {
 		// return empty signature of max values
