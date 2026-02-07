@@ -47,6 +47,16 @@ func GetPackageNamesFromReactNativeDirectoryJson(reactNativeDirectoryJsonPath st
 	return packageNames, nil
 }
 
+// GetGithubSecurityAdvisories queries the GitHub Security Advisory REST API for npm
+// advisories affecting the given package names. Packages are sent in batches of 100
+// (the GitHub API per-page limit) via the ?affects= query parameter, and each batch
+// is automatically paginated by following the Link header's rel="next" URL until all
+// pages are exhausted.
+//
+// Requires the GITHUB_TOKEN environment variable to be set to a valid GitHub Personal
+// Access Token with read access to security advisories. Returns an error immediately
+// if the token is missing, if any HTTP request fails, or if the API returns a non-200
+// status code.
 func GetGithubSecurityAdvisories(packageNames []string) ([]models.GithubVulnerability, error) {
 	foundAdvisories := make([]models.GithubVulnerability, 0, len(packageNames))
 
@@ -114,6 +124,16 @@ func GetGithubSecurityAdvisories(packageNames []string) ([]models.GithubVulnerab
 	return foundAdvisories, nil
 }
 
+// GetAllGithubSecurityAdvisories retrieves every npm security advisory from the
+// GitHub Security Advisory REST API by paginating through all available pages of
+// the endpoint https://api.github.com/advisories?ecosystem=npm&per_page=100.
+// Unlike GetGithubSecurityAdvisories, this function is not filtered by package name
+// and returns the complete corpus of npm advisories.
+//
+// Requires the GITHUB_TOKEN environment variable to be set to a valid GitHub Personal
+// Access Token with read access to security advisories. Returns an error immediately
+// if the token is missing, if any HTTP request fails, or if the API returns a non-200
+// status code.
 func GetAllGithubSecurityAdvisories() ([]models.GithubVulnerability, error) {
 	// we grab all advisories from github with the ecosystem npm
 	// we then paginate through all the pages
