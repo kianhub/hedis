@@ -200,6 +200,17 @@ type LargeFunctionHeader struct {
 	Unused                 uint8 // 2 bits
 }
 
+// SmallStringTableEntry represents a single entry in the HBC small string table,
+// describing one string's encoding, location, and length within the string
+// storage buffer. Each entry is decoded from a 4-byte bit-packed word whose
+// layout is version-dependent: bytecode versions >= 56 use 1 bit IsUTF16 |
+// 23 bits Offset | 8 bits Length, while earlier versions include an additional
+// 1-bit IsIdentifier flag (removed in bcv 56 as it was only used for assertions).
+//
+// A Length of 0xFF acts as an overflow sentinel indicating the string's actual
+// offset and length must be resolved from the OverflowStringTable. The IsUTF16
+// flag determines whether ReadStringStorage decodes the bytes as little-endian
+// UTF-16 (with surrogate pair handling) or as Latin-1.
 type SmallStringTableEntry struct {
 	IsUTF16      bool
 	IsIdentifier bool // removed because "only used for asserts"
