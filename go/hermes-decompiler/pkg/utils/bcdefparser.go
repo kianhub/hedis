@@ -29,6 +29,22 @@ func initPaths() {
 	hbcTypesOpcodesDir = filepath.Join(pkgDir, "hbc", "types", "opcodes")
 }
 
+// GenerateBytecodeDefinitionFiles generates Go source files containing version-specific
+// opcode definitions from Hermes bytecode definition (.def) files. It scans the
+// defversions/ directory for BytecodeList, Builtins, and BytecodeVersion source files,
+// extracts the bytecode version number, and emits a Go package under
+// pkg/hbc/types/opcodes/bcvNN/ with instruction tables (OpcodeToInstruction,
+// NameToInstruction) and BuiltinFunctionNames. Existing output files are skipped.
+//
+// The update parameter is reserved for automatic invocation of download_all.sh to
+// fetch new Hermes definitions before generation (currently unimplemented).
+//
+// Prerequisites: run "sh pkg/utils/download_all.sh" to download Hermes definition
+// files into defversions/ before calling this function. After generation, register
+// new versions in pkg/hbc/bytecode_parser.go's GetParser method.
+//
+// This function is invoked by the "genopcodes" CLI command. It panics on file I/O
+// errors or if a BytecodeVersion header cannot be parsed.
 func GenerateBytecodeDefinitionFiles(update bool) {
 	initPaths()
 
