@@ -308,6 +308,21 @@ func RunBaselinePipeline(reactNativeWorkingDirectoryPath, hermesCompilerPath, ve
 	return nil
 }
 
+// RunPackagePipeline generates function fingerprints for a single npm package version within
+// one React Native environment. It executes the four-step pipeline: Metro bundle (package_entry.js
+// with the target package imported) → Hermes compile → HBC disassemble → SHA256 hash all functions.
+// Unlike RunSinglePackagePipeline, this function handles npm install and uninstall of the package
+// internally via UseMetroToBundle.
+//
+// Parameters:
+//   - reactNativeWorkingDirectoryPath: absolute path to a pipeline/react-natives/rnXXX/ directory
+//   - hermesCompilerPath: absolute path to the hermesc binary for this RN version
+//   - version: React Native version identifier (e.g. "rn075")
+//   - pkg: package metadata including PackageName and PackageVersion for npm install
+//
+// Returns the PackageHash containing per-function SHA256 fingerprints ready for database insertion,
+// or an error if any pipeline step fails (npm install, Metro bundling, Hermes compilation, or
+// HBC disassembly).
 func RunPackagePipeline(reactNativeWorkingDirectoryPath, hermesCompilerPath, version string, pkg models.Package) (*models.PackageHash, error) {
 	bundlePath, err := UseMetroToBundle(reactNativeWorkingDirectoryPath, version, pkg.PackageName, pkg.PackageVersion, false)
 	if err != nil {
