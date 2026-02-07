@@ -116,7 +116,15 @@ func (mh *MinHasher) JaccardSimilarity(sig1, sig2 []uint64) float64 {
 	return float64(matches) / float64(len(sig1))
 }
 
-// LSH computes LHS band hashe for a MinHash signature
+// ComputeLSHBand extracts a single band from a MinHash signature and returns a
+// hex-encoded hash string for locality-sensitive hashing (LSH) candidate-pair
+// identification. It slices LSH_ROWS consecutive values (default 4) starting at
+// bandNum * LSH_ROWS from the signature, and formats them as "bandNum:hexDigest".
+// Two signatures that share the same band string for any bandNum are candidate
+// similar pairs. Typical usage partitions a full signature into LSH_BANDS bands
+// (default 32), each stored in an index for fast lookup. The bandNum parameter
+// must be in [0, LSH_BANDS); out-of-range values that exceed the signature length
+// are clamped to avoid a panic.
 func (mh *MinHasher) ComputeLSHBand(signature []uint64, bandNum int) string {
 	start := bandNum * LSH_ROWS
 	end := min(start+LSH_ROWS, len(signature)) // ensure we don't go out of bounds of the signature
