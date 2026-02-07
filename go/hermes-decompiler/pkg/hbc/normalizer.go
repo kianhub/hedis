@@ -6,6 +6,17 @@ import (
 	"strings"
 )
 
+// CreateFunctionObjects converts all parsed function headers in the HBCReader
+// into normalized FunctionObject representations suitable for fingerprinting.
+// For each function header (SmallFunctionHeader or LargeFunctionHeader), it
+// resolves the function name from the string table (falling back to a synthetic
+// "#func_<index>_<bytecodeSize>_<paramCount>" identifier for anonymous
+// functions), disassembles the bytecode via ParseHBCBytecode, and resolves
+// semantic operand meanings—mapping StringID, FunctionID, and BigIntID
+// references to their concrete values. It also unpacks inline array and object
+// literals (NewArrayWithBuffer, NewObjectWithBuffer), annotates CallBuiltin
+// targets, and attaches SwitchImm jump table metadata. Returns nil and an
+// error if bytecode parsing fails for any function.
 func CreateFunctionObjects(hbcReader *HBCReader) ([]*types.FunctionObject, error) {
 	var functionObjects []*types.FunctionObject
 
