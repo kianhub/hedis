@@ -286,6 +286,14 @@ func NewHBCReader() *HBCReader {
 	}
 }
 
+// InitParserModule selects and assigns the version-specific opcode parser
+// for the bytecode version found in the file header. It must be called after
+// ReadHeader (or indirectly via ReadWholeFile) so that Header.Version is set;
+// calling it before the header is read returns an error.
+//
+// The method delegates to GetParser, which picks the highest registered
+// parser version that does not exceed the file's bytecode version. If no
+// compatible parser exists (e.g. bcv < 84), it returns an error.
 func (h *HBCReader) InitParserModule() error {
 	if h.Header.Version == 0 {
 		return fmt.Errorf("header must be read before init parser moduler")
