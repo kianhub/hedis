@@ -6,6 +6,19 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
+// FunctionSignature holds the complete fingerprint for a single function extracted
+// from an npm package compiled with Hermes. It pairs two complementary matching
+// strategies: four SHA256 hex-digest hashes (StructuralHashSHA256, ContentIR1HashSHA256,
+// ContentIR2HashSHA256, CombinedHashSHA256) for exact-match lookups, and four
+// MinHash signature vectors (StructuralHash, ContentIR1Hash, ContentIR2Hash,
+// CombinedHash) for approximate Jaccard-similarity comparison via MinHasher.
+// LSHBands stores pre-computed locality-sensitive hash band strings produced by
+// ComputeLSHBand over the CombinedHash signature, enabling fast candidate-pair
+// retrieval in MongoDB without exhaustive pairwise comparison. The struct is
+// produced by MinHasher.ComputeFunctionSignature and persisted in the "hashes"
+// and "hashes_ghsa" MongoDB collections with BSON field tags. IR1 and IR2 fields
+// are omitempty because functions may lack non-identifier strings or identifier
+// references respectively, making those IRs empty.
 type FunctionSignature struct {
 	// metadata
 	ID             primitive.ObjectID `bson:"_id,omitempty"`
