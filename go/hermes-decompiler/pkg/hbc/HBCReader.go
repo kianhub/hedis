@@ -1227,6 +1227,19 @@ func (h *HBCReader) ReadOverflowStringTable() error {
 	return nil
 }
 
+// ReadSmallStringTable reads string table entries from the HBC file, populating
+// h.SmallStringTable with Header.StringCount entries. Each entry is a 4-byte
+// little-endian word containing bit-packed fields: an IsUTF16 flag, a storage
+// offset, and a length byte.
+//
+// The bit layout is version-dependent. For bytecode versions >= 56, the 32-bit
+// word is partitioned as 1 bit IsUTF16 | 23 bits Offset | 8 bits Length. For
+// earlier versions (< 56), an additional 1-bit IsIdentifier flag is present:
+// 1 bit IsUTF16 | 1 bit IsIdentifier | 22 bits Offset | 8 bits Length. The
+// IsIdentifier field was removed in bcv 56 as it was only used for assertions.
+//
+// A Length value of 0xFF indicates an overflow string whose actual offset and
+// length are resolved via the OverflowStringTable during ReadStringStorage.
 func (h *HBCReader) ReadSmallStringTable() error {
 	h.SmallStringTable = make([]SmallStringTableEntry, h.Header.StringCount)
 
