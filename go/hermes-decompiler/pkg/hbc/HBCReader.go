@@ -930,6 +930,24 @@ func (h *HBCReader) ReadRegExp() error {
 	return nil
 }
 
+// ReadBigInts reads BigInt literal values from the HBC file, populating
+// h.BigIntValues. The BigInt section is only present in bytecode version >= 87;
+// for earlier versions, h.BigIntValues is set to an empty slice and the method
+// returns immediately.
+//
+// The section consists of two parts separated by 4-byte alignment padding:
+// a table of Header.BigIntCount offset/length pairs (each two little-endian
+// uint32 values) followed by a contiguous storage buffer of
+// Header.BigIntStorageSize bytes. Each table entry locates a variable-length
+// signed integer within the storage buffer.
+//
+// Values that fit in 8 bytes are decoded as signed int64 with sign extension
+// for shorter representations. Values larger than 8 bytes are truncated to
+// the low-order 64 bits. Sentinel entries (offset 0xFFFFFFFF or zero length)
+// are stored as 0.
+//
+// Returns an error if any read fails or a table entry references bytes
+// outside the storage buffer.
 func (h *HBCReader) ReadBigInts() error {
 	// BigInts were introduced in bcv87
 	if h.Header.Version < 87 {
