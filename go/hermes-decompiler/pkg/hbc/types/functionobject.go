@@ -7,6 +7,17 @@ import (
 	"strings"
 )
 
+// FunctionObject is the normalized intermediate representation of a single
+// disassembled Hermes function, produced by CreateFunctionObjects. It pairs
+// function-level metadata (name, parameter count, bytecode size, index) with
+// a sequence of resolved instructions whose operands have been mapped to
+// concrete string values, object references, and builtin annotations.
+//
+// FunctionObject supports three complementary fingerprint generation methods
+// via ToIR: a structural IR (opcode bigrams), a content IR1 (sorted
+// non-identifier string literals), and a content IR2 (sorted identifiers and
+// object references). These IRs are hashed (SHA256 and MinHash) for
+// similarity matching against the fingerprint database.
 type FunctionObject struct {
 	Metadata     *FunctionObjectMetadata
 	Instructions []*FunctionObjectInstruction
