@@ -16,6 +16,17 @@ import (
 	"strings"
 )
 
+// ParsedInstruction represents a single decoded Hermes bytecode instruction
+// produced by ParseHBCBytecode. It pairs the static instruction definition
+// (Inst) with the concrete operand values (Args) read from the bytecode
+// stream. OriginalPos and NextPos record the instruction's byte offset within
+// the function's bytecode buffer (not the file), enabling address resolution
+// for relative jumps. For SwitchImm instructions, SwitchJumpTable holds the
+// resolved jump target offsets from the 4-byte-aligned jump table that follows
+// the instruction. The HBCReader back-reference allows the String() method to
+// resolve semantic operand meanings (StringID, FunctionID, BigIntID) and
+// inline literal values, array contents, and object key-value pairs as
+// human-readable comments in the disassembly output.
 type ParsedInstruction struct {
 	Inst            *types.Instruction
 	Args            []any
