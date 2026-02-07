@@ -30,6 +30,12 @@ func Init() {
 	}
 }
 
+// InitWithDatabaseName establishes the global MongoDB connection using an explicit
+// database name instead of reading MONGO_DB_NAME from the environment. It is used
+// by the "packages" command to connect to a separate database (e.g. "clean") for
+// package management operations that should not affect the primary fingerprint store.
+// Like Init, it reads MONGO_CONNECTION_STRING from the environment (required),
+// terminates with os.Exit(1) if unset, and panics on connection failure.
 func InitWithDatabaseName(databaseName string) {
 	mongoConnectionString := os.Getenv("MONGO_CONNECTION_STRING")
 	if mongoConnectionString == "" {
