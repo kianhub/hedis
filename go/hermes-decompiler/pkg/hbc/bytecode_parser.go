@@ -278,6 +278,17 @@ func GetBuiltinFunctions(module *ParserModule) []string {
 	return module.BuiltinFunctionNames
 }
 
+// ParseHBCBytecode disassembles the bytecode of a single Hermes function into
+// a sequence of decoded instructions. It accepts either a *SmallFunctionHeader
+// or *LargeFunctionHeader to locate the function's bytecode within the HBC
+// file, reads the raw bytes from hbcReader.FileBuffer, then iterates through
+// the bytecode stream decoding each opcode and its typed operands (int8 through
+// uint32 and double) using the version-specific ParserModule. For SwitchImm
+// instructions, it additionally reads the 4-byte-aligned jump table that
+// follows the instruction and populates SwitchJumpTable with resolved target
+// offsets. Returns an error if the function header type is unrecognized, the
+// bytecode seek or read fails, an opcode has no definition in the current
+// parser, or an operand has an unsupported type kind.
 func ParseHBCBytecode(functionHeader any, hbcReader *HBCReader) ([]*ParsedInstruction, error) {
 	// extract function metadata based on {Small,Large}FunctionHeader
 	var offset, bytecodeSizeInBytes int
