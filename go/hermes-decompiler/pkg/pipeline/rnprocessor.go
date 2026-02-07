@@ -76,7 +76,35 @@ func ProcessPackagesForRNVersion(rnDir os.DirEntry, packages models.Packages, rn
 	return allPackageHashes, nil
 }
 
-// ProcessPackagesForRNVersionWithProgress handles the processing with progress tracking and resume capability
+// ProcessPackagesForRNVersionWithProgress orchestrates the fingerprinting pipeline for all
+// pending packages within a single React Native environment, adding progress tracking and
+// resume capability on top of the core processing logic.
+//
+// Before processing begins, it creates a pristine backup of the RN environment's node_modules
+// via CreateBackup, then filters out already-completed packages using FilterPendingPackages
+// and the supplied rnProgress state. Remaining packages are grouped by name via
+// GroupPackagesByName to minimize npm install/uninstall churn, and each group is processed
+// by ProcessPackageVersionsBatchedWithProgress with environment restoration (RestoreFromBackup)
+// before every group to ensure a clean slate. Database writes are batched (100 ops/batch)
+// via NewDatabaseBatcher for efficiency.
+//
+// If a backup restoration fails for a package group, all versions in that group are marked
+// as failed in rnProgress and processing continues with the next group.
+//
+// Parameters:
+//   - rnDir: directory entry for the React Native environment (e.g. "rn075"); the numeric
+//     suffix is parsed into a version string (e.g. "0.75").
+//   - packages: full list of packages to process; already-completed packages are filtered
+//     out internally via rnProgress.
+//   - rnRoot: parent directory containing all rnXXX environment directories.
+//   - rnProgress: mutable progress tracker for this RN version; updated in place with
+//     completed/failed package status for JSON-based resume capability.
+//   - osHermes: Hermes binary platform directory name ("osx-bin" or "linux64-bin");
+//     defaults to "osx-bin" if empty.
+//
+// Returns the collected PackageHash results for all successfully processed packages.
+// Returns a non-nil error only if every package fails; partial failures are recorded
+// in rnProgress and do not cause an error return.
 func ProcessPackagesForRNVersionWithProgress(rnDir os.DirEntry, packages models.Packages, rnRoot string, rnProgress *RNEnvironmentProgress, osHermes string) ([]*models.PackageHash, error) {
 	name := rnDir.Name()
 
