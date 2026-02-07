@@ -6,6 +6,24 @@ import (
 	"hermes-decompiler/pkg/hbc/types"
 )
 
+// ComputeFunctionSignature generates a complete FunctionSignature from a normalized
+// FunctionObject by combining exact-match and approximate-similarity fingerprinting.
+// It first calls fo.ToIR to obtain the three IR strings (structural, content IR1,
+// content IR2), then computes SHA256 hex-digest hashes for each IR whose length is
+// at least 10 characters; IRs shorter than 10 characters are left empty to avoid
+// matching on trivially small functions. A fourth combined SHA256 hash is produced
+// by concatenating all three IRs when both content IRs meet the length threshold.
+//
+// For approximate matching, it tokenizes each IR via TokenizeStructuralIR and
+// TokenizeContentIRs, computes a MinHash signature per token set, and builds a
+// combined signature from all tokens with "s:", "c1:", and "c2:" prefixes to
+// preserve namespace separation. Finally, it partitions the combined MinHash
+// signature into LSH_BANDS locality-sensitive hash bands for fast candidate-pair
+// retrieval in MongoDB.
+//
+// The returned FunctionSignature is ready for persistence in the "hashes" or
+// "hashes_ghsa" collections. Metadata fields (PackageName, PackageVersion,
+// PackageID) are not populated by this method and must be set by the caller.
 func (minHasher *MinHasher) ComputeFunctionSignature(fo *types.FunctionObject) *FunctionSignature {
 
 	// compute exact match hashes from IRs
