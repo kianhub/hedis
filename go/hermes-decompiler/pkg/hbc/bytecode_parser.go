@@ -233,6 +233,13 @@ type ParserModule struct {
 	BuiltinFunctionNames []string
 }
 
+// GetParser returns the ParserModule for the given Hermes bytecode version
+// (bcv). It selects the highest available parser version that does not exceed
+// bcv, so newer files automatically fall back to the closest older opcode set
+// (e.g., bcv 92 uses the bcv90 parser). The supported parser versions are 84,
+// 85, 89, 90, 94, and 96. Returns nil if bcv is below all available parsers
+// (bcv < 84). Logs a warning for ancient formats (bcv < 72) and future formats
+// (bcv > 96, i.e., above LatestBytecodeVersion).
 func GetParser(bcv int) *ParserModule {
 	parserModuleTable := map[int]*ParserModule{
 		// For each bcv there should be a definition generated in `hbc/types/opcodes` from
