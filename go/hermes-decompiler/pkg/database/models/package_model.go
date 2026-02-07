@@ -6,6 +6,16 @@ import (
 
 type Packages []Package
 
+// PackageWithVulnerabilitiesModel represents an npm package flagged by GitHub Security Advisories,
+// stored in the "packages" MongoDB collection. It pairs a package identity (PackageName + PackageVersion)
+// with the advisory URLs that triggered its inclusion in the fingerprint database. The pipeline uses
+// this model to track which packages to process: GetPackagesFromVulnerabilitiesJson populates it from
+// advisory JSON, AddPackageToDatabase persists it with duplicate detection, and the pipeline clean/hash
+// stages reference it to install, bundle, compile, and fingerprint each package across all RN versions.
+//
+// HasError and Error provide per-RN-version error tracking: when a package fails to install or compile
+// in a specific React Native environment, the version string is used as the map key in Error and HasError
+// is set to true, allowing the pipeline to skip known-broken combinations on resume.
 type PackageWithVulnerabilitiesModel struct {
 	ID             primitive.ObjectID `bson:"_id"`
 	PackageName    string             `bson:"package_name"`
