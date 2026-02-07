@@ -588,6 +588,21 @@ func (h *HBCReader) ReadWholeFile(file io.ReadSeeker) error {
 	return nil
 }
 
+// ReadDebugInfo reads the debug information section from the HBC file,
+// starting at the byte offset specified by Header.DebugInfoOffset. It
+// populates the DebugInfoHeader, DebugStringTable, DebugStringStorage,
+// DebugFileRegions, and the variable-length debug data storage fields
+// (SourcesDataStorage, ScopeDescDataStorage, and for bcv >= 91
+// TextifiedDataStorage and StringTableStorage).
+//
+// The debug info header layout is version-dependent: bytecode version >= 91
+// adds TextifiedDataOffset and StringTableOffset fields, which split the
+// debug data into four subsections instead of two. For bcv < 91 the debug
+// data contains only source locations and scope descriptor data.
+//
+// This method is called last in the ReadWholeFile sequence and requires
+// all preceding sections to have been read. Returns an error if the seek
+// to DebugInfoOffset fails or any debug section cannot be read.
 func (h *HBCReader) ReadDebugInfo() error {
 
 	// seek into debug info section
