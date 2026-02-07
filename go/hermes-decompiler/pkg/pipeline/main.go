@@ -272,6 +272,20 @@ func ProcessPackageVersionsBatchedWithProgress(packageName string, packageVersio
 	return results, errors
 }
 
+// RunBaselinePipeline generates a fingerprint baseline for a single React Native environment.
+// It executes the full four-step pipeline: Metro bundle (baseline_entry.js) → Hermes compile →
+// HBC disassemble → SHA256 hash all functions, then stores the result in the "baselines_v3"
+// MongoDB collection. Baselines capture the framework-only function fingerprints so the analyzer
+// can filter them out when scanning application bundles, preventing false-positive matches against
+// React Native internals.
+//
+// Parameters:
+//   - reactNativeWorkingDirectoryPath: absolute path to a pipeline/react-natives/rnXXX/ directory
+//   - hermesCompilerPath: absolute path to the hermesc binary for this RN version
+//   - version: React Native version identifier (e.g. "rn075")
+//
+// Returns an error if any pipeline step fails (Metro bundling, Hermes compilation,
+// HBC disassembly, or database insertion).
 func RunBaselinePipeline(reactNativeWorkingDirectoryPath, hermesCompilerPath, version string) error {
 	bundlePath, err := UseMetroToBundle(reactNativeWorkingDirectoryPath, version, "", "", true)
 	if err != nil {
