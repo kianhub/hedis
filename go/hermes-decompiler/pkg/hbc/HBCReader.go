@@ -32,6 +32,19 @@ const (
 	Predefined // unused since v0.3.0 - merged with 'Identifier'
 )
 
+// HBCHeader represents the file header of a Hermes bytecode (.hbc) file.
+// It contains metadata about the file's contents including counts and sizes
+// of all sections (functions, strings, arrays, RegExp, BigInts, CJS modules,
+// debug info, etc.) that guide subsequent parsing.
+//
+// The header layout is version-dependent:
+//   - BigIntCount and BigIntStorageSize are only present in bytecode version >= 87.
+//   - FunctionSourceCount is only present in bytecode version >= 84.
+//   - SegmentID was called CjsModuleOffset before bytecode version 78.
+//
+// The trailing flags byte packs three boolean fields (StaticBuiltins,
+// CjsModulesStaticallyResolved, HasAsync) into bits 0-2. After the flags
+// byte, the reader aligns to a 32-byte boundary before the first data section.
 type HBCHeader struct {
 	Magic                        uint64
 	Version                      uint32
