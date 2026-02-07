@@ -127,6 +127,20 @@ func (fo *FunctionObject) TokenizeContentIRs() (cir1, cir2 []string) {
 	return nonIdentifierTokens, identifierAndObjectTokens
 }
 
+// ToIR generates three complementary intermediate representations of the
+// function for fingerprinting. The structural IR is a pipe-delimited sequence
+// of opcode mnemonics prefixed with the parameter count (e.g. "pc=2|LoadParam|
+// GetById|Ret|"), capturing the function's control-flow shape independent of
+// concrete values. Content IR1 is a pipe-delimited, sorted list of
+// lowercased non-identifier string literals extracted from ResolvedRichData
+// entries with Type "STRING" and IsIdentifier false. Content IR2 is a
+// pipe-delimited, sorted list of lowercased identifier strings (Type "STRING",
+// IsIdentifier true) and object references (Type "OBJECT", IsIdentifier
+// false). Pipe characters within values are stripped to avoid delimiter
+// collisions. Content IR1 and IR2 are returned as empty strings when no
+// matching tokens are found. All three IRs are designed for downstream SHA256
+// exact-match hashing and MinHash/LSH fuzzy similarity matching (see
+// TokenizeStructuralIR and TokenizeContentIRs for the tokenized equivalents).
 func (fo *FunctionObject) ToIR() (structuralIR, contentIR1, contentIR2 string) {
 
 	paramCountString := fmt.Sprintf("pc=%d|", fo.Metadata.ParamCount)
