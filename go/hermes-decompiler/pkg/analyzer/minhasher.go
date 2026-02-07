@@ -107,7 +107,14 @@ func (mh *MinHasher) ComputeSignature(tokens []string) []uint64 {
 	return signature
 }
 
-// JaccardSimilarity computes Jaccard similarity between two MinHash signatures
+// JaccardSimilarity estimates the Jaccard similarity between two token sets by
+// comparing their MinHash signatures element-wise. It counts the fraction of
+// positions where sig1[i] == sig2[i], returning a float64 in [0.0, 1.0] that
+// approximates the ratio |A ∩ B| / |A ∪ B| of the original sets. Both signatures
+// must have the same length (typically NumHashes); mismatched or zero-length
+// signatures return 0.0. Signatures produced by ComputeSignature with
+// math.MaxUint64 sentinel values (empty input) will match each other but not
+// non-empty signatures, yielding correct boundary behavior.
 func (mh *MinHasher) JaccardSimilarity(sig1, sig2 []uint64) float64 {
 	if len(sig1) != len(sig2) || len(sig1) == 0 {
 		return 0.0
