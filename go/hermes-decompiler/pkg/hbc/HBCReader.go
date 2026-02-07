@@ -1355,6 +1355,25 @@ func (h *HBCReader) ReadStringKinds() error {
 	return nil
 }
 
+// ReadFunctions reads all function headers from the HBC file, populating
+// FunctionHeaders with either *SmallFunctionHeader or *LargeFunctionHeader
+// entries depending on whether each header's Overflowed flag is set. Each
+// SmallFunctionHeader is a 16-byte bit-packed structure; when Overflowed is
+// true, the Offset and InfoOffset fields are combined into a 41-bit seek
+// address pointing to a 32-byte LargeFunctionHeader with full-width fields.
+//
+// For each function, the method also reads associated exception handler
+// tables and debug offset records. Exception handlers (when HasExceptionHandler
+// is set) consist of a uint32 count followed by that many 12-byte
+// ExceptionHandlerInfo entries (Start, End, Target), stored in
+// FunctionIDToExcHandlers. Debug offsets (when HasDebugInfo is set) include
+// SourceLocations and ScopeDescData, plus a TextifiedCallees field for
+// bcv >= 91, stored in FunctionIDToDebugOffsets.
+//
+// After reading each function's extended information, the file position is
+// restored to the end of the original small header so the next function
+// header can be read sequentially. Returns an error if any read or seek
+// operation fails.
 func (h *HBCReader) ReadFunctions() error {
 	h.FunctionHeaders = make([]any, 0, h.Header.FunctionCount)
 	h.FunctionIDToExcHandlers = make(map[int][]ExceptionHandlerInfo)
