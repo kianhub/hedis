@@ -1075,6 +1075,22 @@ func (h *HBCReader) ReadArrays() error {
 	return nil
 }
 
+// ReadStringStorage reads and decodes all strings from the HBC string storage
+// section, populating h.Strings. It iterates over the SmallStringTable (which
+// must already be populated by ReadSmallStringTable) and resolves each entry's
+// raw bytes from a contiguous storage buffer of Header.StringStorageSize bytes.
+//
+// Strings whose SmallStringTableEntry.Length equals 0xFF are overflow strings:
+// the entry's Offset field is reinterpreted as an index into h.OverflowStringTable
+// (populated by ReadOverflowStringTable), which provides the actual offset and
+// length within the storage buffer.
+//
+// UTF-16 strings (SmallStringTableEntry.IsUTF16 == true) are decoded from
+// little-endian UTF-16 code units with surrogate pair handling for code points
+// above U+FFFF. Non-UTF-16 strings are decoded byte-by-byte as Latin-1 runes.
+//
+// Returns an error if the storage buffer read fails, an overflow table index is
+// out of bounds, or a string's offset+length exceeds the storage buffer size.
 func (h *HBCReader) ReadStringStorage() error {
 	h.Strings = make([]string, 0, h.Header.StringCount)
 
