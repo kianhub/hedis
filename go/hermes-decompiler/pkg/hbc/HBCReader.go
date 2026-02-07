@@ -12,6 +12,11 @@ import (
 
 const (
 	HeaderMagic           uint64 = 0x1F1903C103BC1FC6 // Unicode 'Ἑρμῆ' encoded as UTF-16BE
+	// LatestBytecodeVersion is the highest Hermes bytecode version (bcv) supported
+	// by this decompiler. It corresponds to the most recent generated opcode definitions
+	// in pkg/hbc/types/opcodes/bcv96/. Files with a version above this value trigger a
+	// warning in GetParser but may still partially parse via closest-version fallback.
+	// To add support for a newer version, run download_all.sh then genopcodes.
 	LatestBytecodeVersion uint32 = 96
 	SHA1NumBytes          int    = 20
 )
