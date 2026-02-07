@@ -41,6 +41,21 @@ func GetRNBaselines() error {
 	return nil
 }
 
+// CreateHashesForPackage runs the full fingerprinting pipeline for a single package across all
+// 11 React Native environments (rn069–rn079). For each RN version it delegates to runPipeline,
+// which performs: npm install → Metro bundle → Hermes compile → HBC disassemble → SHA256 hash →
+// baseline filtering → database insert. Per-version failures are non-fatal: the error is logged,
+// recorded in pkg.HasError/pkg.Error[rnVersion], and persisted via UpdatePackageErrorLog so the
+// package can be retried or skipped on subsequent runs.
+//
+// Parameters:
+//   - pkg: the package to process, looked up in the "packages" MongoDB collection. Its Error map
+//     is mutated in place to track per-RN-version failures.
+//
+// Returns:
+//
+//	nil unconditionally; individual RN version errors are recorded in the package's Error map
+//	rather than propagated, so the caller can continue processing other packages.
 func CreateHashesForPackage(pkg *models.PackageWithVulnerabilitiesModel) error {
 	// first, we check if the package already has hashes
 	// if it does, we skip it
