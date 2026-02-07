@@ -818,6 +818,19 @@ func (h *HBCReader) ReadFunctionSources() error {
 	return nil
 }
 
+// ReadCjsModules reads CommonJS module entries from the bytecode file,
+// populating h.CjsModules with either raw uint32 function indices or
+// SymbolOffsetPair values depending on the bytecode version.
+//
+// For bytecode versions < 77 with statically resolved modules
+// (Header.CjsModulesStaticallyResolved), each entry is a single uint32
+// representing a function index. For version >= 77 (or non-statically-resolved
+// modules), each entry is a SymbolOffsetPair containing a symbol table ID
+// and a bytecode offset. The result slice uses []any to accommodate both
+// storage formats.
+//
+// The method reads Header.CjsModuleCount entries. Returns an error if any
+// read fails.
 func (h *HBCReader) ReadCjsModules() error {
 	// bcv >= 77 handles CjsModules differently so we have to handle it
 	if h.Header.Version < 77 && h.Header.CjsModulesStaticallyResolved {
