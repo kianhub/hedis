@@ -218,6 +218,15 @@ func operandMeaningName(meaning types.OperandMeaning) string {
 	}
 }
 
+// ParserModule holds the opcode-to-instruction lookup tables for a specific
+// Hermes bytecode version. OpcodeToInstruction maps numeric opcodes to their
+// instruction definitions for decoding, NameToInstruction provides reverse
+// lookup by mnemonic name, and BuiltinFunctionNames lists the built-in
+// function names defined in that bytecode version (used to annotate
+// CallBuiltin/GetBuiltinClosure instructions in disassembly output).
+// Each supported bytecode version (bcv84, bcv85, ..., bcv96) has a
+// pre-generated ParserModule produced by the genopcodes command. GetParser
+// selects the closest compatible module for a given bytecode version.
 type ParserModule struct {
 	OpcodeToInstruction  map[int]*types.Instruction
 	NameToInstruction    map[string]*types.Instruction
