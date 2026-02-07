@@ -12,7 +12,6 @@ import (
 	"io"
 	"os"
 	"slices"
-	"strings"
 	"sync"
 
 	"github.com/spf13/cobra"
@@ -48,21 +47,6 @@ type Content struct {
 	ContentIR2s      []string
 }
 
-// TODO: use this result struct
-type Results struct {
-	ExactMatchesMessage              string
-	FuzzyMatchesMessage              string
-	StructuralFuzzyMatches           []string
-	ContentIR1FuzzyMatches           []string
-	ContentIR2FuzzyMatches           []string
-	StructuralExactMatchesPercentage float64
-	ContentIR1ExactMatchesPercentage float64
-	ContentIR2ExactMatchesPercentage float64
-	StructuralFuzzyMatchesPercentage float64
-	ContentIR1FuzzyMatchesPercentage float64
-	ContentIR2FuzzyMatchesPercentage float64
-}
-
 type FuzzyResults struct {
 	Structural *FuzzyContent
 	ContentIR1 *FuzzyContent
@@ -75,13 +59,10 @@ type FuzzyContent struct {
 	MatchedIRs []string
 }
 
-var specialHash = ""
-
 var (
 	ipaFilePath         string
 	fuzzyMatching       bool
 	confidenceThreshold float64
-	/* batchSize           int = 2000 // Default batch size for hash queries */
 
 	// Fuzzy matching performance controls
 	maxFuzzyDocs    int     = 5000 // Maximum documents to check for fuzzy matching
@@ -161,47 +142,8 @@ var (
 			// Initialize database connection
 			database.Init()
 
-			/* if ipaFilePath != "" {
-				// Open and analyze the IPA file
-				err := analyzeIPA(ipaFilePath)
-				if err != nil {
-					utils.F.Printf("error analyzing IPA file: %v\n", err)
-					return
-				}
-			}
-
-			if hbcFilePath != "" {
-				fileContent, err := openFileFromPath(hbcFilePath)
-				if err != nil {
-					utils.F.Printf("failed to open HBC file: %v\n", err)
-					return
-				}
-
-				err = analyzeHBCFile(fileContent)
-				if err != nil {
-					utils.F.Printf("error analyzing HBC file: %v\n", err)
-					return
-				}
-			} */
-
 		},
 	}
-
-	// Common file extensions that are definitely not HBC files
-	/* blacklistedExtensions = []string{
-		".jpg", ".jpeg", ".png", ".gif", ".bmp", ".tiff", ".webp", // Images
-		".mp4", ".mov", ".avi", ".mkv", ".webm", ".m4v", // Videos
-		".mp3", ".wav", ".aac", ".m4a", ".flac", ".ogg", // Audio
-		".pdf", ".doc", ".docx", ".xls", ".xlsx", ".ppt", ".pptx", // Documents
-		".zip", ".tar", ".gz", ".7z", ".rar", ".bz2", // Archives
-		".txt", ".md", ".rtf", ".csv", ".json", ".xml", ".yml", ".yaml", // Text files
-		".html", ".css", ".js", ".ts", ".jsx", ".tsx", ".vue", ".svelte", // Web files (except .js bundles)
-		".strings", ".storyboard", ".xib", ".nib", ".car", ".icns", // iOS specific
-		".dylib", ".a", ".so", ".dll", // Binaries
-		".plist", ".entitlements", ".mobileprovision", ".cer", ".p12", // iOS certificates/config
-		".sqlite", ".db", ".realm", // Databases
-		".log", ".tmp", ".cache", ".lock", // Temporary files
-	} */
 )
 
 func init() {
@@ -386,107 +328,6 @@ func buildLengthFilter(inputLength int, tolerance float64, hashField string) bso
 	}
 }
 
-// analyzeIPA opens the IPA file and analyzes it for HBC content
-/* func analyzeIPA(ipaPath string) error {
-	utils.L.Printf("Opening IPA file: %s\n", ipaPath)
-
-	// Open the IPA file as a ZIP archive
-	reader, err := zip.OpenReader(ipaPath)
-	if err != nil {
-		return fmt.Errorf("failed to open IPA file as ZIP archive: %v", err)
-	}
-	defer reader.Close()
-
-	utils.L.Printf("IPA file opened successfully, searching for HBC files...\n")
-
-	// Search for HBC files in the archive
-	hbcFile, err := findHBCFile(&reader.Reader)
-	if err != nil {
-		return fmt.Errorf("error searching for HBC files: %v", err)
-	}
-
-	if hbcFile == nil {
-		utils.L.Println("No HBC files found in the IPA archive")
-		return nil
-	}
-
-	utils.S.Printf("Found HBC file: %s\n", hbcFile.Name)
-
-	// Disassemble the HBC file and extract hashes
-	fileContent, err := openZipFile(hbcFile)
-	if err != nil {
-		return fmt.Errorf("failed to open HBC file: %v", err)
-	}
-
-	return analyzeHBCFile(fileContent)
-} */
-
-// findHBCFile searches through the ZIP archive for files with HBC magic number
-/* func findHBCFile(reader *zip.Reader) (*zip.File, error) {
-	for _, file := range reader.File {
-		// Skip directories
-		if file.FileInfo().IsDir() {
-			continue
-		}
-
-		// Check if file extension is blacklisted
-		if isBlacklistedExtension(file.Name) {
-			utils.D.Printf("Skipping blacklisted file: %s\n", file.Name)
-			continue
-		}
-
-		utils.D.Printf("Checking file: %s\n", file.Name)
-
-		// Open the file and check for HBC magic number
-		rc, err := file.Open()
-		if err != nil {
-			utils.F.Printf("Failed to open file %s: %v\n", file.Name, err)
-			continue
-		}
-
-		// Read first 8 bytes to check magic number
-		magicBytes := make([]byte, 8)
-		n, err := rc.Read(magicBytes)
-		rc.Close()
-
-		if err != nil || n < 8 {
-			continue
-		}
-
-		// Check if the magic number matches HBC header magic
-		magic := uint64(magicBytes[0]) | uint64(magicBytes[1])<<8 | uint64(magicBytes[2])<<16 | uint64(magicBytes[3])<<24 |
-			uint64(magicBytes[4])<<32 | uint64(magicBytes[5])<<40 | uint64(magicBytes[6])<<48 | uint64(magicBytes[7])<<56
-
-		if magic == hbc.HeaderMagic {
-			utils.S.Printf("Found HBC file with valid magic number: %s\n", file.Name)
-			return file, nil
-		}
-	}
-
-	return nil, nil
-} */
-
-// isBlacklistedExtension checks if a file extension is in the blacklist
-/* func isBlacklistedExtension(filename string) bool {
-	ext := strings.ToLower(filepath.Ext(filename))
-	for _, blacklistedExt := range blacklistedExtensions {
-		if ext == blacklistedExt {
-			return true
-		}
-	}
-	return false
-} */
-
-/* func openZipFile(file *zip.File) ([]byte, error) {
-	rc, err := file.Open()
-	if err != nil {
-		return nil, fmt.Errorf("failed to open file %s: %v", file.Name, err)
-	}
-	defer rc.Close()
-
-	return io.ReadAll(rc)
-} */
-
 func openFileFromPath(path string) ([]byte, error) {
 	rc, err := os.Open(path)
 	if err != nil {
@@ -516,9 +357,6 @@ func fuzzyMatch(packageIRs, appIRs []string, exactMatchedIndices []int, resultsC
 		eligible++
 
 		for _, appIR := range longAppIRs { // app IRs to check
-			/* if i%1000 == 0 {
-				utils.L.Printf("Checking app IR %d of %d\n", i, len(longAppIRs))
-			} */
 			// quick length compatibility check to avoid expensive distance when clearly different
 			if !isLengthCompatible(pkgIR, appIR, lengthTolerance) {
 				continue
@@ -564,9 +402,6 @@ func compareContents(appBundleContent, packageContent Content) (structualFuzzyMa
 		appSet := buildSet(appHashes)
 		for i, h := range packageHashes {
 			if _, ok := appSet[h]; ok {
-				if h == specialHash {
-					utils.S.Printf("Found special hash as exact match: %s\n", h)
-				}
 				indices = append(indices, i)
 				matches++
 			}
@@ -676,10 +511,6 @@ func analyzeHBCFile(fileContent []byte) (Content, error) {
 			contentIR1Hash := fmt.Sprintf("%x", sha256.Sum256([]byte(contentIR1)))
 			contentIR1Hashes = append(contentIR1Hashes, contentIR1Hash)
 			contentIR1s = append(contentIR1s, contentIR1)
-			if strings.Contains(contentIR1, "document_picker_canceled") {
-				utils.S.Printf("Found document_picker_canceled in contentIR1: %s\n", contentIR1)
-				specialHash = contentIR1Hash
-			}
 		}
 
 		if contentIR2 != "" && len(contentIR2) >= 30 {
@@ -692,9 +523,6 @@ func analyzeHBCFile(fileContent []byte) (Content, error) {
 	utils.L.Printf("Extracted %d structural hashes, %d content IR1 hashes, %d content IR2 hashes\n",
 		len(structuralHashes), len(contentIR1Hashes), len(contentIR2Hashes))
 
-	// Query database for matches (exact and/or fuzzy)
-	/* return queryDatabaseForMatches(structuralHashes, contentIR1Hashes, contentIR2Hashes, structuralIRs, contentIR1s, contentIR2s) */
-
 	return Content{
 		StructuralHashes: structuralHashes,
 		ContentIR1Hashes: contentIR1Hashes,
@@ -704,450 +532,3 @@ func analyzeHBCFile(fileContent []byte) (Content, error) {
 		ContentIR2s:      contentIR2s,
 	}, nil
 }
-
-// queryDatabaseForMatches performs bulk database queries to find matching hashes
-/* func queryDatabaseForMatches(structuralHashes, contentIR1Hashes, contentIR2Hashes []string, structuralIRs, contentIR1s, contentIR2s []string) error {
-	utils.L.Println("Querying database for hash matches...")
-
-	totalMatches := 0
-
-	// Query for structural hash matches
-	if len(structuralHashes) > 0 {
-		utils.L.Printf("Searching for %d structural hash matches...\n", len(structuralHashes))
-		matches, err := queryHashMatches("structural_hash", structuralHashes, structuralIRs)
-		if err != nil {
-			utils.F.Printf("Error querying structural hashes: %v\n", err)
-		} else {
-			utils.S.Printf("Found %d structural hash matches\n", len(matches))
-			totalMatches += len(matches)
-			for _, match := range matches {
-				logHashMatch("Structural", match)
-			}
-		}
-	}
-
-	// Query for content IR1 hash matches
-	if len(contentIR1Hashes) > 0 {
-		utils.L.Printf("Searching for %d content IR1 hash matches...\n", len(contentIR1Hashes))
-		matches, err := queryHashMatches("content_ir1_hash", contentIR1Hashes, contentIR1s)
-		if err != nil {
-			utils.F.Printf("Error querying content IR1 hashes: %v\n", err)
-		} else {
-			utils.S.Printf("Found %d content IR1 hash matches\n", len(matches))
-			totalMatches += len(matches)
-			for _, match := range matches {
-				logHashMatch("Content IR1", match)
-			}
-		}
-	}
-
-	// Query for content IR2 hash matches
-	if len(contentIR2Hashes) > 0 {
-		utils.L.Printf("Searching for %d content IR2 hash matches...\n", len(contentIR2Hashes))
-		matches, err := queryHashMatches("content_ir2_hash", contentIR2Hashes, contentIR2s)
-		if err != nil {
-			utils.F.Printf("Error querying content IR2 hashes: %v\n", err)
-		} else {
-			utils.S.Printf("Found %d content IR2 hash matches\n", len(matches))
-			totalMatches += len(matches)
-			for _, match := range matches {
-				logHashMatch("Content IR2", match)
-			}
-		}
-	}
-
-	utils.S.Printf("Analysis complete. Total hash matches found: %d\n", totalMatches)
-	return nil
-} */
-
-// queryHashMatches queries the database for matching hashes of a specific type
-/* func queryHashMatches(hashField string, hashes []string, irStrings []string) ([]SimilarityMatch, error) {
-	var matches []SimilarityMatch
-
-	// First, try exact hash matching
-	utils.L.Printf("Performing exact hash matching for %s...\n", hashField)
-
-	// Query baseline collection
-	baselineMatches, err := queryBaselineHashes(hashField, hashes, irStrings)
-	if err != nil {
-		utils.F.Printf("Error querying baseline hashes: %v\n", err)
-	} else {
-		matches = append(matches, baselineMatches...)
-	}
-
-	// Query package hashes collection
-	packageMatches, err := queryPackageHashes(hashField, hashes, irStrings)
-	if err != nil {
-		utils.F.Printf("Error querying package hashes: %v\n", err)
-	} else {
-		matches = append(matches, packageMatches...)
-	}
-
-	// If fuzzy matching is enabled, also perform fuzzy matching
-	if fuzzyMatching {
-		utils.L.Printf("Performing fuzzy matching for %s with confidence threshold %.2f...\n", hashField, confidenceThreshold)
-
-		fuzzyPackageMatches, err := queryFuzzyPackageMatches(hashField, irStrings)
-		if err != nil {
-			utils.F.Printf("Error in fuzzy package matching: %v\n", err)
-		} else {
-			matches = append(matches, fuzzyPackageMatches...)
-		}
-	}
-
-	return matches, nil
-} */
-
-// queryBaselineHashes queries the baseline collection for hash matches
-/* func queryBaselineHashes(hashField string, hashes []string, irStrings []string) ([]SimilarityMatch, error) {
-	var matches []SimilarityMatch
-
-	// Split hashes into chunks to avoid query size limits
-	hashChunks := chunkStrings(hashes, batchSize)
-
-	utils.L.Printf("Querying baseline collection in %d batches of up to %d hashes each\n", len(hashChunks), batchSize)
-
-	for batchNum, hashChunk := range hashChunks {
-		utils.D.Printf("Processing baseline batch %d/%d (%d hashes)\n", batchNum+1, len(hashChunks), len(hashChunk))
-
-		filter := bson.M{
-			fmt.Sprintf("hashes.%s", hashField): bson.M{"$in": hashChunk},
-		}
-
-		baselines, err := db.Find[models.BaselineModel]("baselines", filter)
-		if err != nil && err != mongo.ErrNoDocuments {
-			return nil, fmt.Errorf("error in baseline batch %d: %v", batchNum+1, err)
-		}
-
-		// Extract matching hashes from baselines
-		for _, baseline := range baselines {
-			for _, hash := range baseline.Hashes {
-				var hashValue string
-				switch hashField {
-				case "structural_hash":
-					hashValue = hash.StructuralHash
-				case "content_ir1_hash":
-					hashValue = hash.ContentIR1Hash
-				case "content_ir2_hash":
-					hashValue = hash.ContentIR2Hash
-				}
-
-				// Check if this hash is in our search list (current chunk)
-				for _, searchHash := range hashChunk {
-					if hashValue == searchHash {
-						match := SimilarityMatch{
-							HashMatch: HashMatch{
-								Hash:                  hash,
-								BaselineID:            &baseline.ID,
-								ReactNativeVersion:    baseline.ReactNativeVersion,
-								HermesBytecodeVersion: baseline.HermesBytecodeVersion,
-								Source:                "baseline",
-							},
-							Confidence:    1.0,
-							MatchType:     "exact",
-							MatchedString: hashValue,
-							InputString:   hashValue,
-						}
-						matches = append(matches, match)
-						break
-					}
-				}
-			}
-		}
-	}
-
-	utils.L.Printf("Baseline batched query complete: found %d matches\n", len(matches))
-	return matches, nil
-} */
-
-// queryPackageHashes queries the package hashes collection for hash matches
-/* func queryPackageHashes(hashField string, hashes []string, irStrings []string) ([]SimilarityMatch, error) {
-	var matches []SimilarityMatch
-
-	// Split hashes into chunks to avoid query size limits
-	hashChunks := chunkStrings(hashes, batchSize)
-
-	utils.L.Printf("Querying package hashes collection in %d batches of up to %d hashes each\n", len(hashChunks), batchSize)
-
-	for batchNum, hashChunk := range hashChunks {
-		utils.D.Printf("Processing package batch %d/%d (%d hashes)\n", batchNum+1, len(hashChunks), len(hashChunk))
-
-		filter := bson.M{
-			fmt.Sprintf("hash.%s", hashField): bson.M{"$in": hashChunk},
-		}
-
-		packageHashes, err := db.Find[models.PackageHashModel]("hashes_ghsa", filter)
-		if err != nil && err != mongo.ErrNoDocuments {
-			return nil, fmt.Errorf("error in package batch %d: %v", batchNum+1, err)
-		}
-
-		// Extract matching hashes from package hashes
-		for _, pkgHash := range packageHashes {
-			var hashValue string
-			switch hashField {
-			case "structural_hash":
-				hashValue = pkgHash.Hash.StructuralHash
-			case "content_ir1_hash":
-				hashValue = pkgHash.Hash.ContentIR1Hash
-			case "content_ir2_hash":
-				hashValue = pkgHash.Hash.ContentIR2Hash
-			}
-
-			// Check if this hash is in our search list (current chunk)
-			for _, searchHash := range hashChunk {
-				if hashValue == searchHash {
-					match := SimilarityMatch{
-						HashMatch: HashMatch{
-							Hash:               pkgHash.Hash,
-							PackageHashID:      &pkgHash.ID,
-							ReactNativeVersion: pkgHash.ReactNativeVersion,
-							Source:             "package",
-						},
-						Confidence:    1.0,
-						MatchType:     "exact",
-						MatchedString: hashValue,
-						InputString:   hashValue,
-					}
-					matches = append(matches, match)
-					break
-				}
-			}
-		}
-	}
-
-	utils.L.Printf("Package hashes batched query complete: found %d matches\n", len(matches))
-	return matches, nil
-} */
-
-// queryFuzzyBaselineMatches performs fuzzy matching against baseline collection
-/* func queryFuzzyBaselineMatches(hashField string, irStrings []string) ([]SimilarityMatch, error) {
-	var matches []SimilarityMatch
-
-	utils.L.Printf("Fuzzy baseline matching: processing %d input IR strings with max %d docs per input\n", len(irStrings), maxFuzzyDocs)
-
-	// Process each input IR string
-	for i, inputIR := range irStrings {
-		if len(inputIR) < 30 {
-			continue // Skip short IR strings
-		}
-
-		// Build length-based filter for this input IR
-		lengthFilter := buildLengthFilter(len(inputIR), lengthTolerance, hashField)
-
-		// Query for documents with compatible IR string lengths
-		baselines, err := db.Find[models.BaselineModel]("baselines", lengthFilter)
-		if err != nil && err != mongo.ErrNoDocuments {
-			utils.F.Printf("Error in fuzzy baseline query for input %d: %v\n", i+1, err)
-			continue
-		}
-
-		// Limit the number of documents to check
-		docsChecked := 0
-		maxDocsForThisInput := maxFuzzyDocs
-
-		utils.D.Printf("Fuzzy baseline: input %d/%d, found %d length-compatible docs, checking up to %d\n",
-			i+1, len(irStrings), len(baselines), maxDocsForThisInput)
-
-		// Check each document until we hit our limit
-		for _, baseline := range baselines {
-			if docsChecked >= maxDocsForThisInput {
-				utils.D.Printf("Reached document limit (%d) for input %d\n", maxDocsForThisInput, i+1)
-				break
-			}
-
-			for _, hash := range baseline.Hashes {
-				var storedIR string
-				switch hashField {
-				case "structural_hash":
-					storedIR = hash.StructuralRaw
-				case "content_ir1_hash":
-					storedIR = hash.ContentIR1Raw
-				case "content_ir2_hash":
-					storedIR = hash.ContentIR2Raw
-				}
-
-				if storedIR == "" || len(storedIR) < 30 {
-					continue
-				}
-
-				// Double-check length compatibility (since MongoDB query might not be exact)
-				if !isLengthCompatible(inputIR, storedIR, lengthTolerance) {
-					continue
-				}
-
-				// Calculate similarity
-				similarity := levenshteinSimilarity(inputIR, storedIR)
-
-				if similarity >= confidenceThreshold && similarity < 1.0 { // Exclude exact matches
-					match := SimilarityMatch{
-						HashMatch: HashMatch{
-							Hash:                  hash,
-							BaselineID:            &baseline.ID,
-							ReactNativeVersion:    baseline.ReactNativeVersion,
-							HermesBytecodeVersion: baseline.HermesBytecodeVersion,
-							Source:                "baseline",
-						},
-						Confidence:    similarity,
-						MatchType:     "fuzzy",
-						MatchedString: storedIR,
-						InputString:   inputIR,
-					}
-					matches = append(matches, match)
-				}
-
-				docsChecked++
-				if docsChecked >= maxDocsForThisInput {
-					break
-				}
-			}
-		}
-
-		// Progress update every 10 inputs
-		if (i+1)%10 == 0 || i+1 == len(irStrings) {
-			utils.D.Printf("Fuzzy baseline progress: %d/%d input strings processed, %d matches so far\n",
-				i+1, len(irStrings), len(matches))
-		}
-	}
-
-	utils.L.Printf("Fuzzy baseline matching complete: found %d matches\n", len(matches))
-	return matches, nil
-}
-
-// queryFuzzyPackageMatches performs fuzzy matching against package hashes collection
-func queryFuzzyPackageMatches(hashField string, irStrings []string) ([]SimilarityMatch, error) {
-	var matches []SimilarityMatch
-
-	utils.L.Printf("Fuzzy package matching: processing %d input IR strings with max %d docs per input\n", len(irStrings), maxFuzzyDocs)
-
-	// Process each input IR string
-	for i, inputIR := range irStrings {
-		if len(inputIR) < 30 {
-			continue // Skip short IR strings
-		}
-
-		// Build length-based filter for this input IR
-		lengthFilter := buildLengthFilter(len(inputIR), lengthTolerance, hashField)
-
-		// Query for documents with compatible IR string lengths
-		packageHashes, err := db.Find[models.PackageHashModel]("hashes_ghsa", lengthFilter)
-		if err != nil && err != mongo.ErrNoDocuments {
-			utils.F.Printf("Error in fuzzy package query for input %d: %v\n", i+1, err)
-			continue
-		}
-
-		// Limit the number of documents to check
-		docsChecked := 0
-		maxDocsForThisInput := maxFuzzyDocs
-
-		utils.D.Printf("Fuzzy package: input %d/%d, found %d length-compatible docs, checking up to %d\n",
-			i+1, len(irStrings), len(packageHashes), maxDocsForThisInput)
-
-		// Check each document until we hit our limit
-		for _, pkgHash := range packageHashes {
-			if docsChecked >= maxDocsForThisInput {
-				utils.D.Printf("Reached document limit (%d) for input %d\n", maxDocsForThisInput, i+1)
-				break
-			}
-
-			var storedIR string
-			switch hashField {
-			case "structural_hash":
-				storedIR = pkgHash.Hash.StructuralRaw
-			case "content_ir1_hash":
-				storedIR = pkgHash.Hash.ContentIR1Raw
-			case "content_ir2_hash":
-				storedIR = pkgHash.Hash.ContentIR2Raw
-			}
-
-			if storedIR == "" || len(storedIR) < 30 {
-				continue
-			}
-
-			// Double-check length compatibility (since MongoDB query might not be exact)
-			if !isLengthCompatible(inputIR, storedIR, lengthTolerance) {
-				continue
-			}
-
-			// Calculate similarity
-			similarity := levenshteinSimilarity(inputIR, storedIR)
-
-			if similarity >= confidenceThreshold && similarity < 1.0 { // Exclude exact matches
-				match := SimilarityMatch{
-					HashMatch: HashMatch{
-						Hash:               pkgHash.Hash,
-						PackageHashID:      &pkgHash.ID,
-						ReactNativeVersion: pkgHash.ReactNativeVersion,
-						Source:             "package",
-					},
-					Confidence:    similarity,
-					MatchType:     "fuzzy",
-					MatchedString: storedIR,
-					InputString:   inputIR,
-				}
-				matches = append(matches, match)
-			}
-
-			docsChecked++
-			if docsChecked >= maxDocsForThisInput {
-				break
-			}
-		}
-
-		// Progress update every 10 inputs
-		if (i+1)%10 == 0 || i+1 == len(irStrings) {
-			utils.D.Printf("Fuzzy package progress: %d/%d input strings processed, %d matches so far\n",
-				i+1, len(irStrings), len(matches))
-		}
-	}
-
-	utils.L.Printf("Fuzzy package matching complete: found %d matches\n", len(matches))
-	return matches, nil
-} */
-
-// logHashMatch logs information about a hash match
-/* func logHashMatch(hashType string, match SimilarityMatch) {
-	var hashValue string
-	switch hashType {
-	case "Structural":
-		hashValue = match.Hash.StructuralHash
-	case "Content IR1":
-		hashValue = match.Hash.ContentIR1Hash
-	case "Content IR2":
-		hashValue = match.Hash.ContentIR2Hash
-	}
-
-	// Log match information with confidence
-	if match.MatchType == "exact" {
-		utils.S.Printf("EXACT MATCH - %s Hash: %s (Function Index: %d)\n",
-			hashType, hashValue, match.Hash.RelativeFunctionIndex)
-	} else {
-		utils.S.Printf("FUZZY MATCH - %s Hash: %s (Function Index: %d) [Confidence: %.3f]\n",
-			hashType, hashValue, match.Hash.RelativeFunctionIndex, match.Confidence)
-	}
-
-	// Log source-specific information
-	if match.Source == "package" && match.PackageHashID != nil {
-		utils.S.Printf("  └─ Source: Package Hash ID: %s, React Native Version: %s\n",
-			match.PackageHashID.Hex(), match.ReactNativeVersion)
-	} else if match.Source == "baseline" && match.BaselineID != nil {
-		utils.S.Printf("  └─ Source: Baseline ID: %s, React Native Version: %s, Hermes Version: %s\n",
-			match.BaselineID.Hex(), match.ReactNativeVersion, match.HermesBytecodeVersion)
-	}
-
-	// For fuzzy matches, optionally show IR string comparison (truncated for readability)
-	if match.MatchType == "fuzzy" {
-		inputTruncated := truncateString(match.InputString, 100)
-		matchedTruncated := truncateString(match.MatchedString, 100)
-		utils.D.Printf("  └─ Input IR:   %s\n", inputTruncated)
-		utils.D.Printf("  └─ Matched IR: %s\n", matchedTruncated)
-	}
-}
-
-// truncateString truncates a string to a maximum length with ellipsis
-func truncateString(s string, maxLen int) string {
-	if len(s) <= maxLen {
-		return s
-	}
-	return s[:maxLen-3] + "..."
-}
-*/
