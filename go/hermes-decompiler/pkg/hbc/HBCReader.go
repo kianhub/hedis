@@ -218,6 +218,23 @@ type FunctionSourceEntry struct {
 	StringID   uint32
 }
 
+// HBCReader holds all parsed data from a Hermes bytecode (.hbc) file.
+// It is the central structure produced by reading an HBC file and serves
+// as input to the bytecode parser, normalizer, and fingerprinting pipeline.
+//
+// Create an HBCReader with NewHBCReader, then call ReadWholeFile to populate
+// all fields from an io.ReadSeeker. ReadWholeFile parses sections in the order
+// defined by the HBC format: header, functions, string kinds, identifier
+// hashes, string tables, string storage, arrays, BigInts (bcv >= 87),
+// RegExp, CJS modules, function sources (bcv >= 84), and debug info.
+//
+// FunctionHeaders contains either SmallFunctionHeader or LargeFunctionHeader
+// values depending on whether the compact representation overflowed.
+// CjsModules similarly holds either uint32 or SymbolOffsetPair values
+// depending on bytecode version (< 77 uses pairs, >= 77 uses uint32).
+//
+// The ParserModule field is initialized by InitParserModule after the header
+// is read and provides version-specific opcode definitions for disassembly.
 type HBCReader struct {
 	Header                   HBCHeader
 	FunctionHeaders          []any // can be {Small,Large}FunctionHeader
