@@ -776,6 +776,16 @@ func (h *HBCReader) ReadDebugInfo() error {
 	return nil
 }
 
+// ReadFunctionSources reads function source entries from the HBC file,
+// populating h.FunctionSources. Each entry maps a FunctionID to a StringID
+// that references the function's source text in the string table.
+//
+// The method reads Header.FunctionSourceCount entries, each consisting of
+// two little-endian uint32 values (function ID and string ID), after aligning
+// the read position to a 4-byte boundary.
+//
+// This section is only present in bytecode version >= 84; ReadWholeFile
+// guards the call accordingly. Returns an error if any read fails.
 func (h *HBCReader) ReadFunctionSources() error {
 	h.FunctionSources = make([]FunctionSourceEntry, 0, h.Header.FunctionSourceCount)
 
