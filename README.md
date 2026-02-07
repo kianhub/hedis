@@ -116,6 +116,18 @@ hermes-decompiler maintain-database -s
 hermes-decompiler maintain-database -g
 ```
 
+### `genopcodes`
+
+Generate Go opcode definition packages from downloaded Hermes source files. See [Hermes Bytecode Versions & Opcode Generation](#hermes-bytecode-versions--opcode-generation) for the full workflow.
+
+```bash
+# Download Hermes definitions first
+sh pkg/utils/download_all.sh
+
+# Generate Go opcode packages
+hermes-decompiler genopcodes
+```
+
 ### `packages`
 
 Package management utilities for updating the database and creating hashes.
@@ -125,6 +137,45 @@ hermes-decompiler packages -u                # Update database
 hermes-decompiler packages --create-hashes   # Create hashes
 hermes-decompiler packages -d -a <app.hbc>   # Analyze app against database
 ```
+
+## Hermes Bytecode Versions & Opcode Generation
+
+Hermes bytecode files embed a version number that determines the instruction set used to encode the JavaScript. Each version of the Hermes engine may introduce, remove, or reorder opcodes, so the decompiler needs version-specific instruction tables to correctly parse any given `.hbc` file.
+
+Hedis ships with pre-generated opcode definitions for **30 bytecode versions** (v61–v96), covering Hermes releases from v0.1.0 through v0.14.0+. These definitions live in `go/hermes-decompiler/pkg/hbc/types/opcodes/bcvNN/` as auto-generated Go packages.
+
+### When you need to regenerate or add opcodes
+
+- **Analyzing apps built with a newer Hermes version** — If you encounter an `.hbc` file whose bytecode version exceeds v96, you need to add support for that version.
+- **Updating after a new Hermes release** — When Facebook ships a new Hermes version with bytecode changes, the opcode tables must be regenerated to include the new instruction set.
+
+### How opcode generation works
+
+1. **Download Hermes definitions** from the official [facebook/hermes](https://github.com/nicolo-ribaudo/hermes) repository. This fetches the C++ instruction definitions (`BytecodeList.def`), version headers (`BytecodeVersion.h`), and builtin function lists (`Builtins.def`) for each tagged release:
+
+   ```bash
+   cd go/hermes-decompiler
+   sh pkg/utils/download_all.sh
+   ```
+
+   The downloaded files are stored in `pkg/utils/defversions/`.
+
+2. **Generate Go opcode packages** from the downloaded definitions. This parses each version's `.def` files and produces a Go package with instruction lookup tables:
+
+   ```bash
+   go run main.go genopcodes
+   ```
+
+   Each generated package (e.g., `pkg/hbc/types/opcodes/bcv96/hbc96.go`) contains:
+   - An ordered list of all instructions with their operand types and sizes
+   - Opcode-to-instruction and name-to-instruction lookup maps
+   - Builtin function name lists
+
+3. **Register the new version in the parser.** Generated opcode packages are not automatically used — you must register them in `pkg/hbc/bytecode_parser.go`'s `GetParser()` method by adding the new version to the `parserModuleTable` map and importing the generated package.
+
+### Parser version fallback
+
+Not every bytecode version requires its own parser entry. The parser uses a fallback strategy: it selects the highest registered version that does not exceed the file's bytecode version. For example, a v92 file will use the v90 parser if v92 is not explicitly registered. Only versions that introduce meaningful instruction set changes need their own entry.
 
 ## Repository Layout
 
