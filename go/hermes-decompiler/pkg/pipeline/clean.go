@@ -521,7 +521,28 @@ type MatchResults struct {
 	TotalMatchPercentage      float64
 }
 
-// CompareAppWithPackage is comparing the app bundle hashes with the package hashes and returns the ratio of how many hashes matched
+// CompareAppWithPackage compares an app bundle's function fingerprints against a known package's
+// fingerprints to determine whether the package is present in the app. It iterates over every
+// package hash and searches for a matching app hash using a combined three-IR equality check
+// (Structural + ContentAR1 + ContentAR2 must all match). The first match per package hash
+// short-circuits to avoid double-counting.
+//
+// The returned MatchResults contains per-IR match counts, total hash counts (including
+// ContentIR1/IR2 non-empty counts via CountPackageMetadata), per-IR match percentages,
+// and an overall TotalMatchPercentage computed as CombinedMatches / TotalPackageHashes * 100.
+// A high TotalMatchPercentage indicates the package's compiled functions are present in the app
+// bundle.
+//
+// Parameters:
+//   - appHashes: function fingerprints extracted from the target app's HBC file, typically
+//     produced by GenerateHashesForSpecific after baseline filtering via FindRNBaselineCandidates.
+//   - packageHashes: function fingerprints for the candidate package from the "hashes" or
+//     "hashes_ghsa" MongoDB collection, grouped by GetHashesFromDatabaseWithRNVersion.
+//
+// Returns:
+//
+//	*MatchResults with match counts, hash totals, and percentage breakdowns. PackageInfo is
+//	not populated by this function and must be set by the caller.
 func CompareAppWithPackage(appHashes []*models.FunctionObjectHashModel, packageHashes []*models.FunctionObjectHashModel) *MatchResults {
 	matchResults := &MatchResults{
 		StructuralMatches:  0,
