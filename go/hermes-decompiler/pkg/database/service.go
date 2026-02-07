@@ -12,6 +12,12 @@ import (
 	"go.philip.id/mongopiet/pkg/db"
 )
 
+// AddPackageToDatabase inserts a package record into the "packages" MongoDB collection
+// if no document with the same package_name and package_version already exists. It
+// performs a find-before-insert to enforce uniqueness: if the package is not found
+// (mongo.ErrNoDocuments), it inserts the document; if it already exists, it returns an
+// error indicating the duplicate. Any unexpected query or insert failure is wrapped and
+// returned.
 func AddPackageToDatabase(pkg *models.PackageWithVulnerabilitiesModel) error {
 
 	existingPkg, err := db.FindOne[models.PackageWithVulnerabilitiesModel]("packages", bson.M{"package_name": pkg.PackageName, "package_version": pkg.PackageVersion})
