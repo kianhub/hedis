@@ -1305,6 +1305,19 @@ func (h *HBCReader) ReadIdentifierHashes() error {
 	return nil
 }
 
+// ReadStringKinds reads run-length-encoded string kind entries from the HBC
+// file, populating h.StringKinds with one StringKind value per string. Each
+// raw 32-bit entry encodes a kind and a repeat count; the method expands these
+// runs so that h.StringKinds[i] gives the kind for string index i.
+//
+// The bit layout of each entry is version-dependent. For bytecode version >= 71
+// (Hermes 0.3.0+), the entry uses 31 bits for count and 1 bit for kind, since
+// the Predefined kind was merged into Identifier. For earlier versions, the
+// entry uses 30 bits for count and 2 bits for kind to accommodate all three
+// StringKind values (String, Identifier, Predefined).
+//
+// The method reads Header.StringKindCount encoded entries after aligning the
+// read position to a 4-byte boundary. Returns an error if any read fails.
 func (h *HBCReader) ReadStringKinds() error {
 	h.StringKinds = make([]StringKind, 0, h.Header.StringKindCount)
 
