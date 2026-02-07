@@ -23,6 +23,15 @@ type FunctionObject struct {
 	Instructions []*FunctionObjectInstruction
 }
 
+// FunctionObjectInstruction is a single normalized instruction within a
+// FunctionObject. Name holds the opcode mnemonic (e.g. "TryGetById"),
+// Operands holds the string-formatted operand values, and ResolvedRichData
+// holds semantically resolved operand information (string literals, object
+// references, builtin annotations) used by the content IR fingerprinting
+// stages (ToIR, TokenizeContentIRs). Each FunctionResolvedRichData entry
+// carries a Type ("STRING" or "OBJECT"), a Value, and an IsIdentifier flag
+// that controls whether the value contributes to content IR1 (non-identifier
+// strings) or content IR2 (identifiers and object references).
 type FunctionObjectInstruction struct {
 	Name             string
 	Operands         []string
