@@ -144,6 +144,18 @@ func (header *HBCHeader) PrintHBCHeaderTable() {
 		strings.Repeat("-", valueWidth))
 }
 
+// SmallFunctionHeader is the compact 16-byte bit-packed representation of a
+// Hermes function header. Fields are packed across four 32-bit words: word 0
+// holds Offset (25 bits) and ParamCount (7 bits), word 1 holds
+// BytecodeSizeInBytes (15 bits) and FunctionName (17 bits), word 2 holds
+// InfoOffset (25 bits) and FrameSize (7 bits), and word 3 holds
+// EnvironmentState, HighestReadCacheIndex, HighestWriteCacheIndex (8 bits
+// each), plus a flags byte with ProhibitInvoke (2 bits), StrictMode,
+// HasExceptionHandler, HasDebugInfo, Overflowed, and Unused (2 bits).
+//
+// When Overflowed is true, the Offset and InfoOffset fields are combined into
+// a 41-bit seek address (InfoOffset<<16 | Offset) pointing to a
+// LargeFunctionHeader with full-width uint32 fields.
 type SmallFunctionHeader struct {
 	Offset                 uint32 // 25 bits
 	ParamCount             uint8  // 7 bits
