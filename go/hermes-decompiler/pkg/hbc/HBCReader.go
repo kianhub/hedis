@@ -488,6 +488,23 @@ func (h *HBCReader) ReadHeader() error {
 	return nil
 }
 
+// ReadWholeFile is the main entry point for parsing a Hermes bytecode file.
+// It reads the entire file into memory, then parses all HBC sections in the
+// order defined by the binary format: header, function headers (with exception
+// handlers and debug offsets), string kinds, identifier hashes, small string
+// table, overflow string table, string storage, arrays, BigInts (bcv >= 87),
+// RegExp, CJS modules, function sources (bcv >= 84), and debug info.
+//
+// After parsing the header, it initializes the version-specific ParserModule
+// via InitParserModule, which enables bytecode disassembly for the file's
+// bytecode version.
+//
+// The caller must create an HBCReader with NewHBCReader before calling this
+// method. On success all HBCReader fields are populated and ready for use by
+// the bytecode parser and normalizer.
+//
+// Returns an error if the file cannot be read or any section parse fails.
+// Errors from individual section readers are propagated without wrapping.
 func (h *HBCReader) ReadWholeFile(file io.ReadSeeker) error {
 	// read entire file into memory TODO: might need to optimize this
 	fileData, err := io.ReadAll(file)
