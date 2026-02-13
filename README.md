@@ -6,7 +6,13 @@ Hedis decompiles Hermes bytecode (`.hbc` files), extracts function fingerprints,
 
 Inspired by [P1Sec/hermes-dec](https://github.com/P1Sec/hermes-dec).
 
-> **Note:** This is primarily also a test to use AI agents. We used Opus 4.6 and [Maestro](https://runmaestro.ai) to refactor, document and update the original codebase in order to make this more accessible to the public. If we think this didn't go well, we will rollback and manually remake this repository to stay true to the original code that has been used in the thesis paper.
+> **Note:** This is primarily also a test to use AI agents. We used Opus 4.6 and [Maestro](https://runmaestro.ai) to refactor, document and update the original codebase, in order to make it more accessible to the public. If we believe this approach didn’t yield satisfactory results, we will revert to the original code and manually recreate the repository to adhere to the code used in the thesis paper.
+
+## Research
+
+This tool was developed as part of my bachelor thesis at TU Darmstadt titled **"Evaluating Dependency Vulnerabilities in React Native Applications"**. The thesis presents a novel static analysis pipeline for detecting vulnerable JavaScript packages within production React Native applications. The approach works by constructing a reference database of npm package fingerprints extracted from disassembled Hermes bytecode, then matching these fingerprints against real-world application bundles obtained from the iOS App Store. Validation was performed on open-source apps (Rainbow, Mattermost) and production apps (Discord, Microsoft Outlook), demonstrating the feasibility of coarse-grained dependency detection across different React Native versions and build configurations.
+
+The full thesis is available at: [doi.org/10.26083/tuprints-00031438](https://doi.org/10.26083/tuprints-00031438)
 
 ## Prerequisites
 
