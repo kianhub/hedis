@@ -29,3 +29,10 @@
 - Precision is the failure mode: many FP packages (shared/trivial function hashes), and highest-match version picks wrong among near-identical versions. Far from 0.95.
 - Match wall 45-490 s/app (contention with build); dominated by DB fetch, not compare.
 - Build resume2: 1475/3010 jobs processed, 1197 ok (pid 236275).
+
+## 2026-10-12 02:45 CT — M3: resume fixed, Mongo index
+- Root cause of "resume redoes everything": `fingerprint` read MONGO_DB_NAME (default "clean") while the matcher used HEDIS_PACKAGES_DB=hedis, so resume2/3 built into a separate `clean` DB (6.3M hashes, stray, to be dropped). Fixed: fingerprint honors HEDIS_PACKAGES_DB and logs the DB name (feat/resume-fix).
+- resume2 (old binary) was OOM-killed at 02:26 (hedis 6 GB RSS): in-memory bundle cache held all raw IR. Removed (disk .hbc cache stays).
+- resume4 (pid 331759, logs/fp-build-resume4.log, logs/fp-stats-resume4.jsonl) skips fp_done jobs instantly (500 skips in 20 s); 2603 rows so far.
+- Mongo: covering index cover_rn_pkg_3hash {rn, package_id, S, C1, C2} (built in 76 s). Index alone did not help the $group/$lookup aggregation (80 s); replaced with covered Find + group in Go: db_load 80.2 s -> 23.9 s (3.4x), results identical on synth-00 (1175 pkg-versions). (feat/mongo-indexes)
+- Added --dump-app/--dump-only to export filtered app triples for offline experiments (runs/apps/*.triples).
