@@ -10,7 +10,7 @@ usage: matchlab3.py <tag> [--fullbase] [--df N] [--vd] """
 import sys, os, json, math, collections, argparse
 E_ = "/workspace/hedis-eval"
 ap = argparse.ArgumentParser(); ap.add_argument("tag"); ap.add_argument("--fullbase", action="store_true")
-ap.add_argument("--df", type=int, default=1); ap.add_argument("--vd", action="store_true"); a_ = ap.parse_args()
+ap.add_argument("--df", type=int, default=1); ap.add_argument("--vd", action="store_true"); ap.add_argument("--dep", type=float, default=0); ap.add_argument("--depdf", type=float, default=3); a_ = ap.parse_args()
 M = (1 << 63) - 1
 def h(x): return int(x[:16], 16) if x else 0
 def key(ns, nc): return (h(ns) ^ (h(nc) * 3)) & M
@@ -55,9 +55,17 @@ def score(a, thr):
             w = lambda ks: sum(math.log(1 + I.N / I.df[k]) for k in ks)
             hit = [k for k in K if k in A]; sc = w(hit) / w(K)
             if best is None or (sc, len(hit)) > best[:2]: best = (sc, len(hit), i)
-        if not best or best[1] == 0: continue
+        # dependency-aware fallback (--dep T): a package whose keys are mostly shared with a dependent package
+        # (e.g. react-freeze inside react-native-screens) has ~no unique keys; accept it when >= T of ALL its keys are in the app
+        dep = None
+        if a_.dep:
+            fr = max(((len(I.K[i] & A) / len(I.K[i]), i) for i in ids if len(I.K[i]) >= 20
+                      and sum(I.df[k] for k in I.K[i]) / len(I.K[i]) <= a_.depdf), default=(0, None))
+            if fr[0] >= a_.dep: dep = fr
+        if (not best or best[1] == 0) and not dep: continue
+        if not best or best[1] == 0: best = (dep[0], len(I.K[dep[1]] & A), dep[1])
         sc, m, i = best
-        if thr is not None and sc < thr.get(n, thr["_global"]): continue
+        if thr is not None and sc < thr.get(n, thr["_global"]) and not dep: continue
         if a_.vd and I.var[n]:
             V = I.var[n]; AV = A & V
             def vs(j):

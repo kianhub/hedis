@@ -148,3 +148,11 @@ Next: baseline = full RN+React release bundle (shrinks package sets to package c
 - Correction to M11: the "1-4k keys per version, shared RN code" observation came from diag_versions.py reading unfiltered Mongo rows; after the baseline filter zod has 226 keys. RN code was not the problem.
 - Found a Go bug: --from-dump used strings.Fields, which shifts NS/NC when C1/C2 are empty, so M10 Go scores were understated. Fixed (split on single spaces). Python lab with the same method (a+b, nsnc): test pkg F1 0.900, strict pkg+ver F1 0.541 (eval.py), vs Go M10 0.444.
 - matchlab3.py adds a class-level metric (identical-fingerprint versions = one class): test 0.775.
+
+## 05:34 CT — M13: why packages are missed (step 4)
+Dev misses with a+b nsnc (15 truth pairs, prod_closure); for the true version: keys after baseline / in app / package-unique / unique in app:
+- crypto-js 4.2.0 (synth-00,01,04): 219 / 1-102 / 116 / 0. semver 5.7.2 (synth-00,02,03,04): 85 / 4-5 / 78 / 0. dayjs 1.11.23 (synth-00,04): 55 / 0 / 53 / 0. => the lockfile lists them (transitive), but none of their own code is in the bundle (0 unique keys present). Not a threshold or filter problem: the prod_closure label includes packages that are installed but not bundled.
+- react-freeze 1.0.4 (synth-00,01,03,04, mattermost): 55 / 47-53 / 1 / 0. 45 of its 55 keys are shared with ~20 other packages (generic React helper code that the RN baseline does not contain); its single unique key is absent. The uniqueness filter drops it, but nothing is left that identifies react-freeze specifically.
+- @gorhom/bottom-sheet (mattermost): not in the DB (outside the 30 targets' versions).
+- Threshold is not the cause: every missed package has 0 unique hits, so no threshold value recovers it. Tried a dependency-aware fallback (accept when >=80-90% of ALL keys present): recovers react-freeze but adds many FPs (test pkg P 1.00 -> 0.47-0.53); restricting to low-df keys recovers nothing. Not adopted.
+- Fix for the metric: report recall against bundled truth too (packages with >=1 unique key present is circular; needs Metro module lists from the rebuilt synthetic bundles, step 5).
