@@ -184,8 +184,9 @@ var (
 				rn, hbcV := hdr[2], hdr[4]
 				var pairs [][2]string
 				for _, l := range lines[1:] {
-					f := strings.Fields(l)
-					if len(f) >= 4 {
+					// split on single spaces: empty C1/C2 columns must keep their position (strings.Fields shifted NS/NC)
+					f := strings.Split(strings.TrimRight(l, "\r"), " ")
+					if len(f) >= 4 && !strings.HasPrefix(l, "#") {
 						nc := ""
 						if len(f) >= 5 {
 							nc = f[4]
