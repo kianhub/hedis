@@ -442,3 +442,65 @@ func (r *Runner) one(env string, j Job) {
 	st.Db = time.Since(t).Seconds()
 	st.OK = true
 }
+
+// ImportFromStats rebuilds DB rows from the on-disk .hbc cache using a previous run's stats JSONL
+// (ok rows carry BundleSHA), without npm/Metro. Used to recover after Mongo data loss.
+func (r *Runner) ImportFromStats(statsPath string, rns []string) (int, error) {
+	for _, rn := range rns {
+		if err := r.EnsureBaseline(rn); err != nil {
+			return 0, err
+		}
+	}
+	f, err := os.ReadFile(statsPath)
+	if err != nil {
+		return 0, err
+	}
+	n := 0
+	for _, line := range strings.Split(string(f), "\n") {
+		var s Stat
+		if json.Unmarshal([]byte(line), &s) != nil || !s.OK || s.BundleSHA == "" {
+			continue
+		}
+		v := rnNum(s.RN)
+		id, err := r.pkgID(s.Name, s.Version)
+		if err != nil {
+			return n, err
+		}
+		dk := id.Hex() + "|" + v
+		if r.done[dk] {
+			continue
+		}
+		hs, _, err := hashesFromHBC(filepath.Join(r.cfg.CacheDir, s.RN, s.BundleSHA+".hbc"))
+		if err != nil {
+			continue
+		}
+		base := r.baseline[v]
+		docs := make([]interface{}, 0, len(hs))
+		for _, h := range hs {
+			bk := key3{h.Structural.Hash, h.ContentAR1.Hash, h.ContentAR2.Hash}
+			if r.cfg.Release {
+				bk = key3{h.NormS, h.NormC, "n"}
+			}
+			if _, in := base[bk]; in {
+				continue
+			}
+			d := *h
+			d.ID, d.PackageID, d.ReactNativeVersion = primitive.NewObjectID(), id, v
+			if r.cfg.Release {
+				d.Structural.Raw, d.ContentAR1.Raw, d.ContentAR2.Raw = "", "", ""
+			}
+			docs = append(docs, d)
+		}
+		ctx := context.Background()
+		r.db.Collection("hashes").DeleteMany(ctx, bson.M{"package_id": id, "react_native_version": v})
+		if len(docs) > 0 {
+			if _, err := r.db.Collection("hashes").InsertMany(ctx, docs, options.InsertMany().SetOrdered(false)); err != nil {
+				return n, err
+			}
+		}
+		r.db.Collection("fp_done").UpdateOne(ctx, bson.M{"_id": dk}, bson.M{"$set": bson.M{"funcs": len(hs), "kept": len(docs), "bundle_sha": s.BundleSHA}}, options.Update().SetUpsert(true))
+		r.done[dk] = true
+		n++
+	}
+	return n, nil
+}

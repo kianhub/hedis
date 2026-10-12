@@ -66,6 +66,15 @@ var fingerprintCmd = &cobra.Command{
 			utils.F.Println(err)
 			os.Exit(1)
 		}
+		if fpImport != "" {
+			n, err := r.ImportFromStats(fpImport, rns)
+			if err != nil {
+				utils.F.Println(err)
+				os.Exit(1)
+			}
+			utils.S.Printf("fingerprint: imported %d jobs from cache\n", n)
+			return
+		}
 		utils.L.Printf("fingerprint: %d jobs, %d workers per RN\n", len(jobs), fpWorkers)
 		if err := r.Run(jobs); err != nil {
 			utils.F.Println(err)
@@ -76,8 +85,10 @@ var fingerprintCmd = &cobra.Command{
 }
 
 var fpRelease bool
+var fpImport string
 
 func init() {
+	fingerprintCmd.Flags().StringVar(&fpImport, "import-stats", "", "rebuild DB rows from cached .hbc using this stats JSONL (no npm/Metro)")
 	fingerprintCmd.Flags().BoolVar(&fpRelease, "release", false, "release bundles (dev=false, minify=true), normalized-key baseline filter, no raw IR stored")
 	fingerprintCmd.Flags().StringVar(&fpTargets, "targets", "", "targets JSON")
 	fingerprintCmd.Flags().StringVar(&fpRNs, "rns", "rn074,rn076", "comma-separated RN env dir names")
