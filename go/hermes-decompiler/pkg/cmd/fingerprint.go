@@ -47,10 +47,15 @@ var fingerprintCmd = &cobra.Command{
 				}
 			}
 		}
-		dbName := os.Getenv("MONGO_DB_NAME")
+		// same DB as the matcher: HEDIS_PACKAGES_DB wins, then MONGO_DB_NAME, then "clean"
+		dbName := os.Getenv("HEDIS_PACKAGES_DB")
+		if dbName == "" {
+			dbName = os.Getenv("MONGO_DB_NAME")
+		}
 		if dbName == "" {
 			dbName = "clean"
 		}
+		utils.L.Printf("fingerprint: DB %q\n", dbName)
 		osh := os.Getenv("OS_HERMES")
 		if osh == "" {
 			osh = "linux64-bin"
