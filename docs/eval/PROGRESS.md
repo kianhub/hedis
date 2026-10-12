@@ -43,3 +43,10 @@
   dev  prod_closure pkg 0.466/0.988/0.633  ver 0.207/0.379/0.268
   test prod_closure pkg 0.379/1.000/0.550  ver 0.193/0.424/0.265
 - Exported covered index to cache/index-*.npz (eval/export_index.py, 52 s + 38 s) for offline experiments (eval/matchlab.py).
+
+## 2026-10-12 03:21 CT — EXP lab_thesis (re-implementation check) + EXP (a) IDF
+- matchlab thesis re-implementation reproduces the Go matcher within ±2 TP (dev pc ver F1 0.287 vs 0.268; test 0.269 vs 0.265; diff = only fp_done-complete pkg-versions + set dedup).
+- (a) drop triples shared by >1 package name, IDF-weighted match fraction (threshold 0):
+  dev  prod_closure pkg 0.756/0.793/0.774  ver 0.349/0.316/0.331
+  test prod_closure pkg 0.630/0.836/0.719  ver 0.315/0.348/0.331
+  Precision roughly doubles; some recall lost (packages with no unique triples, e.g. thin wrappers).
