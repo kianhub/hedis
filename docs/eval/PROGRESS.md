@@ -142,3 +142,9 @@ Diagnosis (g_nsnc_ab, dev, direct truth; eval/diag_versions.py): 27 correct, 11 
 - Even the true version only has ~93% of its keys in the app; the missing ~7% (app-context inlining/tree-shaking) is larger than the gap between neighbouring versions, so 'highest match' and F1 tie-break both pick by noise. --tiebreak made it slightly worse.
 - Package misses (prod_closure recall 0.73-0.76): mostly transitive packages whose unique keys are in the app at >=50% but fall under the dev-tuned threshold, or whose keys are all shared with another package (dropped by the uniqueness filter).
 Next: baseline = full RN+React release bundle (shrinks package sets to package code), score versions only on keys that differ between versions (symmetric difference with neighbours), and collapse indistinguishable versions into equivalence classes when scoring.
+
+## 05:32 CT — M12: full React+RN release baseline (step 1)
+- Built a full React+RN release bundle per RN (envs/rnXXX/fullbase_entry.js imports all of react-native + react; 1.3 MB hbc, runs/fullbase/). Its 3119 NS/NC keys are already inside the existing release baselines (3158 keys) and none survive in any filtered package set or app set, so re-scoring is identical (lab3: test strict pkg+ver F1 0.541 both ways).
+- Correction to M11: the "1-4k keys per version, shared RN code" observation came from diag_versions.py reading unfiltered Mongo rows; after the baseline filter zod has 226 keys. RN code was not the problem.
+- Found a Go bug: --from-dump used strings.Fields, which shifts NS/NC when C1/C2 are empty, so M10 Go scores were understated. Fixed (split on single spaces). Python lab with the same method (a+b, nsnc): test pkg F1 0.900, strict pkg+ver F1 0.541 (eval.py), vs Go M10 0.444.
+- matchlab3.py adds a class-level metric (identical-fingerprint versions = one class): test 0.775.
