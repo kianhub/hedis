@@ -230,3 +230,19 @@ eval/hbc_features.py (hedis disassemble -> referenced strings incl. short ones, 
 | test15 | g3_ab | 0.942 | 0.648/0.577/**0.610** | 0.984/0.876/**0.927** |
 | test15 | + group resolution | 0.942 | 0.648/0.577/**0.610** | 0.984/0.876/**0.927** |
 - Real ceiling (credit 1/|bundle-byte-identical sub-group| of the true version, perfect package detection): dev **0.676**, test **0.659** strict F1 (149 / 137 truth pairs). 310/320 DB groups (96.9%) are byte-identical, so the real ceiling is almost the class ceiling (0.651 test).
+
+## M22 — one-class metric, dev error diagnosis, recall fixes (2026-10-12)
+Primary metric (Kian): pkg+version F1, byte-identical bundles = one release, bundled truth (eval/oneclass.py; release identity = root bundle SHA + subpath bundle SHA).
+Baseline g3_ab: dev 0.914 (P .984 R .852, tp127 fp2 fn22), test 0.927.
+Dev errors by category (g3_ab): FN package missed 19 (react-freeze 13, crypto-js 4, @react-navigation/native 6.1.18 2), FN wrong version 2, FN version not in DB 1 (crypto-js 4.1.1); FP 2 (both wrong-version).
+Root causes:
+- react-freeze: its only package-unique key (df=1) is never present in apps (bundle artifact); remaining 54 keys are shared. Same for @react-navigation/native 6.1.x (1 unique key, absent).
+- crypto-js: apps get it via parse/react-native-keys which require subpaths (crypto-js/aes, core, md5, enc-*); DB had only the root entry, and only version 4.2.0.
+- Note: runs/apps_rel dumps for synth-10..29 were lost in the restore; regenerated from apps/out (synth-00 dump re-check byte-identical).
+Fixes (eval/matchlab4.py + Go fingerprint --subpaths):
+- thresholds tuned on dev against bundled truth.
+- --lowuniq 2: packages with <=2 unique keys score on keys with df<=2.
+- --dep 0.6: dependency implication from npm dependencies (data/deps.json via eval/fetch_deps.py).
+- fingerprint --subpaths: one extra bundle per version importing every subpath entry (exports map, else top-level .js files); rows tagged sub; bad subpaths dropped one by one on Metro failure. Logs: logs/fp-sub-stats.jsonl.
+- Added crypto-js 3.1.6..4.2.0 and react-freeze 1.0.0..1.0.4 (db/targets_ext.json).
+Dev (old index, before subpath rows): m4_base 0.899; +dep 0.930; +dep+lowuniq 0.956 (P .972 R .940, tp140 fp4 fn9). --vd / --fit version choice: 0.942 (worse, dropped).

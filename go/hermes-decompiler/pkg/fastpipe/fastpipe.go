@@ -27,6 +27,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"sort"
 	"strings"
 	"sync"
 	"time"
@@ -45,6 +46,7 @@ type Config struct {
 	CacheDir         string
 	StatsPath        string
 	OSHermes         string
+	Sub              bool // bundle the package subpath entry points (exports map / top-level files) in one entry; rows tagged sub, root rows untouched
 	Release          bool // dev=false, minify=true bundles (store-app config); baseline filter on normalized key; raw IR not stored
 }
 
@@ -59,6 +61,7 @@ type Stat struct {
 	Funcs, Kept                             int
 	BundleSHA                               string
 	CacheHit                                bool
+	Subpaths                                []string `json:"subpaths,omitempty"`
 }
 
 func rnNum(rn string) string { // rn074 -> 0.74
@@ -344,6 +347,9 @@ func (r *Runner) one(env string, j Job) {
 		return
 	}
 	dk := id.Hex() + "|" + v
+	if r.cfg.Sub {
+		dk += "|sub"
+	}
 	r.mu.Lock()
 	isDone := r.done[dk]
 	r.mu.Unlock()
@@ -367,13 +373,52 @@ func (r *Runner) one(env string, j Job) {
 		return
 	}
 	entry := fmt.Sprintf("import * as ModuleToBundle from '%s';\n\nglobal.MODULE_TO_BUNDLE = ModuleToBundle;", j.Name)
+	if r.cfg.Sub {
+		subs := Subpaths(filepath.Join(env, "node_modules", j.Name))
+		st.Subpaths = subs
+		if len(subs) == 0 {
+			st.OK, st.Skipped = true, "no-subpaths"
+			r.db.Collection("fp_done").UpdateOne(context.Background(), bson.M{"_id": dk}, bson.M{"$set": bson.M{"funcs": 0, "kept": 0}}, options.Update().SetUpsert(true))
+			return
+		}
+		var b strings.Builder
+		for i, s := range subs {
+			fmt.Fprintf(&b, "import * as S%d from '%s/%s';\nglobal.S%d = S%d;\n", i, j.Name, s, i, i)
+		}
+		entry = b.String()
+	}
 	os.WriteFile(filepath.Join(env, "package_entry_fast.js"), []byte(entry), 0644)
 	out := "package_out_fast.js"
 	writeBundleScript(env, "package_entry_fast.js", out, false)
 	t = time.Now()
 	if _, err := run(env, 10*time.Minute, "node", "bundle-fast.mjs"); err != nil {
-		st.Err = "metro: " + err.Error()
-		return
+		if !r.cfg.Sub || len(st.Subpaths) < 2 {
+			st.Err = "metro: " + err.Error()
+			return
+		}
+		// one bad subpath (node-only, type-only, unresolvable) fails the whole entry: keep the ones that bundle alone
+		var ok []string
+		for _, s := range st.Subpaths {
+			e := fmt.Sprintf("import * as S0 from '%s/%s';\nglobal.S0 = S0;\n", j.Name, s)
+			os.WriteFile(filepath.Join(env, "package_entry_fast.js"), []byte(e), 0644)
+			if _, err := run(env, 5*time.Minute, "node", "bundle-fast.mjs"); err == nil {
+				ok = append(ok, s)
+			}
+		}
+		st.Subpaths = ok
+		if len(ok) == 0 {
+			st.Err = "metro: no subpath bundles"
+			return
+		}
+		var b strings.Builder
+		for i, s := range ok {
+			fmt.Fprintf(&b, "import * as S%d from '%s/%s';\nglobal.S%d = S%d;\n", i, j.Name, s, i, i)
+		}
+		os.WriteFile(filepath.Join(env, "package_entry_fast.js"), []byte(b.String()), 0644)
+		if _, err := run(env, 10*time.Minute, "node", "bundle-fast.mjs"); err != nil {
+			st.Err = "metro: " + err.Error()
+			return
+		}
 	}
 	st.Metro = time.Since(t).Seconds()
 	bundle, err := os.ReadFile(filepath.Join(env, out))
@@ -418,6 +463,7 @@ func (r *Runner) one(env string, j Job) {
 		}
 		d := *h
 		d.ID, d.PackageID, d.ReactNativeVersion = primitive.NewObjectID(), id, v
+		d.Sub = r.cfg.Sub
 		if r.cfg.Release {
 			d.Structural.Raw, d.ContentAR1.Raw, d.ContentAR2.Raw = "", "", ""
 		}
@@ -427,7 +473,11 @@ func (r *Runner) one(env string, j Job) {
 	st.Hash = time.Since(t).Seconds()
 	t = time.Now()
 	// idempotent: drop partial inserts from an interrupted previous run
-	r.db.Collection("hashes").DeleteMany(context.Background(), bson.M{"package_id": id, "react_native_version": v})
+	del := bson.M{"package_id": id, "react_native_version": v}
+	if r.cfg.Sub {
+		del["sub"] = true
+	}
+	r.db.Collection("hashes").DeleteMany(context.Background(), del)
 	if len(docs) > 0 {
 		if _, err := r.db.Collection("hashes").InsertMany(context.Background(), docs, options.InsertMany().SetOrdered(false)); err != nil {
 			st.Err = "db: " + err.Error()
@@ -503,4 +553,45 @@ func (r *Runner) ImportFromStats(statsPath string, rns []string) (int, error) {
 		n++
 	}
 	return n, nil
+}
+
+// Subpaths lists importable subpath entry points of an installed package: string-valued exports
+// keys ("./v4", not "." / wildcards / json), else top-level .js files (UMD-style packages like
+// crypto-js whose consumers import "crypto-js/aes"). Capped at 80.
+func Subpaths(dir string) []string {
+	b, err := os.ReadFile(filepath.Join(dir, "package.json"))
+	if err != nil {
+		return nil
+	}
+	var pj struct {
+		Exports json.RawMessage `json:"exports"`
+		Main    string          `json:"main"`
+	}
+	json.Unmarshal(b, &pj)
+	var out []string
+	var ex map[string]json.RawMessage
+	if len(pj.Exports) > 0 && json.Unmarshal(pj.Exports, &ex) == nil {
+		for k := range ex {
+			if !strings.HasPrefix(k, "./") || strings.Contains(k, "*") || strings.HasSuffix(k, ".json") || strings.HasSuffix(k, "/") {
+				continue
+			}
+			out = append(out, strings.TrimPrefix(k, "./"))
+		}
+	} else if len(pj.Exports) == 0 {
+		main := strings.TrimPrefix(filepath.Clean(pj.Main), "./")
+		ents, _ := os.ReadDir(dir)
+		for _, e := range ents {
+			n := e.Name()
+			if e.IsDir() || !strings.HasSuffix(n, ".js") || strings.HasSuffix(n, ".min.js") || n == "index.js" || n == main ||
+				strings.Contains(n, "config") || strings.HasPrefix(n, ".") {
+				continue
+			}
+			out = append(out, strings.TrimSuffix(n, ".js"))
+		}
+	}
+	sort.Strings(out)
+	if len(out) > 80 {
+		out = out[:80]
+	}
+	return out
 }
