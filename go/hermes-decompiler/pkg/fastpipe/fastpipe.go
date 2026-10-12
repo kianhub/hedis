@@ -104,20 +104,7 @@ func New(cfg Config) (*Runner, error) {
 			r.pkgIDs[p.PackageName+"@"+p.PackageVersion] = p.ID
 		}
 	}
-	agg, err := r.db.Collection("hashes").Aggregate(ctx, bson.A{bson.M{"$group": bson.M{"_id": bson.M{"p": "$package_id", "r": "$react_native_version"}}}})
-	if err == nil {
-		var rows []struct {
-			ID struct {
-				P primitive.ObjectID `bson:"p"`
-				R string             `bson:"r"`
-			} `bson:"_id"`
-		}
-		agg.All(ctx, &rows)
-		for _, x := range rows {
-			r.done[x.ID.P.Hex()+"|"+x.ID.R] = true
-		}
-	}
-	// also: packages that legitimately produced 0 kept hashes are recorded in "fp_done"
+	// fp_done is the only completion marker (written after the hash insert succeeds)
 	cur2, err := r.db.Collection("fp_done").Find(ctx, bson.M{})
 	if err == nil {
 		var rows []struct {
@@ -164,6 +151,7 @@ func (r *Runner) hermesc(env string) string {
 const bundleScript = `import Metro from 'metro';
 const config = await Metro.loadConfig();
 config.resetCache = %v;
+config.maxWorkers = 2;
 await Metro.runBuild(config, { entry: '%s', platform: 'ios', minify: false, out: '%s' });`
 
 func writeBundleScript(env, entry, out string, reset bool) error {
@@ -420,6 +408,8 @@ func (r *Runner) one(env string, j Job) {
 	st.Kept = len(docs)
 	st.Hash = time.Since(t).Seconds()
 	t = time.Now()
+	// idempotent: drop partial inserts from an interrupted previous run
+	r.db.Collection("hashes").DeleteMany(context.Background(), bson.M{"package_id": id, "react_native_version": v})
 	if len(docs) > 0 {
 		if _, err := r.db.Collection("hashes").InsertMany(context.Background(), docs, options.InsertMany().SetOrdered(false)); err != nil {
 			st.Err = "db: " + err.Error()
