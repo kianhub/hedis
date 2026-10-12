@@ -80,3 +80,13 @@ Build-config probe (parse 6.0.0, RN 0.74, share of the package's non-baseline tr
 | +d anchors | dev  | 0.970 | 0.793 | 0.872 | 0.433 | 0.305 | 0.358 |
 | +d anchors | test | 0.939 | 0.836 | 0.885 | 0.429 | 0.318 | 0.365 |
 (prod_closure truth, universe = 30 targets.) Best = a+b. Dropped stray `clean` DB.
+
+## 2026-10-12 03:24 CT — M6: hash-component diagnosis (parse 6.0.0 isolated vs inside synth-00, RN 0.74)
+Tools: --dump-app + HEDIS_DUMP_RAW=1 writes raw S/C1/C2; eval/diag_components.py, eval/norm_check.py.
+Isolated release build (dev=false, minify=true), 2156 pkg functions: exact 57.7%; S differs only 28.8%; S same but C1+C2 differ 5.4%; C2 only 2.2%; C1 only 0.8%; nothing 5.1%.
+Causes (the module-ID hypothesis was wrong: S has no operands and numbers aren't strings):
+1. S: operand-width opcode variants depend on the size of the whole bundle's string table / jump distances: GetByIdShort vs GetById, PutNewOwnByIdShort, J*Long, LoadConstUInt8/Int/Zero.
+2. C1<->C2 flips: a string is flagged "identifier" bundle-wide if any use is an identifier, so e.g. "fulfilled" moves between C1 and C2 depending on the other code in the bundle.
+3. Minification: the DB's unminified build matches only 49.7% (vs 57.7% minified).
+Normalized prototype (NS = width-folded opcodes, LoadConst{UInt8,Int,Zero,Double}->LoadConstNum; NC = sorted C1∪C2, strings len<=2 dropped):
+  minified pkg: NS+NC 99.8% present in app (orig 57.7%), NS-only 99.8%; unminified pkg: NS+NC 78.4%.
