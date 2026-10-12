@@ -177,3 +177,13 @@ Synthetic app rebuild running: logs/synth-rebuild.log (frozen labels backed up i
 ## 05:43 CT — M16: synthetic apps rebuilt and verified (step 5)
 - scripts/build_synthetic.py 10 re-run after the restore: all 10 synthetic .hbc files are byte-identical to the SHA-256 values frozen in data/split.json; direct and prod_closure labels are identical to the backed-up frozen labels (data/groundtruth.frozen/). Mattermost and Rainbow .hbc are still missing.
 - Go norm matcher run on the real test .hbc files (not dumps): test strict pkg+ver F1 0.541, pkg F1 0.900, identical to the --from-dump run.
+
+## 05:45 CT — M17: strict pkg+version ceiling from identical-fingerprint classes (step 2)
+eval/ceiling.py: an oracle detects every truth package whose true version is in hedis_rel and picks a version inside the true version's identical-fingerprint class. A hash method can't separate class members, so expected strict credit = 1/|class|; "optimistic" = lucky pick (= class metric).
+| split | truth | pairs | not in DB | mean class size | singleton share | expected strict ceiling F1 | optimistic |
+|---|---|---|---|---|---|---|---|
+| dev  | prod_closure | 95 | 1 | 3.16 | 0.638 | 0.730 | 0.995 |
+| test | prod_closure | 66 | 0 | 3.00 | 0.576 | **0.695** | 1.000 |
+| dev  | direct | 70 | 1 | 3.75 | 0.551 | 0.665 | 0.993 |
+| test | direct | 46 | 0 | 3.78 | 0.435 | 0.591 | 1.000 |
+=> With this DB, no exact-hash method can expect more than ~0.70 strict pkg+ver F1 on test (current 0.541). The 0.95 strict target is unreachable by hashing alone; it needs non-hash version evidence or a coarser version definition (class-level F1 test 0.775).
