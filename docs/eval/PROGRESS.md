@@ -50,3 +50,9 @@
   dev  prod_closure pkg 0.756/0.793/0.774  ver 0.349/0.316/0.331
   test prod_closure pkg 0.630/0.836/0.719  ver 0.315/0.348/0.331
   Precision roughly doubles; some recall lost (packages with no unique triples, e.g. thin wrappers).
+
+## 2026-10-12 03:21 CT — EXP (b) per-package min-score threshold (tuned on dev only)
+- On top of (a). Tuned on dev package-level F1 (prod_closure); result: global 0.05, parse 0.10, dayjs 0, rest 0.05 (data/thresholds_dev.json -> docs/eval/results). Mostly a global threshold; per-package tuning has too little dev data to differ.
+  dev  prod_closure pkg 0.970/0.793/0.872  ver 0.448/0.316/0.370
+  test prod_closure pkg 0.939/0.836/0.885  ver 0.469/0.348/0.400
+  test direct       pkg 0.898/0.957/0.926  ver 0.469/0.500/0.484
