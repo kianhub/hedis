@@ -183,7 +183,9 @@ hermes-decompiler analyze -s \
 
 ## Target beyond thesis baseline
 
-Kian confirmed (2026-10-12): **micro-F1 ≥ 0.95** at **package+version** on a frozen held-out set (≥30 apps, 60/20/20, stratified by RN version). Rainbow and Mattermost remain in **development** only. Harness: `run_eval.sh` (external).
+**2026-10-12 00:10 CT (initial):** micro-F1 ≥ 0.95 at strict **package+version** on a held-out test set (≥30 apps, 60/20/20, stratified by RN version); Rainbow and Mattermost in dev only.
+
+**2026-10-12 07:40 CT (current):** **package+version F1** on held-out **test** with **bundled truth** (Metro source maps) and **byte-identical Metro bundles** counted as one release class. Test **0.927** reported; dev **0.956** under the updated metric ([log](./log/2026-10-12-eval-matcher-optimizer.md)). Harness: `run_eval.sh`, `data/split.v1.json` (external at time of writing).
 
 ## Decision log
 

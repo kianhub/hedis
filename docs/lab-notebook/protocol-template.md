@@ -10,6 +10,7 @@
 | **Authors** | |
 | **Research question / milestone** | e.g., RQ2 version precision, eval harness v2 |
 | **Git commit** | `git rev-parse HEAD` |
+| **Run settings** | Agent or human runner, model, effort level, host (e.g., Hedis Optimizer on Grok Bot, effort high; no cloud agents); commit author if delegated |
 | **Related log entries** | |
 
 ## Hypothesis

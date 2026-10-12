@@ -41,13 +41,11 @@ We scored thesis-style package detections against lockfile ground truth for **Ra
 
 **Interpretation (hedged):** The package-level recall of 1.0 may indicate that fingerprint matching is inclusive relative to lockfile declarations, while precision 0.375 suggests that many detected package names do not correspond to declared direct dependencies. Package+version F1 of zero is plausibly explained by the restricted version coverage in the database rather than by a failure of the triple-hash matcher itself.
 
-### Evaluation target (confirmed by Kian)
+### Evaluation target (confirmed by Kian, superseded later same day)
 
-We recorded the following engineering target:
+We initially recorded micro-F1 **≥ 0.95** at strict **package+version** on a frozen held-out split (≥30 apps, 60/20/20, stratified by RN version). **Rainbow** and **Mattermost** were reserved for development.
 
-- **Metric:** micro-F1 **≥ 0.95** at **package+version** granularity.
-- **Test set:** frozen held-out split with **≥ 30 applications** (open source plus synthetic), **60/20/20** train/validation/test, **stratified by RN version**, with explicit **leakage rules**.
-- **Development holdout:** **Rainbow** and **Mattermost** remain in the **development** split only (not in held-out test).
+**Update:** On 2026-10-12 **07:40 CT**, Kian superseded this with bundled-truth labels and byte-identical-bundle version equivalence; see [2026-10-12-eval-matcher-optimizer.md](./2026-10-12-eval-matcher-optimizer.md).
 
 ### Eval harness
 
