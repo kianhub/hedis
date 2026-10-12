@@ -73,7 +73,6 @@ type Runner struct {
 	baseline  map[string]map[key3]struct{} // rnNum -> set
 	pkgIDs    map[string]primitive.ObjectID
 	done      map[string]bool // pkgid|rn
-	bundleMem sync.Map        // rn|bundleSHA -> []*models.FunctionObjectHashModel (unfiltered hashes)
 	mu        sync.Mutex
 	statsF    *os.File
 }
@@ -383,16 +382,12 @@ func (r *Runner) one(env string, j Job) {
 	}
 	st.Hermes = time.Since(t).Seconds()
 	t = time.Now()
-	var hs []*models.FunctionObjectHashModel
-	if c, ok := r.bundleMem.Load(j.RN + "|" + bsha); ok {
-		hs = c.([]*models.FunctionObjectHashModel)
-	} else {
-		hs, _, err = hashesFromHBC(cacheHBC)
-		if err != nil {
-			st.Err = "disasm: " + err.Error()
-			return
-		}
-		r.bundleMem.Store(j.RN+"|"+bsha, hs)
+	// no in-memory bundle cache: it held every bundle's raw IR and OOM-killed the build (6 GB RSS);
+	// the on-disk .hbc cache already makes re-hashing cheap.
+	hs, _, err := hashesFromHBC(cacheHBC)
+	if err != nil {
+		st.Err = "disasm: " + err.Error()
+		return
 	}
 	st.Funcs = len(hs)
 	base := r.baseline[v]
