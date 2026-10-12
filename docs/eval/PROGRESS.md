@@ -156,3 +156,8 @@ Dev misses with a+b nsnc (15 truth pairs, prod_closure); for the true version: k
 - @gorhom/bottom-sheet (mattermost): not in the DB (outside the 30 targets' versions).
 - Threshold is not the cause: every missed package has 0 unique hits, so no threshold value recovers it. Tried a dependency-aware fallback (accept when >=80-90% of ALL keys present): recovers react-freeze but adds many FPs (test pkg P 1.00 -> 0.47-0.53); restricting to low-df keys recovers nothing. Not adopted.
 - Fix for the metric: report recall against bundled truth too (packages with >=1 unique key present is circular; needs Metro module lists from the rebuilt synthetic bundles, step 5).
+
+## 05:35 CT — M14: version-diff scoring (step 2)
+- vd: on version-variable keys V_p (union minus intersection over the package versions), score(v) = |D_v present| - |D_v absent| - |app keys in V_p not in v|; pick max, tie -> IDF score.
+- Result: test identical (strict 0.541, class 0.775); dev slightly worse (strict 0.519 -> 0.494). Not adopted.
+- Why: class precision is already 0.956 on test while strict precision is 0.667, i.e. nearly every wrong version has a fingerprint identical to the true one. There is nothing left between versions for any key-based tie-break to use; remaining strict errors are indistinguishable versions.
