@@ -16,3 +16,16 @@
   - direct:       pkg 0.586/0.944/0.723, pkg+ver 0.276/0.444/0.340
   - match wall 87 s (runs/hedisv2_/). Rainbow .hbc not available (bundle fails, logs/rainbow2.log).
 - Synthetic apps: scripts/build_synthetic.py 10 running (pid 241545, logs/synth.log); 4/10 OK so far.
+
+## 2026-10-12 02:28 CT — M2: synthetic eval set frozen + baseline on it
+- 10 synthetic Hermes apps built (apps/out/synth-0[0-9]-rn07{4,6}.hbc, labels data/groundtruth/synth-*.json, manifest data/synth_manifest.json), 9-12 target pkgs each, alternating rn074/rn076.
+- Split frozen in data/split.json (with .hbc sha256): dev = synth-00..04 + mattermost-2.29.1; held-out TEST = synth-05..09 (+ rainbow-1.9.70 when its .hbc builds).
+- Thesis matcher baseline (partial DB, universe = 30 targets, threshold 0):
+  | split | truth | pkg P | pkg R | pkg F1 | ver P | ver R | ver F1 |
+  | dev  | direct       | 0.397 | 0.986 | 0.566 | 0.172 | 0.429 | 0.246 |
+  | dev  | prod_closure | 0.466 | 0.988 | 0.633 | 0.207 | 0.379 | 0.268 |
+  | test | direct       | 0.317 | 1.000 | 0.482 | 0.172 | 0.543 | 0.262 |
+  | test | prod_closure | 0.379 | 1.000 | 0.550 | 0.193 | 0.424 | 0.265 |
+- Precision is the failure mode: many FP packages (shared/trivial function hashes), and highest-match version picks wrong among near-identical versions. Far from 0.95.
+- Match wall 45-490 s/app (contention with build); dominated by DB fetch, not compare.
+- Build resume2: 1475/3010 jobs processed, 1197 ok (pid 236275).

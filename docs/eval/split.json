@@ -1,0 +1,20 @@
+{
+ "frozen": "2026-10-12",
+ "rule": "synth i<5 dev, i>=5 held-out test (seeds 1000+i); mattermost dev; rainbow test (no hbc yet)",
+ "dev": {
+  "synth-00-rn074": "e54450089e5e76cde652af9024fd4b88729209ad45b175d8e3c2c13dff10ded5",
+  "synth-01-rn076": "72a1a83670aa591c6977ff53ca4822416e81a030a20048334de5b4e41ece5ed5",
+  "synth-02-rn074": "b971c120985f8d4fbafb29475aa1873b56da137b7c5a9f371c819cde846d860b",
+  "synth-03-rn076": "773c8b5dc3fb3a4dfa19059590a330ed6e05738cd7c1a0ef4205b19b156e79be",
+  "synth-04-rn074": "fd1725ab1e040261d7c0c99ca577f16ae692537d398be194693ea255a863af55",
+  "mattermost-2.29.1": "1b130377bf700efcdb08df30e0f4a426f4b3f187dbb24db23a4256ded0b3c7e2"
+ },
+ "test": {
+  "synth-05-rn076": "c035225671ed9c4651f3e23dce8a02d131a4af20274f2e81d4141d6f2ae85163",
+  "synth-06-rn074": "dc4490bbe06259b0cde241b4716f5b0819e8b18089ddda73757749ad59f67012",
+  "synth-07-rn076": "78d745468e48f409b9aab03e2f0b9f8f0b5927bfa43e1b7a891a97bfe2bc00ca",
+  "synth-08-rn074": "ea3161344ac3ae6c5e1e4b66f4c2d7b33fca4b730618e3f5a138774850751951",
+  "synth-09-rn076": "fc25e6b6598cd9d886e644a680fccee38d5bba52476e1d08bfe318b5262c63c6",
+  "rainbow-1.9.70": null
+ }
+}
