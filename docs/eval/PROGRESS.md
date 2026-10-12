@@ -246,3 +246,31 @@ Fixes (eval/matchlab4.py + Go fingerprint --subpaths):
 - fingerprint --subpaths: one extra bundle per version importing every subpath entry (exports map, else top-level .js files); rows tagged sub; bad subpaths dropped one by one on Metro failure. Logs: logs/fp-sub-stats.jsonl.
 - Added crypto-js 3.1.6..4.2.0 and react-freeze 1.0.0..1.0.4 (db/targets_ext.json).
 Dev (old index, before subpath rows): m4_base 0.899; +dep 0.930; +dep+lowuniq 0.956 (P .972 R .940, tp140 fp4 fn9). --vd / --fit version choice: 0.942 (worse, dropped).
+
+## M23: subpath rows, dep + lowuniq ported to Go, frozen config, test scored once (2026-10-12)
+Run settings: worker effort level high (default).
+- History: v2 rewritten so all 69 commits are authored and committed by Kian Pasani, with no Co-authored-by trailers. A local backup ref is kept as backup/v2-pre-rewrite. Merged remote feat/* branches were deleted. Commit refs cited above (66fcd2f main, 4eb1c4b/96f9ceb/d6f4dc3) were Kian's and are unchanged. Every other bot-era commit hash changed.
+- Subpath fingerprinting (fingerprint --subpaths) over db/targets_ext.json, both RNs:
+  - 287 version/RN jobs added subpath rows (crypto-js, parse, semver, axios, permissions, zod v3/v4-locales, ...).
+  - 1037 had no subpaths and 514 failed.
+  - better-auth, bottom-sheet, fast-image and reanimated fail mostly because their exports need babel plugins that RN 0.74/0.76 lack (e.g. zod/v4 classic export-namespace-from). Apps on these RNs can't import those subpaths either.
+  - Probing now skips subpaths that already failed in 2+ versions and only probes when there are 50 or fewer subpaths.
+- Metric: one-class identity is the root bundle SHA, as Kian defined it. `oneclass.py --subsha` is optional.
+- Subpath rows exist only for some versions, which biased version choice (parse 6.0.0 vs 8.0.1, zod 4.1.x). The fix is --rootver: version choice uses root-entry keys only (cache/relidx_root.json via `matchlab2.py export-root`; rows tagged sub in Go).
+- Dep rule (--depshared): the evidence is the dependency's keys that the parent's own fingerprint also contains (min 5), with coverage of at least 0.6. This fixes crypto-js pulled in via parse, whose crypto-js keys are not unique.
+- Go port in pkg/pipeline/normmatch.go adds the flags --lowuniq/--lowdf, --dep/--deps, and --rootver. Go matches Python exactly on dev (0.970, same errors).
+- Frozen config (data/frozen_m23.json and .sha256): `--norm nsnc --thresholds data/thresholds_m4f_dlr.json --lowuniq 2 --lowdf 2 --dep 0.6 --deps data/deps.json --rootver`.
+
+| one-class F1 (P/R) | dev | test |
+|---|---|---|
+| g3_ab (M21) | 0.914 (.984/.852) | 0.927 (.984/.876) |
+| m4 dep+lowuniq, old index | 0.956 (.972/.940) | – |
+| + subpath rows (no rootver) | 0.940 (.940/.940) | – |
+| **frozen go_m23** | **0.970 (.973/.966)** | **0.975 (.971/.978)**, scored once |
+
+Remaining dev errors (go_m23):
+- FN missed (1): crypto-js 4.2.0 in synth-00.
+- Wrong version (4): screens 3.35 vs 3.37 and immer 11.1.2 vs 11.1.3 have identical NS/NC keysets but different bundles; screens 3.33 vs 3.37 and fast-image 9.0.1 vs 9.0.2 have version-distinguishing keys absent from the app.
+Test errors:
+- Wrong version (3): i18next 23.12.0 vs .1, fast-image 8.23 vs 8.25, immer 11.1.14 vs .15.
+- FP (1): @react-navigation/native 6.1.18 in synth-24 (not bundled).

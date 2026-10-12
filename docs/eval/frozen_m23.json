@@ -1,0 +1,3 @@
+{"frozen": "2026-10-12, chosen on dev only", "binary": "bin/hedis-norm (hedis packages -d --from-dump)",
+ "flags": "--norm nsnc --thresholds data/thresholds_m4f_dlr.json --lowuniq 2 --lowdf 2 --dep 0.6 --deps data/deps.json --rootver",
+ "db": "hedis_rel incl. subpath rows (fingerprint --subpaths) and crypto-js/react-freeze extra versions"}

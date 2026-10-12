@@ -6,8 +6,8 @@ usage: oneclass.py <pred_prefix> <dev|test> [--diag]"""
 import sys, json, collections
 E_ = "/workspace/hedis-eval"; P, part = sys.argv[1], sys.argv[2]; diag = "--diag" in sys.argv
 UNI = set(json.load(open(f"{E_}/data/universe_targets.json"))); split = json.load(open(f"{E_}/data/split.json"))
-sha = {}  # release identity = (root bundle SHA, subpath bundle SHA): both must be identical
-for f in ("fp-rel-stats.jsonl", "fp-sub-stats.jsonl"):
+sha = {}  # release identity = root bundle SHA (Kian's definition); --subsha also requires identical subpath bundles
+for f in ("fp-rel-stats.jsonl",) + (("fp-sub-stats.jsonl",) if "--subsha" in sys.argv else ()):
     try:
         for l in open(f"{E_}/logs/{f}"):
             d = json.loads(l)

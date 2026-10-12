@@ -73,6 +73,7 @@ func rnNum(rn string) string { // rn074 -> 0.74
 type key3 struct{ s, c1, c2 string }
 
 type Runner struct {
+	subFail  map[string]int // "<pkg>/<subpath>" -> versions where it failed to bundle alone (guarded by mu)
 	cfg      Config
 	db       *mongo.Database
 	baseline map[string]map[key3]struct{} // rnNum -> set
@@ -375,6 +376,16 @@ func (r *Runner) one(env string, j Job) {
 	entry := fmt.Sprintf("import * as ModuleToBundle from '%s';\n\nglobal.MODULE_TO_BUNDLE = ModuleToBundle;", j.Name)
 	if r.cfg.Sub {
 		subs := Subpaths(filepath.Join(env, "node_modules", j.Name))
+		// skip subpaths that already failed to bundle alone in 2+ other versions of this package
+		r.mu.Lock()
+		kept := subs[:0]
+		for _, s := range subs {
+			if r.subFail[j.Name+"/"+s] < 2 {
+				kept = append(kept, s)
+			}
+		}
+		r.mu.Unlock()
+		subs = kept
 		st.Subpaths = subs
 		if len(subs) == 0 {
 			st.OK, st.Skipped = true, "no-subpaths"
@@ -392,7 +403,8 @@ func (r *Runner) one(env string, j Job) {
 	writeBundleScript(env, "package_entry_fast.js", out, false)
 	t = time.Now()
 	if _, err := run(env, 10*time.Minute, "node", "bundle-fast.mjs"); err != nil {
-		if !r.cfg.Sub || len(st.Subpaths) < 2 {
+		// per-subpath probing costs one Metro run each: only for packages with few subpaths (crypto-js, zod)
+		if !r.cfg.Sub || len(st.Subpaths) < 2 || len(st.Subpaths) > 50 {
 			st.Err = "metro: " + err.Error()
 			return
 		}
@@ -403,6 +415,13 @@ func (r *Runner) one(env string, j Job) {
 			os.WriteFile(filepath.Join(env, "package_entry_fast.js"), []byte(e), 0644)
 			if _, err := run(env, 5*time.Minute, "node", "bundle-fast.mjs"); err == nil {
 				ok = append(ok, s)
+			} else {
+				r.mu.Lock()
+				if r.subFail == nil {
+					r.subFail = map[string]int{}
+				}
+				r.subFail[j.Name+"/"+s]++
+				r.mu.Unlock()
 			}
 		}
 		st.Subpaths = ok
