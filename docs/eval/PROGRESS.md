@@ -199,3 +199,17 @@ eval/ceiling.py: an oracle detects every truth package whose true version is in 
 | test | bundled      | 1.000/0.918/**0.957** | 0.667/0.612/**0.638** |
 | test | prod_closure | 1.000/0.818/0.900 | 0.667/0.455/0.541 |
 - Ceiling on bundled truth (expected, uniform pick in class): dev 0.656, test 0.616 (mean class size 3.6; 47-54% singletons). The matcher's 0.638 is above the uniform-pick expectation because it picks deterministically within classes and got lucky on some ties; optimistic ceiling 1.0.
+
+## 06:04 CT — M19: eval set grown to 30 synthetic apps (step 3)
+- build_synthetic.py 20 10 (seeds 1010-1029, now with --sourcemap-output and a start index): 20/20 OK, 166 picks, 131 distinct pkg@version over 29 packages. Bundled truth from their source maps (mean 36.8 bundled packages/app).
+- Split extended under the same frozen rule (data/split.json, v1 kept as data/split.v1.json): synth-10..19 -> dev, synth-20..29 -> test, sha256 of each .hbc recorded. Size now dev = 15 synth + mattermost, test = 15 synth + rainbow (no .hbc).
+- Go nsnc a+b (unchanged thresholds from the v1 dev tuning):
+| set | truth | pkg P/R/F1 | strict pkg+ver P/R/F1 |
+|---|---|---|---|
+| dev 15 synth  | bundled      | 1.000/0.866/0.928 | 0.620/0.537/0.576 |
+| test 15 synth | bundled      | 1.000/0.891/**0.942** | 0.648/0.577/**0.610** |
+| dev 15 synth  | prod_closure | 1.000/0.777/0.875 | 0.620/0.402/0.488 |
+| test 15 synth | prod_closure | 1.000/0.787/0.881 | 0.648/0.418/0.508 |
+| test new 10 only | bundled   | 1.000/0.875/0.933 | 0.636/0.557/0.594 |
+- Strict ceiling, bundled truth: dev15 0.667, test15 0.651 (mean class size 3.3-3.6, 137 test pairs).
+- RN 0.79: not cheap. It needs a new rn079 env plus ~1500 more fingerprint jobs (~1 h+ CPU) before any 0.79 app can be matched; not done.

@@ -2488,5 +2488,126 @@
   "yoctocolors": [
    "2.2.0"
   ]
- }
+ },
+ "bundled": {
+  "@babel/runtime": [
+   "7.26.0",
+   "7.29.10"
+  ],
+  "@babel/runtime-corejs3": [
+   "7.22.11"
+  ],
+  "@nozbe/watermelondb": [
+   "0.28.0"
+  ],
+  "@react-native/assets-registry": [
+   "0.74.89"
+  ],
+  "@react-native/js-polyfills": [
+   "0.74.89"
+  ],
+  "@react-native/normalize-colors": [
+   "0.74.89"
+  ],
+  "@react-native/virtualized-lists": [
+   "0.74.89"
+  ],
+  "@shopify/flash-list": [
+   "1.8.3"
+  ],
+  "abort-controller": [
+   "3.0.0"
+  ],
+  "axios": [
+   "1.7.0"
+  ],
+  "base64-js": [
+   "1.5.1"
+  ],
+  "better-auth": [
+   "0.0.1"
+  ],
+  "core-js-pure": [
+   "3.50.0"
+  ],
+  "crypto-js": [
+   "4.1.1"
+  ],
+  "dayjs": [
+   "1.11.17"
+  ],
+  "event-target-shim": [
+   "5.0.1"
+  ],
+  "events": [
+   "3.3.0"
+  ],
+  "idb-keyval": [
+   "6.2.1"
+  ],
+  "invariant": [
+   "2.2.4"
+  ],
+  "lodash.debounce": [
+   "4.0.8"
+  ],
+  "memoize-one": [
+   "5.2.1"
+  ],
+  "metro-runtime": [
+   "0.80.12"
+  ],
+  "nullthrows": [
+   "1.1.1"
+  ],
+  "parse": [
+   "4.3.0"
+  ],
+  "promise": [
+   "8.3.0"
+  ],
+  "prop-types": [
+   "15.8.1"
+  ],
+  "react": [
+   "18.2.0"
+  ],
+  "react-freeze": [
+   "1.0.4"
+  ],
+  "react-native": [
+   "0.74.7"
+  ],
+  "react-native-permissions": [
+   "5.4.4"
+  ],
+  "recyclerlistview": [
+   "4.2.3"
+  ],
+  "regenerator-runtime": [
+   "0.13.11"
+  ],
+  "rxjs": [
+   "7.8.2"
+  ],
+  "scheduler": [
+   "0.24.0-canary-efb381bbf-20230505"
+  ],
+  "stacktrace-parser": [
+   "0.1.11"
+  ],
+  "ts-object-utils": [
+   "0.0.5"
+  ],
+  "tslib": [
+   "2.8.1"
+  ],
+  "uuid": [
+   "9.0.0"
+  ],
+  "whatwg-fetch": [
+   "3.6.20"
+  ]
+ },
+ "bundled_modules": 1613
 }
