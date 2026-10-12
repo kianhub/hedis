@@ -61,7 +61,7 @@ var fingerprintCmd = &cobra.Command{
 			osh = "linux64-bin"
 		}
 		r, err := fastpipe.New(fastpipe.Config{MongoURI: os.Getenv("MONGO_CONNECTION_STRING"), DBName: dbName,
-			EnvsRoot: fpEnvs, RNs: rns, Workers: fpWorkers, CacheDir: fpCache, StatsPath: fpStats, OSHermes: osh, Release: fpRelease})
+			EnvsRoot: fpEnvs, RNs: rns, Workers: fpWorkers, CacheDir: fpCache, StatsPath: fpStats, OSHermes: osh, Release: fpRelease, Sub: fpSub})
 		if err != nil {
 			utils.F.Println(err)
 			os.Exit(1)
@@ -84,11 +84,12 @@ var fingerprintCmd = &cobra.Command{
 	},
 }
 
-var fpRelease bool
+var fpRelease, fpSub bool
 var fpImport string
 
 func init() {
 	fingerprintCmd.Flags().StringVar(&fpImport, "import-stats", "", "rebuild DB rows from cached .hbc using this stats JSONL (no npm/Metro)")
+	fingerprintCmd.Flags().BoolVar(&fpSub, "subpaths", false, "fingerprint package subpath entry points (rows tagged sub)")
 	fingerprintCmd.Flags().BoolVar(&fpRelease, "release", false, "release bundles (dev=false, minify=true), normalized-key baseline filter, no raw IR stored")
 	fingerprintCmd.Flags().StringVar(&fpTargets, "targets", "", "targets JSON")
 	fingerprintCmd.Flags().StringVar(&fpRNs, "rns", "rn074,rn076", "comma-separated RN env dir names")

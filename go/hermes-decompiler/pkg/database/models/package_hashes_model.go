@@ -37,6 +37,7 @@ type FunctionObjectHashModel struct {
 	ContentAR2         FunctionObjectDataModel `bson:"ar2"`
 	// normalized, bundle-context-robust hashes (pkg/normhash); empty in thesis-era DBs
 	NormS string `bson:"ns,omitempty"`
+	Sub   bool   `bson:"sub,omitempty"` // from a subpath-entry bundle (e.g. zod/v4, crypto-js/aes)
 	NormC string `bson:"nc,omitempty"`
 }
 
