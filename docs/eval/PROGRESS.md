@@ -173,3 +173,7 @@ Dev misses with a+b nsnc (15 truth pairs, prod_closure); for the true version: k
 Dev g3_ab: pkg 0.899, strict 0.519, class 0.790. Direct truth, test: pkg F1 0.989, strict 0.659. Go and the Python lab produce identical predictions.
 Recall ceiling: prod_closure includes installed-but-unbundled packages (M13), and identical-fingerprint versions cap strict precision.
 Synthetic app rebuild running: logs/synth-rebuild.log (frozen labels backed up in data/groundtruth.frozen/).
+
+## 05:43 CT — M16: synthetic apps rebuilt and verified (step 5)
+- scripts/build_synthetic.py 10 re-run after the restore: all 10 synthetic .hbc files are byte-identical to the SHA-256 values frozen in data/split.json; direct and prod_closure labels are identical to the backed-up frozen labels (data/groundtruth.frozen/). Mattermost and Rainbow .hbc are still missing.
+- Go norm matcher run on the real test .hbc files (not dumps): test strict pkg+ver F1 0.541, pkg F1 0.900, identical to the --from-dump run.
