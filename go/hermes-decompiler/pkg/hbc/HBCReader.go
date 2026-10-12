@@ -11,7 +11,7 @@ import (
 )
 
 const (
-	HeaderMagic           uint64 = 0x1F1903C103BC1FC6 // Unicode 'Ἑρμῆ' encoded as UTF-16BE
+	HeaderMagic uint64 = 0x1F1903C103BC1FC6 // Unicode 'Ἑρμῆ' encoded as UTF-16BE
 	// LatestBytecodeVersion is the highest Hermes bytecode version (bcv) supported
 	// by this decompiler. It corresponds to the most recent generated opcode definitions
 	// in pkg/hbc/types/opcodes/bcv96/. Files with a version above this value trigger a
