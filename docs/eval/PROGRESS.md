@@ -90,3 +90,9 @@ Causes (the module-ID hypothesis was wrong: S has no operands and numbers aren't
 3. Minification: the DB's unminified build matches only 49.7% (vs 57.7% minified).
 Normalized prototype (NS = width-folded opcodes, LoadConst{UInt8,Int,Zero,Double}->LoadConstNum; NC = sorted C1∪C2, strings len<=2 dropped):
   minified pkg: NS+NC 99.8% present in app (orig 57.7%), NS-only 99.8%; unminified pkg: NS+NC 78.4%.
+
+## 2026-10-12 03:27 CT — M7: normalized hashes + release rebuild started
+- pkg/normhash: NS (opcode width variants folded, LoadConst numerics unified) and NC (C1∪C2 sorted, len<=2 dropped) SHA-256; stored as hashes.ns / hashes.nc and baselines.hashes.ns/nc; covering index cover_rn_pkg_norm {rn, package_id, ns, nc}. Unit tests in pkg/normhash.
+- fingerprint --release: Metro dev=false minify=true (store config), baseline filter on (NS,NC), raw IR not stored (axios 1.6.0 job: 373 funcs, 294 kept vs ~4k in the dev DB).
+- Rebuild into new DB hedis_rel: pid 368177, logs/fp-rel.log, logs/fp-rel-stats.jsonl, cache-rel/. ~18 jobs/min (CPU-bound, load 11 on 8 cores) -> ETA ~2.5 h.
+- Go matcher port ready: packages -d --norm nsnc|ns [--thresholds f.json] [--tiebreak] (pkg/pipeline/normmatch.go); offline lab eval/matchlab2.py. App norm keys dumped to runs/apps_rel/.
