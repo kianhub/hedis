@@ -56,3 +56,6 @@
   dev  prod_closure pkg 0.970/0.793/0.872  ver 0.448/0.316/0.370
   test prod_closure pkg 0.939/0.836/0.885  ver 0.469/0.348/0.400
   test direct       pkg 0.898/0.957/0.926  ver 0.469/0.500/0.484
+
+## 2026-10-12 03:22 CT — EXP (c) version choice by F1 of the version's triples vs the app's triples of that package
+- On top of (a)+(b). No gain: dev identical (ver F1 0.370), test slightly worse (pc ver 0.383 vs 0.400; direct 0.421 vs 0.484). Diagnosis follows in next entry.
