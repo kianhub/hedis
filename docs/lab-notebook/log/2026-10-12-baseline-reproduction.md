@@ -66,4 +66,4 @@ We **started** that rebuild as of this timestamp. The rebuild is intended to unb
 - [ ] Publish or vendor `run_eval.sh` and document invocation in [baseline-thesis.md](../baseline-thesis.md).
 - [ ] Complete the reduced MongoDB build with non-vulnerable versions for eval packages.
 - [ ] Generate synthetic apps covering diverse RN/Hermes versions for the 60/20/20 split.
-- [ ] Transcribe thesis per-app tables from TUprints PDF when access is available (**unverified** rows until then).
+- [x] Transcribe thesis Tables 5.1–5.6 — completed 2026-10-12; see [2026-10-12-thesis-pdf-verification.md](./2026-10-12-thesis-pdf-verification.md).

@@ -12,7 +12,8 @@ This registry lists datasets referenced in the thesis and datasets present in th
 | D4 | npm registry metadata | registry.npmjs.org | Per package at pipeline time | Network | npm terms of use | `npm install <pkg>@<ver>` in RN sandboxes |
 | D5 | RN baseline template apps | Generated via `pipeline/get_rn_versions.sh` | RN 0.69.12–0.79.3 (11 envs) | Large `node_modules` per `pipeline/react-natives/rn*` | Per dependency | Empty app + `baseline_entry.js` → Metro bundle → Hermes → fingerprints → `baselines_v3` |
 | D6 | RN fingerprint pipeline packages | Same as D3, installed into D5 | Per package@version × RN version | MongoDB `hashes` / `hashes_ghsa` | Per package | Baseline subtraction; three SHA-256 hashes per FO |
-| D7 | Thesis MongoDB fingerprint DB | Thesis experiments | **Not in repo** (~16 GB cited in lab log) | ~16 GB | N/A | Required for full thesis rerun |
+| D6b | Thesis refined fingerprint targets | RN Directory ∩ GHSA (thesis §4.3.1, §6.2) | Snapshot **2025-07-10**; **1,220** package versions processed (**952** packages succeeded) | **16.06 GB** MongoDB (thesis); not in repo | CC BY 4.0 (thesis) | 76 h pipeline; see Table 5.6 in [baseline-thesis.md](./baseline-thesis.md) |
+| D7 | Thesis MongoDB fingerprint DB | Thesis experiments | **Not in repo** | 16,579,257 FO records | N/A | Required for full thesis rerun |
 | D8 | Rainbow Wallet (evaluation) | GitHub / App Store IPA | **v1.9.70** (thesis; lockfile scoring in lab log) | IPA not in repo | OSS app license | `main.jsbundle` Hermes extraction; test reference `Rainbow-1_9_70_app_test_bundle.hbc` in analyzer tests |
 | D9 | Mattermost Mobile (evaluation) | GitHub / App Store | **v2.29.1** (lab log lockfile scoring) | IPA not in repo | Apache-2.0 (mobile client) | Same pipeline as D8 |
 | D10 | Discord (evaluation) | iOS App Store | Production build (thesis) | IPA not in repo; Apple login required | Proprietary | IPA download + Hermes bundle extraction |
@@ -27,9 +28,13 @@ This registry lists datasets referenced in the thesis and datasets present in th
 
 We use the Directory as a practical universe of React Native–relevant npm packages. The harvest script requests `https://reactnative.directory/api/libraries?ios=true&skipTools=true&skipTemplates=true` with pagination (30 libraries per page).
 
+**Thesis (Section 4.3.1):** After filtering tools and templates, the thesis retained **1,717** iOS-relevant packages. Expanding via the npm registry yielded **73,293** distinct package versions before the security-focused refinement described under D6b.
+
 ### D2–D3 — Advisories and vulnerable versions
 
 `js/get-packages/README.md` documents the workflow: intersect Directory packages with npm ecosystem advisories, expand affected version ranges via semver, and write `vulnerable-packages.json`. This file drives which package@version pairs enter the MongoDB fingerprint pipeline (`maintain-database -p`).
+
+**Thesis (Section 5.2.2):** The GitHub Advisory Database snapshot on **July 10, 2025** contained **289,277** distinct npm packages with documented vulnerabilities. Intersecting with the Directory yielded **17** packages with security advisories, which fed the refined **1,220**-version fingerprint target set (D6b). The open-repo `vulnerable-packages.json` (**446** packages) is a **broader** harvest and is not identical to the thesis evaluation corpus.
 
 ### D5 — Multi-version React Native sandboxes
 
@@ -55,7 +60,14 @@ MongoDB collections (see root `README.md`): `packages`, `hashes`, `hashes_ghsa`,
 
 ### D8–D11 — Application evaluation sets
 
-The thesis validates on two open-source applications (Rainbow, Mattermost) with known dependency graphs and two production iOS applications (Discord, Microsoft Outlook) without source access. Hermes bytecode versions in the thesis evaluation span roughly v84–v96 across these apps (**unverified** in this workspace until IPAs and DB are restored).
+| App | Version | RN | Hermes BC | Ground-truth notes (thesis §5.3) |
+|-----|---------|-----|-----------|----------------------------------|
+| Rainbow | v1.9.70 | 0.74.3 declared; 0.74 inferred | v96 | 246 top-level deps; 7 with fingerprints in DB; Table 5.1 |
+| Mattermost | v2.29.1 | 0.76.9 | — | Table 5.2 |
+| Discord | 288.0 | 0.74 | v96 | Table 5.4; no public ground truth |
+| Outlook | 4.2527.0 | 0.71 | v90 | Table 5.5; no public ground truth |
+
+IPAs are not vendored in this repository; Table 5.3 lists extracted metadata for production apps.
 
 ### D13–D14 — Post-thesis evaluation target
 

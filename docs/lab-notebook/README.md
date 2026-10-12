@@ -13,7 +13,7 @@ We treat each substantial experiment as a dated log entry under [`log/`](./log/)
 | [STYLE.md](./STYLE.md) | Writing conventions (academic *we*, hedging, formatting) |
 | [protocol-template.md](./protocol-template.md) | Blank experiment protocol |
 | [dataset-registry.md](./dataset-registry.md) | Datasets used in the thesis and in this repository |
-| [baseline-thesis.md](./baseline-thesis.md) | Thesis-reported baseline method, numbers, and reproduction notes |
+| [baseline-thesis.md](./baseline-thesis.md) | Thesis Tables 5.1–5.6, matching procedure, reproduction notes |
 | [related-work.md](./related-work.md) | Prior art and newer verified references |
 | [paper-outline.md](./paper-outline.md) | Outline for an extended paper beyond the thesis |
 | [log/](./log/) | Chronological experiment and decision log |
