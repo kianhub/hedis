@@ -104,3 +104,24 @@ Normalized prototype (NS = width-folded opcodes, LoadConst{UInt8,Int,Zero,Double
 - Around 04:37 CT the box was restored/restarted: mongod died with an unclean shutdown; WiredTiger sizeStorer.wt is corrupted (checksum error), and `mongod --repair` aborts. node_modules (envs/*, envs/work/*), ~/.npm, /tmp, the .venv and cache/relidx.json were lost. Kept: .hbc caches (cache/, cache-rel/), stats JSONLs, runs/apps_rel dumps, cache/index-*.npz (thesis DB export), git.
 - Corrupt data dir preserved as mongo-data (+ copy mongo-data.bak-0450); a fresh mongod now runs on mongo-data-rel.
 - Recovery without re-running npm/Metro for 2353 jobs: new `fingerprint --release --import-stats logs/fp-rel-stats.jsonl` re-hashes the cached release .hbc files into hedis_rel (feat/import-from-cache). Only the baselines need Metro, so running npm ci in envs/rn074 and envs/rn076.
+
+## 2026-10-12 05:24 CT — M10: Go normalized matcher scores (hedis_rel, app NS/NC from runs/apps_rel dumps)
+- hedis_rel recovered via --import-stats: 2351/2353 jobs, 8.26M hashes, release baselines rebuilt. apps/out/*.hbc were lost in the restore, so the Go matcher ran with --from-dump on the M7 app dumps (same functions; orig-key baseline pre-filtered). Thresholds tuned on dev only (data/thresholds_g_*.json).
+```
+g_nsnc_a dev  prod_closure  0.00 |  0.984  0.732  0.839 (60, 1, 22) |  0.475  0.305  0.372 (29, 32, 66)
+g_nsnc_a dev  direct        0.00 |  0.967  0.843  0.901 (59, 2, 11) |  0.443  0.386  0.412 (27, 34, 43)
+g_nsnc_a test prod_closure  0.00 |  1.000  0.764  0.866 (42, 0, 13) |  0.571  0.364  0.444 (24, 18, 42)
+g_nsnc_a test direct        0.00 |  1.000  0.913  0.955 (42, 0, 4) |  0.571  0.522  0.545 (24, 18, 22)
+g_nsnc_ab dev  prod_closure  0.00 |  1.000  0.732  0.845 (60, 0, 22) |  0.483  0.305  0.374 (29, 31, 66)
+g_nsnc_ab dev  direct        0.00 |  0.983  0.843  0.908 (59, 1, 11) |  0.450  0.386  0.415 (27, 33, 43)
+g_nsnc_ab test prod_closure  0.00 |  1.000  0.764  0.866 (42, 0, 13) |  0.571  0.364  0.444 (24, 18, 42)
+g_nsnc_ab test direct        0.00 |  1.000  0.913  0.955 (42, 0, 4) |  0.571  0.522  0.545 (24, 18, 22)
+g_nsnc_abc dev  prod_closure  0.00 |  1.000  0.732  0.845 (60, 0, 22) |  0.467  0.295  0.361 (28, 32, 67)
+g_nsnc_abc dev  direct        0.00 |  0.983  0.843  0.908 (59, 1, 11) |  0.433  0.371  0.400 (26, 34, 44)
+g_nsnc_abc test prod_closure  0.00 |  1.000  0.764  0.866 (42, 0, 13) |  0.548  0.348  0.426 (23, 19, 43)
+g_nsnc_abc test direct        0.00 |  1.000  0.913  0.955 (42, 0, 4) |  0.548  0.500  0.523 (23, 19, 23)
+g_ns_a dev  prod_closure  0.00 |  0.949  0.683  0.794 (56, 3, 26) |  0.458  0.284  0.351 (27, 32, 68)
+g_ns_a dev  direct        0.00 |  0.932  0.786  0.853 (55, 4, 15) |  0.424  0.357  0.388 (25, 34, 45)
+g_ns_a test prod_closure  0.00 |  1.000  0.764  0.866 (42, 0, 13) |  0.524  0.333  0.407 (22, 20, 44)
+g_ns_a test direct        0.00 |  1.000  0.913  0.955 (42, 0, 4) |  0.524  0.478  0.500 (22, 20, 24)
+```
