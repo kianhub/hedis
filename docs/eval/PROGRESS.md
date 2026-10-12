@@ -213,3 +213,10 @@ eval/ceiling.py: an oracle detects every truth package whose true version is in 
 | test new 10 only | bundled   | 1.000/0.875/0.933 | 0.636/0.557/0.594 |
 - Strict ceiling, bundled truth: dev15 0.667, test15 0.651 (mean class size 3.3-3.6, 137 test pairs).
 - RN 0.79: not cheap. It needs a new rn079 env plus ~1500 more fingerprint jobs (~1 h+ CPU) before any 0.79 app can be matched; not done.
+
+## 06:07 CT — M20: catalogue of identical-fingerprint version groups
+eval/hbc_features.py (hedis disassemble -> referenced strings incl. short ones, numeric-constant operands, per-function full-instruction hashes with operands, function count); eval/group_catalog.py over every multi-version class in hedis_rel (both RNs). Output docs/eval/results/groups.json.
+- 320 groups with >1 version. **310 (96.9%) are byte-identical**: every member compiled from an identical Metro bundle (same bundle SHA-256), so no feature of the compiled output can tell them apart.
+- Spot check with npm pack: react-native-safe-area-context 4.10.0 vs 4.10.1 differ only in ios/RNCSafeAreaProvider.m and package.json; zod 3.25.34 vs 3.25.35 differ only under dist/*/v4 (the zod/v4 subpath, not reached by `import 'zod'`). Version bumps that touch only native code, types, docs or unbundled subpaths are invisible in the JS bundle. package.json fields are not inlined (no version strings differ in any group).
+- 10 groups have different bundles: 6 differ in instruction operands (ins; immer 11.1.x), 2 also in short strings (immer 11.1.2/11.1.3), 4 differ only in JS text with identical bytecode features (i18next 23.12.0/1, react-native-screens 3.35-3.37; e.g. comment or ordering changes). No group differs in numeric constants, function count or version-string constants.
+- Caveat: the DB fingerprints only the package root entry; apps importing subpaths (e.g. zod/v4) are not covered.
