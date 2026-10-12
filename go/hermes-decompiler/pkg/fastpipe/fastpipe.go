@@ -94,6 +94,10 @@ func New(cfg Config) (*Runner, error) {
 	})
 	r.db.Collection("packages").Indexes().CreateOne(ctx, mongo.IndexModel{
 		Keys: bson.D{{Key: "package_name", Value: 1}, {Key: "package_version", Value: 1}}, Options: options.Index().SetUnique(true)})
+	// covering index for the matcher's $match{rn}+$group{package_id,3 hashes}: avoids fetching docs with raw IR
+	r.db.Collection("hashes").Indexes().CreateOne(ctx, mongo.IndexModel{Keys: bson.D{{Key: "react_native_version", Value: 1},
+		{Key: "package_id", Value: 1}, {Key: "structural.hash", Value: 1}, {Key: "ar1.hash", Value: 1}, {Key: "ar2.hash", Value: 1}},
+		Options: options.Index().SetName("cover_rn_pkg_3hash")})
 	// load existing packages + done pairs for resume
 	cur, err := r.db.Collection("packages").Find(ctx, bson.M{})
 	if err == nil {

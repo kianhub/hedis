@@ -205,11 +205,29 @@ var (
 					bestMatchRNVersion = forceRNVersionFlag
 				}
 				timings["baseline_filter_s"] = time.Since(tBase).Seconds()
+				if dumpAppFlag != "" {
+					// one line per filtered app function: "S C1 C2" (for offline matcher experiments)
+					if f, err := os.Create(dumpAppFlag); err == nil {
+						fmt.Fprintf(f, "# rn %s hbc %s\n", bestMatchRNVersion, appHBCVersion)
+						for _, h := range filteredAppHashes {
+							fmt.Fprintf(f, "%s %s %s\n", h.Structural.Hash, h.ContentAR1.Hash, h.ContentAR2.Hash)
+						}
+						f.Close()
+					}
+					if dumpOnlyFlag {
+						return
+					}
+				}
 				utils.L.Printf("Found %d hashes for app bundle that matched the best RN baseline: %s\n", len(filteredAppHashes), bestMatchRNVersion)
 
 				tDB := time.Now()
 				utils.L.Println("Getting hashes from database...")
-				databasePackageHashes, err := pipeline.GetHashesFromDatabaseWithRNVersion(bestMatchRNVersion)
+				var databasePackageHashes []*pipeline.HashGroup
+				if legacyMatchFlag {
+					databasePackageHashes, err = pipeline.GetHashesFromDatabaseWithRNVersion(bestMatchRNVersion)
+				} else {
+					databasePackageHashes, err = pipeline.GetHashesFromDatabaseFast(bestMatchRNVersion)
+				}
 				if err != nil {
 					utils.F.Printf("failed to get hashes from database: %v\n", err)
 					return
@@ -351,6 +369,11 @@ func amountOfUniquePackages(packages []models.PackageWithVulnerabilitiesModel) i
 	return len(uniquePackages)
 }
 
+var (
+	dumpAppFlag  string
+	dumpOnlyFlag bool
+)
+
 func init() {
 	packagesCmd.Flags().BoolVarP(&updateDatabaseFlag, "update-database", "u", false, "Update the database with the packages")
 	packagesCmd.Flags().BoolVar(&createHashesFlag, "create-hashes", false, "Create hashes for the packages and adds them to the database")
@@ -360,6 +383,8 @@ func init() {
 	packagesCmd.Flags().StringVarP(&compareToSpecificAppBundleFlag, "compare-to-app-bundle", "a", "", "Path to the app bundle HBC file to compare to")
 	packagesCmd.Flags().StringVarP(&outputFilePath, "output-file", "o", "", "Path to the output file to write fuzzy matches to")
 	packagesCmd.Flags().BoolVar(&legacyMatchFlag, "legacy-match", false, "Use the original O(n*m) matching loops (for benchmarking)")
+	packagesCmd.Flags().StringVar(&dumpAppFlag, "dump-app", "", "Write filtered app triples (S C1 C2 per line) to this file")
+	packagesCmd.Flags().BoolVar(&dumpOnlyFlag, "dump-only", false, "With --dump-app: exit after dumping (skip DB match)")
 	packagesCmd.Flags().StringVar(&forceRNVersionFlag, "rn-version", "", "Force the RN version (e.g. 0.74) instead of auto-detecting from baselines")
 	packagesCmd.Flags().BoolVarP(&analyzeWithDatabaseFlag, "analyze-with-database", "d", false, "Analyze with the database")
 }
