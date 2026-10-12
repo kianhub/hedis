@@ -220,3 +220,13 @@ eval/hbc_features.py (hedis disassemble -> referenced strings incl. short ones, 
 - Spot check with npm pack: react-native-safe-area-context 4.10.0 vs 4.10.1 differ only in ios/RNCSafeAreaProvider.m and package.json; zod 3.25.34 vs 3.25.35 differ only under dist/*/v4 (the zod/v4 subpath, not reached by `import 'zod'`). Version bumps that touch only native code, types, docs or unbundled subpaths are invisible in the JS bundle. package.json fields are not inlined (no version strings differ in any group).
 - 10 groups have different bundles: 6 differ in instruction operands (ins; immer 11.1.x), 2 also in short strings (immer 11.1.2/11.1.3), 4 differ only in JS text with identical bytecode features (i18next 23.12.0/1, react-native-screens 3.35-3.37; e.g. comment or ordering changes). No group differs in numeric constants, function count or version-string constants.
 - Caveat: the DB fingerprints only the package root entry; apps importing subpaths (e.g. zod/v4) are not covered.
+
+## 06:09 CT — M21: group-resolution step + real ceiling (bundled truth, 15+15 synthetic apps)
+- eval/resolve_groups.py: for a predicted version in a group whose members have different bundles, split it by bundle SHA and pick the sub-group whose specific features (instruction-with-operand hashes, referenced strings incl. short) best match the app's disassembly. Verified on dev: it fires on 3 dev and 2 test predictions and leaves all of them unchanged (the matcher's pick is already in the right sub-group), so it neither helps nor hurts. Adopted as a no-op safeguard; other feature types (numeric constants, function counts, version strings, inlined package.json) differ in 0 groups, so there was nothing to verify for them.
+| set | method | pkg F1 | strict pkg+ver P/R/F1 | one-class pkg+ver P/R/F1 |
+|---|---|---|---|---|
+| dev15  | g3_ab | 0.928 | 0.620/0.537/0.576 | 0.992/0.859/0.921 |
+| dev15  | + group resolution | 0.928 | 0.620/0.537/0.576 | 0.992/0.859/0.921 |
+| test15 | g3_ab | 0.942 | 0.648/0.577/**0.610** | 0.984/0.876/**0.927** |
+| test15 | + group resolution | 0.942 | 0.648/0.577/**0.610** | 0.984/0.876/**0.927** |
+- Real ceiling (credit 1/|bundle-byte-identical sub-group| of the true version, perfect package detection): dev **0.676**, test **0.659** strict F1 (149 / 137 truth pairs). 310/320 DB groups (96.9%) are byte-identical, so the real ceiling is almost the class ceiling (0.651 test).
