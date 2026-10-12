@@ -19,3 +19,4 @@ pipeline/pipeline_progress.json
 
 # Local development artifacts
 Auto Run Docs/
+__pycache__/
