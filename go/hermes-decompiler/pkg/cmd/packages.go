@@ -6,11 +6,13 @@ import (
 	"hermes-decompiler/pkg/database"
 	"hermes-decompiler/pkg/database/models"
 	"hermes-decompiler/pkg/global"
+	"hermes-decompiler/pkg/normhash"
 	"hermes-decompiler/pkg/pipeline"
 	"hermes-decompiler/pkg/utils"
 	"os"
 	"path/filepath"
 	"slices"
+	"strings"
 	"time"
 
 	"github.com/spf13/cobra"
@@ -210,9 +212,18 @@ var (
 					if f, err := os.Create(dumpAppFlag); err == nil {
 						fmt.Fprintf(f, "# rn %s hbc %s\n", bestMatchRNVersion, appHBCVersion)
 						for _, h := range filteredAppHashes {
-							fmt.Fprintf(f, "%s %s %s\n", h.Structural.Hash, h.ContentAR1.Hash, h.ContentAR2.Hash)
+							ns, nc := normhash.Hashes(h.Structural.Raw, h.ContentAR1.Raw, h.ContentAR2.Raw)
+							fmt.Fprintf(f, "%s %s %s %s %s\n", h.Structural.Hash, h.ContentAR1.Hash, h.ContentAR2.Hash, ns, nc)
 						}
 						f.Close()
+						if os.Getenv("HEDIS_DUMP_RAW") != "" {
+							if g, err := os.Create(dumpAppFlag + ".raw"); err == nil {
+								for _, h := range filteredAppHashes {
+									fmt.Fprintf(g, "%s\t%s\t%s\n", h.Structural.Raw, strings.ReplaceAll(h.ContentAR1.Raw, "\n", " "), strings.ReplaceAll(h.ContentAR2.Raw, "\n", " "))
+								}
+								g.Close()
+							}
+						}
 					}
 					if dumpOnlyFlag {
 						return
@@ -220,6 +231,27 @@ var (
 				}
 				utils.L.Printf("Found %d hashes for app bundle that matched the best RN baseline: %s\n", len(filteredAppHashes), bestMatchRNVersion)
 
+				if normMatchFlag != "" {
+					cfg := pipeline.NormMatchConfig{KeyMode: normMatchFlag, TieBreak: tieBreakFlag, Thresholds: map[string]float64{"_global": 0}}
+					if thresholdsFlag != "" {
+						if b, err := os.ReadFile(thresholdsFlag); err == nil {
+							json.Unmarshal(b, &cfg.Thresholds)
+						}
+					}
+					tN := time.Now()
+					rs, err := pipeline.NormMatch(appHashes, bestMatchRNVersion, cfg)
+					if err != nil {
+						utils.F.Printf("norm match failed: %v\n", err)
+						return
+					}
+					timings["norm_match_s"] = time.Since(tN).Seconds()
+					timings["total_s"] = time.Since(tStart).Seconds()
+					if err := writeMatchResultsJSON(rs, appHBCVersion, bestMatchRNVersion, len(appHashes), len(filteredAppHashes), timings); err != nil {
+						utils.F.Printf("failed to write json results: %v\n", err)
+					}
+					utils.S.Printf("norm match: %d packages predicted\n", len(rs))
+					return
+				}
 				tDB := time.Now()
 				utils.L.Println("Getting hashes from database...")
 				var databasePackageHashes []*pipeline.HashGroup
@@ -370,8 +402,11 @@ func amountOfUniquePackages(packages []models.PackageWithVulnerabilitiesModel) i
 }
 
 var (
-	dumpAppFlag  string
-	dumpOnlyFlag bool
+	normMatchFlag  string
+	tieBreakFlag   bool
+	thresholdsFlag string
+	dumpAppFlag    string
+	dumpOnlyFlag   bool
 )
 
 func init() {
@@ -383,6 +418,9 @@ func init() {
 	packagesCmd.Flags().StringVarP(&compareToSpecificAppBundleFlag, "compare-to-app-bundle", "a", "", "Path to the app bundle HBC file to compare to")
 	packagesCmd.Flags().StringVarP(&outputFilePath, "output-file", "o", "", "Path to the output file to write fuzzy matches to")
 	packagesCmd.Flags().BoolVar(&legacyMatchFlag, "legacy-match", false, "Use the original O(n*m) matching loops (for benchmarking)")
+	packagesCmd.Flags().StringVar(&normMatchFlag, "norm", "", "normalized-hash matcher: nsnc or ns (needs a --release DB)")
+	packagesCmd.Flags().BoolVar(&tieBreakFlag, "tiebreak", false, "with --norm: choose version by F1 of version keys vs app keys")
+	packagesCmd.Flags().StringVar(&thresholdsFlag, "thresholds", "", "with --norm: JSON {package: min score, _global: x} tuned on dev")
 	packagesCmd.Flags().StringVar(&dumpAppFlag, "dump-app", "", "Write filtered app triples (S C1 C2 per line) to this file")
 	packagesCmd.Flags().BoolVar(&dumpOnlyFlag, "dump-only", false, "With --dump-app: exit after dumping (skip DB match)")
 	packagesCmd.Flags().StringVar(&forceRNVersionFlag, "rn-version", "", "Force the RN version (e.g. 0.74) instead of auto-detecting from baselines")

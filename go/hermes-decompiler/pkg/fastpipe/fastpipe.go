@@ -23,6 +23,7 @@ import (
 	"fmt"
 	"hermes-decompiler/pkg/database/models"
 	"hermes-decompiler/pkg/hbc"
+	"hermes-decompiler/pkg/normhash"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -44,6 +45,7 @@ type Config struct {
 	CacheDir         string
 	StatsPath        string
 	OSHermes         string
+	Release          bool // dev=false, minify=true bundles (store-app config); baseline filter on normalized key; raw IR not stored
 }
 
 type Job struct{ Name, Version, RN string }
@@ -68,13 +70,13 @@ func rnNum(rn string) string { // rn074 -> 0.74
 type key3 struct{ s, c1, c2 string }
 
 type Runner struct {
-	cfg       Config
-	db        *mongo.Database
-	baseline  map[string]map[key3]struct{} // rnNum -> set
-	pkgIDs    map[string]primitive.ObjectID
-	done      map[string]bool // pkgid|rn
-	mu        sync.Mutex
-	statsF    *os.File
+	cfg      Config
+	db       *mongo.Database
+	baseline map[string]map[key3]struct{} // rnNum -> set
+	pkgIDs   map[string]primitive.ObjectID
+	done     map[string]bool // pkgid|rn
+	mu       sync.Mutex
+	statsF   *os.File
 }
 
 func New(cfg Config) (*Runner, error) {
@@ -98,6 +100,9 @@ func New(cfg Config) (*Runner, error) {
 	r.db.Collection("hashes").Indexes().CreateOne(ctx, mongo.IndexModel{Keys: bson.D{{Key: "react_native_version", Value: 1},
 		{Key: "package_id", Value: 1}, {Key: "structural.hash", Value: 1}, {Key: "ar1.hash", Value: 1}, {Key: "ar2.hash", Value: 1}},
 		Options: options.Index().SetName("cover_rn_pkg_3hash")})
+	r.db.Collection("hashes").Indexes().CreateOne(ctx, mongo.IndexModel{Keys: bson.D{{Key: "react_native_version", Value: 1},
+		{Key: "package_id", Value: 1}, {Key: "ns", Value: 1}, {Key: "nc", Value: 1}}, Options: options.Index().SetName("cover_rn_pkg_norm")})
+	releaseMode = cfg.Release
 	// load existing packages + done pairs for resume
 	cur, err := r.db.Collection("packages").Find(ctx, bson.M{})
 	if err == nil {
@@ -155,10 +160,12 @@ const bundleScript = `import Metro from 'metro';
 const config = await Metro.loadConfig();
 config.resetCache = %v;
 config.maxWorkers = 2;
-await Metro.runBuild(config, { entry: '%s', platform: 'ios', minify: false, out: '%s' });`
+await Metro.runBuild(config, { entry: '%s', platform: 'ios', dev: %v, minify: %v, out: '%s' });`
+
+var releaseMode bool
 
 func writeBundleScript(env, entry, out string, reset bool) error {
-	return os.WriteFile(filepath.Join(env, "bundle-fast.mjs"), []byte(fmt.Sprintf(bundleScript, reset, entry, out)), 0644)
+	return os.WriteFile(filepath.Join(env, "bundle-fast.mjs"), []byte(fmt.Sprintf(bundleScript, reset, entry, !releaseMode, releaseMode, out)), 0644)
 }
 
 func hashesFromHBC(path string) ([]*models.FunctionObjectHashModel, string, error) {
@@ -185,6 +192,7 @@ func hashesFromHBC(path string) ([]*models.FunctionObjectHashModel, string, erro
 		if c2 != "" {
 			h.ContentAR2 = models.FunctionObjectDataModel{Raw: c2, Hash: sha(c2)}
 		}
+		h.NormS, h.NormC = normhash.Hashes(s, c1, c2)
 		out = append(out, h)
 	}
 	return out, fmt.Sprintf("%d", rd.Header.Version), nil
@@ -218,7 +226,7 @@ func (r *Runner) EnsureBaseline(rn string) error {
 		b = models.BaselineModel{ID: primitive.NewObjectID(), ReactNativeVersion: v, HermesBytecodeVersion: ver}
 		for i, h := range hs {
 			b.Hashes = append(b.Hashes, models.Hash{RelativeFunctionIndex: i, StructuralHash: h.Structural.Hash,
-				ContentIR1Hash: h.ContentAR1.Hash, ContentIR2Hash: h.ContentAR2.Hash})
+				ContentIR1Hash: h.ContentAR1.Hash, ContentIR2Hash: h.ContentAR2.Hash, NormS: h.NormS, NormC: h.NormC})
 		}
 		if _, err := r.db.Collection("baselines").InsertOne(ctx, b); err != nil {
 			return err
@@ -229,7 +237,11 @@ func (r *Runner) EnsureBaseline(rn string) error {
 	}
 	set := make(map[key3]struct{}, len(b.Hashes))
 	for _, h := range b.Hashes {
-		set[key3{h.StructuralHash, h.ContentIR1Hash, h.ContentIR2Hash}] = struct{}{}
+		if r.cfg.Release {
+			set[key3{h.NormS, h.NormC, "n"}] = struct{}{}
+		} else {
+			set[key3{h.StructuralHash, h.ContentIR1Hash, h.ContentIR2Hash}] = struct{}{}
+		}
 	}
 	r.mu.Lock()
 	r.baseline[v] = set
@@ -397,11 +409,18 @@ func (r *Runner) one(env string, j Job) {
 	base := r.baseline[v]
 	docs := make([]interface{}, 0, len(hs))
 	for _, h := range hs {
-		if _, inBase := base[key3{h.Structural.Hash, h.ContentAR1.Hash, h.ContentAR2.Hash}]; inBase {
+		bk := key3{h.Structural.Hash, h.ContentAR1.Hash, h.ContentAR2.Hash}
+		if r.cfg.Release {
+			bk = key3{h.NormS, h.NormC, "n"}
+		}
+		if _, inBase := base[bk]; inBase {
 			continue
 		}
 		d := *h
 		d.ID, d.PackageID, d.ReactNativeVersion = primitive.NewObjectID(), id, v
+		if r.cfg.Release {
+			d.Structural.Raw, d.ContentAR1.Raw, d.ContentAR2.Raw = "", "", ""
+		}
 		docs = append(docs, d)
 	}
 	st.Kept = len(docs)

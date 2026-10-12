@@ -35,6 +35,9 @@ type FunctionObjectHashModel struct {
 	Structural         FunctionObjectDataModel `bson:"structural"`
 	ContentAR1         FunctionObjectDataModel `bson:"ar1"`
 	ContentAR2         FunctionObjectDataModel `bson:"ar2"`
+	// normalized, bundle-context-robust hashes (pkg/normhash); empty in thesis-era DBs
+	NormS string `bson:"ns,omitempty"`
+	NormC string `bson:"nc,omitempty"`
 }
 
 // FunctionObjectDataModel holds a single IR representation of a function as both its raw

@@ -18,4 +18,6 @@ type Hash struct {
 	StructuralHash        string `bson:"structural_hash"`
 	ContentIR1Hash        string `bson:"content_ir1_hash,omitempty"`
 	ContentIR2Hash        string `bson:"content_ir2_hash,omitempty"`
+	NormS                 string `bson:"ns,omitempty"`
+	NormC                 string `bson:"nc,omitempty"`
 }
