@@ -12,13 +12,14 @@ for l in open(f"{ROOT}/logs/fp-stats.jsonl"):
     x = json.loads(l)
     if x["ok"]: ok.setdefault(x["RN"], set()).add((x["Name"], x["Version"]))
 SPECS = int(sys.argv[1]) if len(sys.argv) > 1 else 8
+START = int(sys.argv[2]) if len(sys.argv) > 2 else 0
 def sh(cmd, cwd):
     r = subprocess.run(cmd, cwd=cwd, shell=True, capture_output=True, text=True)
     if r.returncode: raise RuntimeError(f"{cmd}: {r.stdout[-800:]}{r.stderr[-800:]}")
     return r.stdout
 os.makedirs(f"{ROOT}/apps/synth", exist_ok=True); os.makedirs(f"{ROOT}/apps/out", exist_ok=True)
 results = []
-for i in range(SPECS):
+for i in range(START, START + SPECS):
     rng = random.Random(1000 + i)
     rn = ["rn074", "rn076"][i % 2]
     names = sorted({n for n, _ in ok.get(rn, [])})
@@ -45,7 +46,7 @@ const deps = [%s];
 function App() { return React.createElement(Text, null, 'synthetic ' + deps.map(d => Object.keys(d).length).join(',')); }
 AppRegistry.registerComponent('%s', () => App);
 """ % ("\n".join(imports), ", ".join(uses), app))
-        sh(f"npx react-native bundle --platform ios --dev false --minify true --entry-file index.js --bundle-output {ROOT}/apps/out/{app}.js --reset-cache", d)
+        sh(f"npx react-native bundle --platform ios --dev false --minify true --entry-file index.js --bundle-output {ROOT}/apps/out/{app}.js --sourcemap-output {ROOT}/apps/out/{app}.js.map --reset-cache", d)
         sh(f"node_modules/react-native/sdks/hermesc/linux64-bin/hermesc -O -emit-binary -out {ROOT}/apps/out/{app}.hbc {ROOT}/apps/out/{app}.js -w", d)
         pkg = json.load(open(f"{d}/package.json"))
         pkg["dependencies"] = {n: v for n, v in pkg["dependencies"].items() if n in picks or n in ("react", "react-native")}
@@ -56,4 +57,4 @@ AppRegistry.registerComponent('%s', () => App);
     except Exception as e:
         results.append({"app": app, "rn": rn, "picks": picks, "ok": False, "err": str(e)[-500:]})
         print("FAIL", app, str(e)[-500:], flush=True)
-json.dump(results, open(f"{ROOT}/apps/synth/manifest.json", "w"), indent=1)
+json.dump(results, open(f"{ROOT}/apps/synth/manifest-{START}.json", "w"), indent=1)

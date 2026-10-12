@@ -187,3 +187,15 @@ eval/ceiling.py: an oracle detects every truth package whose true version is in 
 | dev  | direct | 70 | 1 | 3.75 | 0.551 | 0.665 | 0.993 |
 | test | direct | 46 | 0 | 3.78 | 0.435 | 0.591 | 1.000 |
 => With this DB, no exact-hash method can expect more than ~0.70 strict pkg+ver F1 on test (current 0.541). The 0.95 strict target is unreachable by hashing alone; it needs non-hash version evidence or a coarser version definition (class-level F1 test 0.775).
+
+## 05:50 CT — M18: bundled truth from Metro source maps (step 1)
+- Re-bundled synth-00..09 with --sourcemap-output (JS identical to the evaluated bundles apart from the sourceMappingURL comment); eval/bundled_truth.py adds "bundled" = packages with >=1 module under node_modules/<pkg>/ in the source map, version from that path's package.json. 29-64 bundled packages per app. eval.py accepts --truth bundled. Labels copied to docs/eval/groundtruth/.
+- Bundled vs prod_closure: e.g. synth-04 closure-only {crypto-js, dayjs, semver} (installed, not bundled), bundled-only {@react-navigation/native} (nested dependency). Mattermost has no source map (no .hbc/app build), so dev here = synth-00..04.
+- Go nsnc a+b (g3_ab) on synthetic apps:
+| split | truth | pkg P/R/F1 | strict pkg+ver P/R/F1 |
+|---|---|---|---|
+| dev  | bundled      | 1.000/0.875/0.933 | 0.633/0.554/0.590 |
+| dev  | prod_closure | 1.000/0.790/0.883 | 0.633/0.431/0.512 |
+| test | bundled      | 1.000/0.918/**0.957** | 0.667/0.612/**0.638** |
+| test | prod_closure | 1.000/0.818/0.900 | 0.667/0.455/0.541 |
+- Ceiling on bundled truth (expected, uniform pick in class): dev 0.656, test 0.616 (mean class size 3.6; 47-54% singletons). The matcher's 0.638 is above the uniform-pick expectation because it picks deterministically within classes and got lucky on some ties; optimistic ceiling 1.0.
