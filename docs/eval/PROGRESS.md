@@ -59,3 +59,7 @@
 
 ## 2026-10-12 03:22 CT — EXP (c) version choice by F1 of the version's triples vs the app's triples of that package
 - On top of (a)+(b). No gain: dev identical (ver F1 0.370), test slightly worse (pc ver 0.383 vs 0.400; direct 0.421 vs 0.484). Diagnosis follows in next entry.
+
+## 2026-10-12 03:23 CT — EXP (d) version-string anchors
+- On top of (a)+(b)+(c): among versions within 0.02 F1 of the best, prefer one whose x.y.z string is in its own bundle and in the app's strings. Slightly worse: dev pc ver F1 0.358, test pc 0.365 (direct 0.400). Few packages embed their version; common strings ("1.0.4") create false anchors.
+- Version-error diagnosis on dev (direct truth, after b): 28 correct, 13 identical fingerprints (indistinguishable by construction), 20 wrong-but-distinguishable, 9 package misses. Even the TRUE version only matches ~50% of its own unique triples in the app (parse 6.0.0: 1069/2153), so the version signal is drowned out.
