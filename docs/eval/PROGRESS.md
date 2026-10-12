@@ -99,3 +99,8 @@ Normalized prototype (NS = width-folded opcodes, LoadConst{UInt8,Int,Zero,Double
 
 ## 2026-10-12 04:35 CT — M8: release DB built
 - hedis_rel finished: 3010 jobs, 2353 ok (same coverage as hedis; same hard failures), 8.29M hashes (ns/nc, no raw IR), 1175 pkg-versions on 0.74 / 1178 on 0.76. Exported to cache/relidx.json (matchlab2.py export, 44 s).
+
+## 2026-10-12 04:59 CT — M9: box restore incident + recovery
+- Around 04:37 CT the box was restored/restarted: mongod died with an unclean shutdown; WiredTiger sizeStorer.wt is corrupted (checksum error), and `mongod --repair` aborts. node_modules (envs/*, envs/work/*), ~/.npm, /tmp, the .venv and cache/relidx.json were lost. Kept: .hbc caches (cache/, cache-rel/), stats JSONLs, runs/apps_rel dumps, cache/index-*.npz (thesis DB export), git.
+- Corrupt data dir preserved as mongo-data (+ copy mongo-data.bak-0450); a fresh mongod now runs on mongo-data-rel.
+- Recovery without re-running npm/Metro for 2353 jobs: new `fingerprint --release --import-stats logs/fp-rel-stats.jsonl` re-hashes the cached release .hbc files into hedis_rel (feat/import-from-cache). Only the baselines need Metro, so running npm ci in envs/rn074 and envs/rn076.
