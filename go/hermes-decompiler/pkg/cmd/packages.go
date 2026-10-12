@@ -11,6 +11,7 @@ import (
 	"os"
 	"path/filepath"
 	"slices"
+	"strings"
 	"time"
 
 	"github.com/spf13/cobra"
@@ -213,6 +214,14 @@ var (
 							fmt.Fprintf(f, "%s %s %s\n", h.Structural.Hash, h.ContentAR1.Hash, h.ContentAR2.Hash)
 						}
 						f.Close()
+						if os.Getenv("HEDIS_DUMP_RAW") != "" {
+							if g, err := os.Create(dumpAppFlag + ".raw"); err == nil {
+								for _, h := range filteredAppHashes {
+									fmt.Fprintf(g, "%s\t%s\t%s\n", h.Structural.Raw, strings.ReplaceAll(h.ContentAR1.Raw, "\n", " "), strings.ReplaceAll(h.ContentAR2.Raw, "\n", " "))
+								}
+								g.Close()
+							}
+						}
 					}
 					if dumpOnlyFlag {
 						return
