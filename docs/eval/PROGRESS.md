@@ -161,3 +161,15 @@ Dev misses with a+b nsnc (15 truth pairs, prod_closure); for the true version: k
 - vd: on version-variable keys V_p (union minus intersection over the package versions), score(v) = |D_v present| - |D_v absent| - |app keys in V_p not in v|; pick max, tie -> IDF score.
 - Result: test identical (strict 0.541, class 0.775); dev slightly worse (strict 0.519 -> 0.494). Not adopted.
 - Why: class precision is already 0.956 on test while strict precision is 0.667, i.e. nearly every wrong version has a fingerprint identical to the true one. There is nothing left between versions for any key-based tie-break to use; remaining strict errors are indistinguishable versions.
+
+## 05:38 CT — M15: Go matcher after the --from-dump fix (prod_closure truth, test unless noted)
+| method | pkg P/R/F1 | strict pkg+ver P/R/F1 | class pkg+ver P/R/F1 |
+|---|---|---|---|
+| thesis baseline (old DB) | 0.379/1.000/0.550 | 0.193/0.424/0.265 | n/a |
+| Go nsnc a+b, M10 (Fields bug) | 1.000/0.764/0.866 | 0.571/0.364/0.444 | 0.786/0.500/0.611 |
+| **Go nsnc a+b, fixed (g3_ab)** | 1.000/0.818/0.900 | **0.667/0.455/0.541** | **0.956/0.652/0.775** |
+| + full RN baseline (lab) | same | 0.541 | 0.775 |
+| + version-diff vd (lab) | same | 0.541 | 0.775 |
+Dev g3_ab: pkg 0.899, strict 0.519, class 0.790. Direct truth, test: pkg F1 0.989, strict 0.659. Go and the Python lab produce identical predictions.
+Recall ceiling: prod_closure includes installed-but-unbundled packages (M13), and identical-fingerprint versions cap strict precision.
+Synthetic app rebuild running: logs/synth-rebuild.log (frozen labels backed up in data/groundtruth.frozen/).
