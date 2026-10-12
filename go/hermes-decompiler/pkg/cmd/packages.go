@@ -31,7 +31,11 @@ var (
 			global.Verbose = verboseFlag
 
 			utils.L.Println("Connecting to database...")
-			database.InitWithDatabaseName("clean")
+			dbName := os.Getenv("HEDIS_PACKAGES_DB") // override for local/eval DBs; default keeps original "clean"
+			if dbName == "" {
+				dbName = "clean"
+			}
+			database.InitWithDatabaseName(dbName)
 			utils.L.Println("Database connected")
 
 			global.OSHermes = os.Getenv("OS_HERMES")
