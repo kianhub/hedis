@@ -194,7 +194,12 @@ var (
 						pairs = append(pairs, [2]string{f[3], nc})
 					}
 				}
-				cfg := pipeline.NormMatchConfig{KeyMode: normMatchFlag, TieBreak: tieBreakFlag, Thresholds: map[string]float64{"_global": 0}}
+				cfg := pipeline.NormMatchConfig{KeyMode: normMatchFlag, TieBreak: tieBreakFlag, Thresholds: map[string]float64{"_global": 0}, LowUniq: lowUniqFlag, LowDf: lowDfFlag, Dep: depFlag, RootVer: rootVerFlag}
+				if depsFlag != "" {
+					if db, err := os.ReadFile(depsFlag); err == nil {
+						json.Unmarshal(db, &cfg.Deps)
+					}
+				}
 				if thresholdsFlag != "" {
 					if tb, err := os.ReadFile(thresholdsFlag); err == nil {
 						json.Unmarshal(tb, &cfg.Thresholds)
@@ -277,7 +282,12 @@ var (
 				utils.L.Printf("Found %d hashes for app bundle that matched the best RN baseline: %s\n", len(filteredAppHashes), bestMatchRNVersion)
 
 				if normMatchFlag != "" {
-					cfg := pipeline.NormMatchConfig{KeyMode: normMatchFlag, TieBreak: tieBreakFlag, Thresholds: map[string]float64{"_global": 0}}
+					cfg := pipeline.NormMatchConfig{KeyMode: normMatchFlag, TieBreak: tieBreakFlag, Thresholds: map[string]float64{"_global": 0}, LowUniq: lowUniqFlag, LowDf: lowDfFlag, Dep: depFlag, RootVer: rootVerFlag}
+					if depsFlag != "" {
+						if db, err := os.ReadFile(depsFlag); err == nil {
+							json.Unmarshal(db, &cfg.Deps)
+						}
+					}
 					if thresholdsFlag != "" {
 						if b, err := os.ReadFile(thresholdsFlag); err == nil {
 							json.Unmarshal(b, &cfg.Thresholds)
@@ -451,6 +461,11 @@ var (
 	normMatchFlag  string
 	tieBreakFlag   bool
 	thresholdsFlag string
+	depsFlag       string
+	depFlag        float64
+	lowUniqFlag    int
+	lowDfFlag      int
+	rootVerFlag    bool
 	dumpAppFlag    string
 	dumpOnlyFlag   bool
 )
@@ -467,6 +482,11 @@ func init() {
 	packagesCmd.Flags().StringVar(&fromDumpFlag, "from-dump", "", "with -d --norm: read app NS/NC from a --dump-app file instead of an .hbc")
 	packagesCmd.Flags().StringVar(&normMatchFlag, "norm", "", "normalized-hash matcher: nsnc or ns (needs a --release DB)")
 	packagesCmd.Flags().BoolVar(&tieBreakFlag, "tiebreak", false, "with --norm: choose version by F1 of version keys vs app keys")
+	packagesCmd.Flags().BoolVar(&rootVerFlag, "rootver", false, "with --norm: choose the version on root-entry keys only (ignore subpath rows)")
+	packagesCmd.Flags().StringVar(&depsFlag, "deps", "", "with --norm: npm dependency table JSON {pkg: {version: [deps]}} for --dep")
+	packagesCmd.Flags().Float64Var(&depFlag, "dep", 0, "with --norm: dependency implication min coverage of parent-shared keys (0 = off)")
+	packagesCmd.Flags().IntVar(&lowUniqFlag, "lowuniq", 0, "with --norm: packages with <= N unique keys score on keys with df <= --lowdf")
+	packagesCmd.Flags().IntVar(&lowDfFlag, "lowdf", 2, "with --norm --lowuniq: max package df of fallback keys")
 	packagesCmd.Flags().StringVar(&thresholdsFlag, "thresholds", "", "with --norm: JSON {package: min score, _global: x} tuned on dev")
 	packagesCmd.Flags().StringVar(&dumpAppFlag, "dump-app", "", "Write filtered app triples (S C1 C2 per line) to this file")
 	packagesCmd.Flags().BoolVar(&dumpOnlyFlag, "dump-only", false, "With --dump-app: exit after dumping (skip DB match)")

@@ -11,7 +11,7 @@ M = (1 << 63) - 1
 def h(x): return int(x[:16], 16) if x else 0
 def key(ns, nc, mode): return h(ns) if mode == "ns" else (h(ns) ^ (h(nc) * 3)) & M
 
-def export():
+def export(root_only=False):
     db = MongoClient("mongodb://127.0.0.1:27017")["hedis_rel"]
     pk = {p["_id"]: (p["package_name"], p["package_version"]) for p in db.packages.find({}, {"package_name": 1, "package_version": 1})}
     done = {tuple(d["_id"].split("|")) for d in db.fp_done.find({}, {"_id": 1})}
@@ -20,11 +20,11 @@ def export():
         out["base"][b["react_native_version"]] = [[x.get("ns", ""), x.get("nc", "")] for x in b["hashes"]]
     for rn in ("0.74", "0.76"):
         t = time.time(); g = collections.defaultdict(list)
-        for d in db.hashes.find({"react_native_version": rn}, {"_id": 0, "package_id": 1, "ns": 1, "nc": 1}, hint="cover_rn_pkg_norm", batch_size=50000):
+        for d in db.hashes.find({"react_native_version": rn, **({"sub": {"$ne": True}} if root_only else {})}, {"_id": 0, "package_id": 1, "ns": 1, "nc": 1}, **({} if root_only else {"hint": "cover_rn_pkg_norm"}), batch_size=50000):
             if (str(d["package_id"]), rn) in done: g[d["package_id"]].append([d.get("ns", ""), d.get("nc", "")])
         out["pv"][rn] = [[*pk[p], v] for p, v in g.items()]
         print(rn, len(g), sum(len(v) for v in g.values()), f"{time.time()-t:.1f}s", flush=True)
-    json.dump(out, open(f"{IDX}.json", "w"))
+    json.dump(out, open(f"{IDX}{'_root' if root_only else ''}.json", "w"))
 
 split = json.load(open(f"{E}/data/split.json")); UNI = set(json.load(open(f"{E}/data/universe_targets.json")))
 def truth(app):
@@ -87,6 +87,7 @@ def tune(I_of, apps):
 
 if __name__ == "__main__":
     if sys.argv[1] == "export": export(); sys.exit()
+    if sys.argv[1] == "export-root": export(True); sys.exit()
     mode = sys.argv[2]; methods = sys.argv[3:] or ["n0", "a", "b", "c"]
     D = json.load(open(f"{IDX}.json")); cache = {}
     def I_of(app):
