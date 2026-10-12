@@ -47,10 +47,27 @@ func NormMatch(app []*models.FunctionObjectHashModel, rn string, cfg NormMatchCo
 			base[cfg.key(h.NormS, h.NormC)] = struct{}{}
 		}
 	}
-	A := map[nkey]struct{}{}
+	var pairs [][2]string
 	for _, h := range app {
 		ns, nc := normhash.Hashes(h.Structural.Raw, h.ContentAR1.Raw, h.ContentAR2.Raw)
-		k := cfg.key(ns, nc)
+		pairs = append(pairs, [2]string{ns, nc})
+	}
+	return NormMatchPairs(pairs, rn, cfg, base)
+}
+
+// NormMatchPairs runs NormMatch on precomputed (NS, NC) hashes (e.g. from a --dump-app file).
+func NormMatchPairs(pairs [][2]string, rn string, cfg NormMatchConfig, base map[nkey]struct{}) ([]*MatchResults, error) {
+	if base == nil {
+		base = map[nkey]struct{}{}
+		if b, ok := rnBaselines[rn]; ok {
+			for _, h := range b.Hashes {
+				base[cfg.key(h.NormS, h.NormC)] = struct{}{}
+			}
+		}
+	}
+	A := map[nkey]struct{}{}
+	for _, p := range pairs {
+		k := cfg.key(p[0], p[1])
 		if _, in := base[k]; !in {
 			A[k] = struct{}{}
 		}

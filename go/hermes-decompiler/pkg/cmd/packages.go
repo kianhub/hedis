@@ -167,6 +167,50 @@ var (
 				utils.S.Printf("Total: %d/%d package hashes matched (%f%%)\n", matchResults.TotalAmountOfMatches, matchResults.TotalAppHashes, matchResults.TotalMatchPercentage)
 			}
 
+			if analyzeWithDatabaseFlag && fromDumpFlag != "" && normMatchFlag != "" {
+				// match a --dump-app file (header "# rn X hbc Y", columns S C1 C2 NS NC) when the .hbc is unavailable
+				tStart := time.Now()
+				if err := pipeline.GetRNBaselines(); err != nil {
+					utils.F.Printf("baselines: %v\n", err)
+					return
+				}
+				b, err := os.ReadFile(fromDumpFlag)
+				if err != nil {
+					utils.F.Println(err)
+					return
+				}
+				lines := strings.Split(string(b), "\n")
+				hdr := strings.Fields(lines[0])
+				rn, hbcV := hdr[2], hdr[4]
+				var pairs [][2]string
+				for _, l := range lines[1:] {
+					f := strings.Fields(l)
+					if len(f) >= 4 {
+						nc := ""
+						if len(f) >= 5 {
+							nc = f[4]
+						}
+						pairs = append(pairs, [2]string{f[3], nc})
+					}
+				}
+				cfg := pipeline.NormMatchConfig{KeyMode: normMatchFlag, TieBreak: tieBreakFlag, Thresholds: map[string]float64{"_global": 0}}
+				if thresholdsFlag != "" {
+					if tb, err := os.ReadFile(thresholdsFlag); err == nil {
+						json.Unmarshal(tb, &cfg.Thresholds)
+					}
+				}
+				rs, err := pipeline.NormMatchPairs(pairs, rn, cfg, nil)
+				if err != nil {
+					utils.F.Println(err)
+					return
+				}
+				if err := writeMatchResultsJSON(rs, hbcV, rn, len(pairs), len(pairs), map[string]float64{"total_s": time.Since(tStart).Seconds()}); err != nil {
+					utils.F.Println(err)
+				}
+				utils.S.Printf("norm match (dump): %d packages predicted\n", len(rs))
+				return
+			}
+
 			if analyzeWithDatabaseFlag {
 				if compareToSpecificAppBundleFlag == "" {
 					utils.F.Printf("compare to specific app bundle flag is not set\n")
@@ -402,6 +446,7 @@ func amountOfUniquePackages(packages []models.PackageWithVulnerabilitiesModel) i
 }
 
 var (
+	fromDumpFlag   string
 	normMatchFlag  string
 	tieBreakFlag   bool
 	thresholdsFlag string
@@ -418,6 +463,7 @@ func init() {
 	packagesCmd.Flags().StringVarP(&compareToSpecificAppBundleFlag, "compare-to-app-bundle", "a", "", "Path to the app bundle HBC file to compare to")
 	packagesCmd.Flags().StringVarP(&outputFilePath, "output-file", "o", "", "Path to the output file to write fuzzy matches to")
 	packagesCmd.Flags().BoolVar(&legacyMatchFlag, "legacy-match", false, "Use the original O(n*m) matching loops (for benchmarking)")
+	packagesCmd.Flags().StringVar(&fromDumpFlag, "from-dump", "", "with -d --norm: read app NS/NC from a --dump-app file instead of an .hbc")
 	packagesCmd.Flags().StringVar(&normMatchFlag, "norm", "", "normalized-hash matcher: nsnc or ns (needs a --release DB)")
 	packagesCmd.Flags().BoolVar(&tieBreakFlag, "tiebreak", false, "with --norm: choose version by F1 of version keys vs app keys")
 	packagesCmd.Flags().StringVar(&thresholdsFlag, "thresholds", "", "with --norm: JSON {package: min score, _global: x} tuned on dev")
