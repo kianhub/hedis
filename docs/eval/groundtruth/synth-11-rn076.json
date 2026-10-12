@@ -1391,5 +1391,99 @@
   "yargs-parser": [
    "21.1.1"
   ]
- }
+ },
+ "bundled": {
+  "@babel/runtime": [
+   "7.26.0",
+   "7.29.10"
+  ],
+  "@nozbe/watermelondb": [
+   "0.28.0"
+  ],
+  "@react-native/assets-registry": [
+   "0.76.9"
+  ],
+  "@react-native/js-polyfills": [
+   "0.76.9"
+  ],
+  "@react-native/normalize-colors": [
+   "0.76.9"
+  ],
+  "@react-native/virtualized-lists": [
+   "0.76.9"
+  ],
+  "abort-controller": [
+   "3.0.0"
+  ],
+  "axios": [
+   "0.31.0"
+  ],
+  "base64-js": [
+   "1.5.1"
+  ],
+  "dayjs": [
+   "1.11.18"
+  ],
+  "event-target-shim": [
+   "5.0.1"
+  ],
+  "form-data": [
+   "4.0.6"
+  ],
+  "invariant": [
+   "2.2.4"
+  ],
+  "memoize-one": [
+   "5.2.1"
+  ],
+  "metro-runtime": [
+   "0.81.5"
+  ],
+  "nullthrows": [
+   "1.1.1"
+  ],
+  "promise": [
+   "8.3.0"
+  ],
+  "react": [
+   "18.3.1"
+  ],
+  "react-freeze": [
+   "1.0.4"
+  ],
+  "react-native": [
+   "0.76.9"
+  ],
+  "react-native-document-picker": [
+   "9.1.0"
+  ],
+  "react-native-fast-image": [
+   "9.0.1"
+  ],
+  "react-native-safe-area-context": [
+   "5.4.0"
+  ],
+  "react-native-svg": [
+   "15.7.0"
+  ],
+  "regenerator-runtime": [
+   "0.13.11"
+  ],
+  "rxjs": [
+   "7.8.2"
+  ],
+  "scheduler": [
+   "0.24.0-canary-efb381bbf-20230505"
+  ],
+  "stacktrace-parser": [
+   "0.1.11"
+  ],
+  "warn-once": [
+   "0.1.1"
+  ],
+  "whatwg-fetch": [
+   "3.6.20"
+  ]
+ },
+ "bundled_modules": 967
 }
