@@ -17,7 +17,6 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/davecgh/go-spew/spew"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.philip.id/mongopiet/pkg/db"
@@ -461,7 +460,7 @@ func FindRNBaselineCandidates(hashes []*models.FunctionObjectHashModel, hbcVersi
 			}
 		}
 	}
-	spew.Dump(baselineMatches)
+	utils.D.Printf("baseline matches: %+v\n", baselineMatches)
 
 	// now for every element in the baselineMatches map, we need to calculate the total matches and then find the react native version with the most matches
 	for rnVersion, matches := range baselineMatches {

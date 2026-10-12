@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"encoding/json"
 	"fmt"
 	"hermes-decompiler/pkg/database"
 	"hermes-decompiler/pkg/database/models"
@@ -10,6 +11,7 @@ import (
 	"os"
 	"path/filepath"
 	"slices"
+	"time"
 
 	"github.com/spf13/cobra"
 )
@@ -18,6 +20,8 @@ var (
 	updateDatabaseFlag      bool
 	createHashesFlag        bool
 	analyzeWithDatabaseFlag bool
+	legacyMatchFlag         bool
+	forceRNVersionFlag      string
 
 	packagesCmd = &cobra.Command{
 		Use:   "packages",
@@ -163,6 +167,8 @@ var (
 					return
 				}
 
+				tStart := time.Now()
+				timings := map[string]float64{}
 				utils.L.Println("Getting RN baselines...")
 				err := pipeline.GetRNBaselines()
 				if err != nil {
@@ -183,9 +189,21 @@ var (
 				utils.L.Printf("Generated %d hashes for app bundle\n", len(appHashes))
 
 				utils.L.Println("Matching hashes with RN baselines...")
-				filteredAppHashes, bestMatchRNVersion := pipeline.FindRNBaselineCandidates(appHashes, appHBCVersion)
+				tBase := time.Now()
+				var filteredAppHashes []*models.FunctionObjectHashModel
+				var bestMatchRNVersion string
+				if legacyMatchFlag {
+					filteredAppHashes, bestMatchRNVersion = pipeline.FindRNBaselineCandidates(appHashes, appHBCVersion)
+				} else {
+					filteredAppHashes, bestMatchRNVersion = pipeline.FindRNBaselineCandidatesFast(appHashes, appHBCVersion)
+				}
+				if forceRNVersionFlag != "" {
+					bestMatchRNVersion = forceRNVersionFlag
+				}
+				timings["baseline_filter_s"] = time.Since(tBase).Seconds()
 				utils.L.Printf("Found %d hashes for app bundle that matched the best RN baseline: %s\n", len(filteredAppHashes), bestMatchRNVersion)
 
+				tDB := time.Now()
 				utils.L.Println("Getting hashes from database...")
 				databasePackageHashes, err := pipeline.GetHashesFromDatabaseWithRNVersion(bestMatchRNVersion)
 				if err != nil {
@@ -200,11 +218,23 @@ var (
 
 				utils.L.Printf("Found %d packages with a total of %d hashes in database for RN version %s\n", len(databasePackageHashes), totalAmountOfHashesFromDb, bestMatchRNVersion)
 
+				timings["db_load_s"] = time.Since(tDB).Seconds()
 				utils.L.Println("Comparing app bundle hashes with database hashes...")
+				tCmp := time.Now()
 				matchResults := make([]*pipeline.MatchResults, len(databasePackageHashes))
+				appSet := pipeline.AppHashSet(filteredAppHashes)
 				for i, dbHashGroup := range databasePackageHashes {
-					matchResults[i] = pipeline.CompareAppWithPackage(filteredAppHashes, dbHashGroup.Hashes)
+					if legacyMatchFlag {
+						matchResults[i] = pipeline.CompareAppWithPackage(filteredAppHashes, dbHashGroup.Hashes)
+					} else {
+						matchResults[i] = pipeline.CompareAppWithPackageFast(appSet, len(filteredAppHashes), dbHashGroup.Hashes)
+					}
 					matchResults[i].PackageInfo = dbHashGroup.Result
+				}
+				timings["compare_s"] = time.Since(tCmp).Seconds()
+				timings["total_s"] = time.Since(tStart).Seconds()
+				if err := writeMatchResultsJSON(matchResults, appHBCVersion, bestMatchRNVersion, len(appHashes), len(filteredAppHashes), timings); err != nil {
+					utils.F.Printf("failed to write json results: %v\n", err)
 				}
 
 				slices.SortFunc(matchResults, func(a, b *pipeline.MatchResults) int {
@@ -218,7 +248,7 @@ var (
 				}
 
 				utils.L.Println("Top 10 matches:")
-				for i := range 10 {
+				for i := 0; i < 10 && i < len(matchResults); i++ {
 					utils.S.Printf("%d. %s@%s (%s)\n", i+1, matchResults[i].PackageInfo.PackageName, matchResults[i].PackageInfo.PackageVersion, matchResults[i].PackageInfo.ID.Hex())
 					utils.S.Printf("Combined: %d/%d (%f%%) package hashes matched\n", matchResults[i].CombinedMatches, matchResults[i].TotalPackageHashes, matchResults[i].TotalMatchPercentage)
 				}
@@ -226,6 +256,34 @@ var (
 		},
 	}
 )
+
+// writeMatchResultsJSON writes every (package, version) score plus run metadata next to the text output.
+func writeMatchResultsJSON(rs []*pipeline.MatchResults, hbcVersion, rnVersion string, nApp, nFiltered int, timings map[string]float64) error {
+	type row struct {
+		Package string  `json:"package"`
+		Version string  `json:"version"`
+		Matched int     `json:"matched_fos"`
+		Total   int     `json:"total_fos"`
+		Score   float64 `json:"score"`
+	}
+	out := struct {
+		HBC      string             `json:"hbc_version"`
+		RN       string             `json:"rn_version"`
+		AppFOs   int                `json:"app_fos"`
+		Filtered int                `json:"app_fos_after_baseline"`
+		Timings  map[string]float64 `json:"timings"`
+		Results  []row              `json:"results"`
+	}{hbcVersion, rnVersion, nApp, nFiltered, timings, nil}
+	for _, r := range rs {
+		out.Results = append(out.Results, row{r.PackageInfo.PackageName, r.PackageInfo.PackageVersion, r.CombinedMatches, r.TotalPackageHashes, r.TotalMatchPercentage / 100})
+	}
+	p := outputFilePath
+	if p == "" {
+		p = filepath.Base(compareToSpecificAppBundleFlag) + "_match_results.txt"
+	}
+	b, _ := json.MarshalIndent(out, "", " ")
+	return os.WriteFile(p+".json", b, 0644)
+}
 
 func writeMatchResultsToFile(matchResults []*pipeline.MatchResults) error {
 	if outputFilePath == "" {
@@ -297,5 +355,7 @@ func init() {
 	packagesCmd.Flags().StringVarP(&specificPackageFlag, "specific-package", "p", "", "Path to the package HBC file to analyze")
 	packagesCmd.Flags().StringVarP(&compareToSpecificAppBundleFlag, "compare-to-app-bundle", "a", "", "Path to the app bundle HBC file to compare to")
 	packagesCmd.Flags().StringVarP(&outputFilePath, "output-file", "o", "", "Path to the output file to write fuzzy matches to")
+	packagesCmd.Flags().BoolVar(&legacyMatchFlag, "legacy-match", false, "Use the original O(n*m) matching loops (for benchmarking)")
+	packagesCmd.Flags().StringVar(&forceRNVersionFlag, "rn-version", "", "Force the RN version (e.g. 0.74) instead of auto-detecting from baselines")
 	packagesCmd.Flags().BoolVarP(&analyzeWithDatabaseFlag, "analyze-with-database", "d", false, "Analyze with the database")
 }
