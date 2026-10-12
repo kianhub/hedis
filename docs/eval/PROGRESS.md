@@ -96,3 +96,6 @@ Normalized prototype (NS = width-folded opcodes, LoadConst{UInt8,Int,Zero,Double
 - fingerprint --release: Metro dev=false minify=true (store config), baseline filter on (NS,NC), raw IR not stored (axios 1.6.0 job: 373 funcs, 294 kept vs ~4k in the dev DB).
 - Rebuild into new DB hedis_rel: pid 368177, logs/fp-rel.log, logs/fp-rel-stats.jsonl, cache-rel/. ~18 jobs/min (CPU-bound, load 11 on 8 cores) -> ETA ~2.5 h.
 - Go matcher port ready: packages -d --norm nsnc|ns [--thresholds f.json] [--tiebreak] (pkg/pipeline/normmatch.go); offline lab eval/matchlab2.py. App norm keys dumped to runs/apps_rel/.
+
+## 2026-10-12 04:35 CT — M8: release DB built
+- hedis_rel finished: 3010 jobs, 2353 ok (same coverage as hedis; same hard failures), 8.29M hashes (ns/nc, no raw IR), 1175 pkg-versions on 0.74 / 1178 on 0.76. Exported to cache/relidx.json (matchlab2.py export, 44 s).
