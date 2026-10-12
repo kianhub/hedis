@@ -125,3 +125,20 @@ g_ns_a dev  direct        0.00 |  0.932  0.786  0.853 (55, 4, 15) |  0.424  0.35
 g_ns_a test prod_closure  0.00 |  1.000  0.764  0.866 (42, 0, 13) |  0.524  0.333  0.407 (22, 20, 44)
 g_ns_a test direct        0.00 |  1.000  0.913  0.955 (42, 0, 4) |  0.524  0.478  0.500 (22, 20, 24)
 ```
+
+## 2026-10-12 05:27 CT — M11: ns (structural-only) a+b, a+b+c + error diagnosis
+```
+g_ns_ab dev  prod_closure  0.00 |  0.982  0.683  0.806 (56, 1, 26) |  0.474  0.284  0.355 (27, 30, 68)
+g_ns_ab dev  direct        0.00 |  0.965  0.786  0.866 (55, 2, 15) |  0.439  0.357  0.394 (25, 32, 45)
+g_ns_ab test prod_closure  0.00 |  1.000  0.764  0.866 (42, 0, 13) |  0.524  0.333  0.407 (22, 20, 44)
+g_ns_ab test direct        0.00 |  1.000  0.913  0.955 (42, 0, 4) |  0.524  0.478  0.500 (22, 20, 24)
+g_ns_abc dev  prod_closure  0.00 |  0.982  0.683  0.806 (56, 1, 26) |  0.456  0.274  0.342 (26, 31, 69)
+g_ns_abc dev  direct        0.00 |  0.965  0.786  0.866 (55, 2, 15) |  0.421  0.343  0.378 (24, 33, 46)
+g_ns_abc test prod_closure  0.00 |  1.000  0.764  0.866 (42, 0, 13) |  0.500  0.318  0.389 (21, 21, 45)
+g_ns_abc test direct        0.00 |  1.000  0.913  0.955 (42, 0, 4) |  0.500  0.457  0.477 (21, 21, 25)
+```
+Diagnosis (g_nsnc_ab, dev, direct truth; eval/diag_versions.py): 27 correct, 11 wrong with an IDENTICAL normalized fingerprint to the true version (indistinguishable by construction), 21 wrong but distinguishable, 10 packages missed, 1 true version not in DB, 1 FP package.
+- Distinguishable errors are near-ties: true vs predicted version match almost the same share (e.g. @react-navigation/native 7.3.7: 3506/3752 vs 7.2.6: 3490/3737; zod 4.1.5 1026/1083 vs 4.1.0 1012/1074). Each package-version set is ~1-4k keys because the release baseline is tiny (a ~17 KB entry bundle), so shared React/RN code stays in every version and only a handful of keys differ between neighbours.
+- Even the true version only has ~93% of its keys in the app; the missing ~7% (app-context inlining/tree-shaking) is larger than the gap between neighbouring versions, so 'highest match' and F1 tie-break both pick by noise. --tiebreak made it slightly worse.
+- Package misses (prod_closure recall 0.73-0.76): mostly transitive packages whose unique keys are in the app at >=50% but fall under the dev-tuned threshold, or whose keys are all shared with another package (dropped by the uniqueness filter).
+Next: baseline = full RN+React release bundle (shrinks package sets to package code), score versions only on keys that differ between versions (symmetric difference with neighbours), and collapse indistinguishable versions into equivalence classes when scoring.
