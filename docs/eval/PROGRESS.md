@@ -63,3 +63,20 @@
 ## 2026-10-12 03:23 CT — EXP (d) version-string anchors
 - On top of (a)+(b)+(c): among versions within 0.02 F1 of the best, prefer one whose x.y.z string is in its own bundle and in the app's strings. Slightly worse: dev pc ver F1 0.358, test pc 0.365 (direct 0.400). Few packages embed their version; common strings ("1.0.4") create false anchors.
 - Version-error diagnosis on dev (direct truth, after b): 28 correct, 13 identical fingerprints (indistinguishable by construction), 20 wrong-but-distinguishable, 9 package misses. Even the TRUE version only matches ~50% of its own unique triples in the app (parse 6.0.0: 1069/2153), so the version signal is drowned out.
+
+## 2026-10-12 03:23 CT — M5: summary table + build-config probe
+Build-config probe (parse 6.0.0, RN 0.74, share of the package's non-baseline triples present in synth-00): dev=true/minify=false 0.294; dev=false/minify=false 0.497 (== DB, so DB is dev=false); dev=false/minify=true 0.577. Store apps are minified, the DB is not: rebuilding the DB with minify=true is a cheap +8 pt overlap win. The remaining ~42% mismatch is bundle-context (module ids / inlined requires in C1/C2), which caps exact 3-hash matching; versions need context-robust features (S-only or normalized-content hashes).
+
+| method (cumulative) | split | pkg P | pkg R | pkg F1 | ver P | ver R | ver F1 |
+|---|---|---|---|---|---|---|---|
+| thesis (Go, hedisv2f_) | dev  | 0.466 | 0.988 | 0.633 | 0.207 | 0.379 | 0.268 |
+| thesis (Go, hedisv2f_) | test | 0.379 | 1.000 | 0.550 | 0.193 | 0.424 | 0.265 |
+| a IDF/unique | dev  | 0.756 | 0.793 | 0.774 | 0.349 | 0.316 | 0.331 |
+| a IDF/unique | test | 0.630 | 0.836 | 0.719 | 0.315 | 0.348 | 0.331 |
+| +b threshold | dev  | 0.970 | 0.793 | 0.872 | 0.448 | 0.316 | 0.370 |
+| +b threshold | test | 0.939 | 0.836 | 0.885 | 0.469 | 0.348 | 0.400 |
+| +c F1 tie-break | dev  | 0.970 | 0.793 | 0.872 | 0.448 | 0.316 | 0.370 |
+| +c F1 tie-break | test | 0.939 | 0.836 | 0.885 | 0.449 | 0.333 | 0.383 |
+| +d anchors | dev  | 0.970 | 0.793 | 0.872 | 0.433 | 0.305 | 0.358 |
+| +d anchors | test | 0.939 | 0.836 | 0.885 | 0.429 | 0.318 | 0.365 |
+(prod_closure truth, universe = 30 targets.) Best = a+b. Dropped stray `clean` DB.
