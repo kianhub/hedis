@@ -36,3 +36,10 @@
 - resume4 (pid 331759, logs/fp-build-resume4.log, logs/fp-stats-resume4.jsonl) skips fp_done jobs instantly (500 skips in 20 s); 2603 rows so far.
 - Mongo: covering index cover_rn_pkg_3hash {rn, package_id, S, C1, C2} (built in 76 s). Index alone did not help the $group/$lookup aggregation (80 s); replaced with covered Find + group in Go: db_load 80.2 s -> 23.9 s (3.4x), results identical on synth-00 (1175 pkg-versions). (feat/mongo-indexes)
 - Added --dump-app/--dump-only to export filtered app triples for offline experiments (runs/apps/*.triples).
+
+## 2026-10-12 03:19 CT — M4: final DB + re-scored baseline
+- Build resume4 (pid 331759) made 0 new successes: the remaining ~657 of 3010 jobs are hard failures (react-native-reanimated 4.x npm ERESOLVE peer deps on RN 0.74/0.76, better-auth Metro ESM resolution, some react-native-screens/axios Metro errors). DB final: hedis = 2353 pkg-version x RN jobs, 8.53M hashes, 1175 pkg-versions on 0.74 / 1178 on 0.76.
+- Re-ran thesis matcher (new fast loader) on all 11 apps: 18.6-23.4 s per synth app, 44 s Mattermost (was 45-490 s). Prefix hedisv2f_. Scores unchanged vs M2 (DB did not change):
+  dev  prod_closure pkg 0.466/0.988/0.633  ver 0.207/0.379/0.268
+  test prod_closure pkg 0.379/1.000/0.550  ver 0.193/0.424/0.265
+- Exported covered index to cache/index-*.npz (eval/export_index.py, 52 s + 38 s) for offline experiments (eval/matchlab.py).
