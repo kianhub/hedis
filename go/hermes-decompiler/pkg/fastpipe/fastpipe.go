@@ -26,6 +26,7 @@ import (
 	"hermes-decompiler/pkg/normhash"
 	"os"
 	"os/exec"
+	"path"
 	"path/filepath"
 	"sort"
 	"strings"
@@ -404,7 +405,7 @@ func (r *Runner) one(env string, j Job) {
 	t = time.Now()
 	if _, err := run(env, 10*time.Minute, "node", "bundle-fast.mjs"); err != nil {
 		// per-subpath probing costs one Metro run each: only for packages with few subpaths (crypto-js, zod)
-		if !r.cfg.Sub || len(st.Subpaths) < 2 || len(st.Subpaths) > 50 {
+		if !r.cfg.Sub || len(st.Subpaths) < 1 {
 			st.Err = "metro: " + err.Error()
 			return
 		}
@@ -425,8 +426,12 @@ func (r *Runner) one(env string, j Job) {
 			}
 		}
 		st.Subpaths = ok
-		if len(ok) == 0 {
-			st.Err = "metro: no subpath bundles"
+		if len(ok) == 0 { // nothing bundles on this RN: record the same marker as a package without subpaths
+			st.OK, st.Skipped = true, "no-subpaths"
+			r.db.Collection("fp_done").UpdateOne(context.Background(), bson.M{"_id": dk}, bson.M{"$set": bson.M{"funcs": 0, "kept": 0, "no_subpath": true}}, options.Update().SetUpsert(true))
+			r.mu.Lock()
+			r.done[dk] = true
+			r.mu.Unlock()
 			return
 		}
 		var b strings.Builder
@@ -591,7 +596,7 @@ func Subpaths(dir string) []string {
 	var ex map[string]json.RawMessage
 	if len(pj.Exports) > 0 && json.Unmarshal(pj.Exports, &ex) == nil {
 		for k := range ex {
-			if !strings.HasPrefix(k, "./") || strings.Contains(k, "*") || strings.HasSuffix(k, ".json") || strings.HasSuffix(k, "/") {
+			if !strings.HasPrefix(k, "./") || strings.Contains(k, "*") || strings.HasSuffix(k, ".json") || strings.HasSuffix(k, "/") || toolingFile(path.Base(k)) {
 				continue
 			}
 			out = append(out, strings.TrimPrefix(k, "./"))
@@ -602,7 +607,7 @@ func Subpaths(dir string) []string {
 		for _, e := range ents {
 			n := e.Name()
 			if e.IsDir() || !strings.HasSuffix(n, ".js") || strings.HasSuffix(n, ".min.js") || n == "index.js" || n == main ||
-				strings.Contains(n, "config") || strings.HasPrefix(n, ".") {
+				strings.Contains(n, "config") || strings.HasPrefix(n, ".") || toolingFile(n) {
 				continue
 			}
 			out = append(out, strings.TrimSuffix(n, ".js"))
@@ -613,4 +618,20 @@ func Subpaths(dir string) []string {
 		out = out[:80]
 	}
 	return out
+}
+
+// toolingFile: top-level files that are build/test tooling, never imported by app code
+// (expo config plugins, jest setup/mocks, metro/babel plugins, CLI scripts).
+func toolingFile(n string) bool {
+	l := strings.ToLower(strings.TrimSuffix(n, ".js"))
+	switch l {
+	case "app.plugin", "metro", "babel", "cli", "scripts", "postinstall", "react-native.config":
+		return true
+	}
+	for _, p := range []string{"jest", "mock", "babel-plugin", "metro-", "eslint", "webpack", "rollup"} {
+		if strings.Contains(l, p) {
+			return true
+		}
+	}
+	return false
 }

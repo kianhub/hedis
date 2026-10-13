@@ -6,14 +6,16 @@ usage: oneclass.py <pred_prefix> <dev|test> [--diag]"""
 import sys, json, collections
 E_ = "/workspace/hedis-eval"; P, part = sys.argv[1], sys.argv[2]; diag = "--diag" in sys.argv
 UNI = set(json.load(open(f"{E_}/data/universe_targets.json"))); split = json.load(open(f"{E_}/data/split.json"))
-sha = {}  # release identity = root bundle SHA (Kian's definition); --subsha also requires identical subpath bundles
-for f in ("fp-rel-stats.jsonl",) + (("fp-sub-stats.jsonl",) if "--subsha" in sys.argv else ()):
+sha = {}  # release identity = root bundle SHA; --subsha (primary since M24) also the subpath bundle SHA
+for f in ("fp-rel-stats.jsonl",) + (("fp-sub-stats.jsonl", "fp-sub3-stats.jsonl") if "--subsha" in sys.argv else ()):
     try:
         for l in open(f"{E_}/logs/{f}"):
-            d = json.loads(l)
-            if d["ok"] and d.get("BundleSHA"):
-                k = (d["Name"], d["Version"], d["RN"]); i = 0 if f.startswith("fp-rel") else 1
-                t = list(sha.get(k, ("", ""))); t[i] = d["BundleSHA"]; sha[k] = tuple(t)
+            d = json.loads(l); k = (d["Name"], d["Version"], d["RN"])
+            if f.startswith("fp-rel"):
+                if d["ok"] and d.get("BundleSHA"): sha[k] = (d["BundleSHA"], "")
+            elif d.get("skipped") != "already-in-db" and k in sha:
+                # later runs override; an ok row without a bundle is the no-subpath marker ("")
+                sha[k] = (sha[k][0], d.get("BundleSHA", "") if d["ok"] else "")
     except FileNotFoundError: pass
 indb = {(n, v) for n, v, r in sha}
 tp = fp = fn = 0; cat = collections.Counter(); ex = collections.defaultdict(list)
