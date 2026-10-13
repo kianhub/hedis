@@ -359,3 +359,24 @@ Not built (blockers):
 - data/split.v3.json (sha256 in data/split.v3.sha256; copy in docs/eval/data/). It keeps v2 dev/test unchanged and adds a `real` held-out set of 8 apps with their hbc sha256 and RN version: mattermost-rel, rainbow-rel, mattermost-2.20.0, bluesky, inaturalist, valora, bluewallet, leather-mobile.
 - Frozen before any go_m23 run on these apps. These apps are never used for tuning.
 - oneclass.py: new `--split=` flag; partition `real` takes RN from the split entry. Dev reproduces 0.970.
+
+## M28: track 2, frozen go_m23 scored once on split v3 `real` (2026-10-12)
+Same frozen flags and DB (hedis_rel), with --subsha identity. App triples were dumped to runs/apps_rel (the existing mattermost-rel/rainbow-rel dumps were byte-identical). Run as go_m23v3, scored once, no tuning.
+
+**real (8 apps): P .530 / R .784 / F1 0.632 (tp98 fp87 fn27)**, vs synth dev 0.970 / test 0.975.
+
+Per app F1:
+- mattermost-rel .727
+- rainbow-rel .720
+- inaturalist .700
+- mattermost-2.20.0 .667
+- bluewallet .615
+- bluesky .529
+- valora .524
+- leather .421
+
+Errors:
+- FP, package not bundled (67) is the dominant error. Precision collapses on large real bundles: parse, immer, i18next, axios, dayjs, @nozbe/watermelondb, react-native-mmkv and react-native-share are predicted in apps that don't bundle them. This looks like shared or generic code matching that synth apps did not exercise.
+- FN, wrong version (16): mostly react-native-screens and react-native-svg, plus @react-navigation/native 7.x predicted as 6.1.18.
+- FN, version not in DB (9): @gorhom/bottom-sheet ×5 (root fingerprint jobs failed, see M25), fast-image 8.5.11/8.6.3, clipboard 1.14.1, reanimated nightly.
+Details: docs/eval/results/go_m23v3/.
