@@ -333,3 +333,24 @@ The 287 earlier ok jobs whose subpath list held tooling files were re-run so the
 The 3 spurious M24 splits are gone: flash-list 2.0.2/2.0.3, permissions 5.2.5/5.3.0, gesture-handler 2.27.0/2.27.1. The remaining errors equal M23:
 - dev: crypto-js missed in synth-00; wrong version for screens ×2, fast-image, immer
 - test: wrong version for i18next, fast-image, immer; FP @react-navigation/native in synth-24
+
+## M26: track 2, real-app Hermes builds + bundled truth (2026-10-12)
+Run settings: executor effort high, model 'Grok Bot, default model', no cloud agents.
+All builds: release Metro bundle (dev=false, minify=true) + source map, then the app's own hermesc -O -> apps/out/<app>.hbc. Bundled truth from the source map (eval/bundled_truth.py; fix: Expo maps use root-relative "/node_modules/..." paths).
+
+| app | RN | bundled pkgs | modules |
+|---|---|---|---|
+| mattermost-rel (Mattermost 2.29.1) | 0.76.9 | 271 | 4496 |
+| rainbow-rel (Rainbow 1.9.70-1) | 0.74.3 | 530 | 7497 |
+| mattermost-2.20.0 | 0.74.5 | 252 | 4226 |
+| bluesky-1.96.0 (Expo) | 0.76.3 | 246 | 3828 |
+| inaturalist-1.0.7 | 0.76.9 | 202 | 6447 |
+| valora-1.110.0 | 0.76.5 | 424 | 6060 |
+| bluewallet-7.0.9 | 0.76.6 | 264 | 2494 |
+| leather-mobile-1.7.0 | 0.74.1 | 59 | 821 |
+
+Not built (blockers):
+- metamask-7.47.3: git dep aprock/react-native-tcp tarball returns 404.
+- zeus-0.11.4: git dep aprock/react-native-os tarball returns 404.
+- joplin-3.3.13: root.tsx uses `import x = require()`, which Metro's Babel TS transform rejects. It needs Joplin's own tsc prebuild.
+- bluewallet: the git dep rn-qr-generator repo is gone. Swapped to npm rn-qr-generator@1.4.3 (native QR wrapper) in package.json/lock, then ran the app's postinstall (rn-nodeify).

@@ -1,0 +1,2 @@
+leather-mobile-1.7.0|leather-io/mono|mobile-v1.7.0|apps/mobile||
+mattermost-2.20.0|mattermost/mattermost-mobile|v2.20.0|.||bash ./scripts/postinstall.sh
