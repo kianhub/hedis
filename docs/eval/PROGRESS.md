@@ -302,3 +302,34 @@ Test:
 - Wrong version (4). The 3 from M23 carry over (i18next 23.12.0 vs .1, fast-image 8.23 vs 8.25, immer 11.1.14 vs .15). The new one:
   - gesture-handler 2.27.0 vs 2.27.1: the 2.27.0 rn076 subpath job failed in Metro, so it has no subpath SHA and doesn't match the identical root bundle. This error comes from the failed job, not from a real difference between versions.
 - FP (1): @react-navigation/native 6.1.18 in synth-24.
+
+## M25: track 1, the 514 failed subpath fingerprint jobs (2026-10-12)
+Run settings: worker effort level high (default).
+
+Triage of the 514 failed subpath jobs (logs/fp-sub-stats.jsonl):
+
+| cause | jobs | fix |
+|---|---|---|
+| root bundle also failed (package-version not in the DB: bottom-sheet npm install errors; better-auth / reanimated Metro errors) | 359 | none needed for identity (no root SHA, so never matched) |
+| top-level tooling files taken as subpaths (app.plugin.js in fast-image 70 / share 46, metro.js in @sentry 9, jestSetup.js in gesture-handler 2) | 127 | `toolingFile()` excludes app.plugin, metro, babel, cli, scripts, jest*, mock*, eslint/webpack/rollup from subpath candidates |
+| zod v4 subpaths: Babel on RN 0.74/0.76 lacks export-namespace-from (TransformError), plus all-probes-failed (zod 24, keys 2, permissions 2) | 28 | probing for any subpath count; skip subpaths that already failed in 2+ versions; when nothing bundles, record the **no-subpath marker** (ok, no SHA, fp_done no_subpath) instead of an error |
+
+Note: no Metro/Babel config change. Adding a Babel plugin only for fingerprinting would make our bundles differ from what an RN 0.74/0.76 app produces.
+
+The 287 earlier ok jobs whose subpath list held tooling files were re-run so their identity is consistent.
+
+| | before | after (logs/fp-sub3-stats.jsonl) |
+|---|---|---|
+| root-ok jobs: subpath rows / no-subpath / error | 629 / 1591 / 155 | 350 / 2025 / **0** |
+
+- oneclass.py --subsha now merges fp-sub then fp-sub3 (later rows override; marker = empty subpath SHA).
+- Rescore of frozen go_m23 (same flags, rerun on the fixed DB as go_m23r; predictions identical):
+
+| --subsha P / R / F1 | dev | test |
+|---|---|---|
+| M24 (spurious splits) | .959 / .953 / 0.956 | .964 / .971 / 0.967 |
+| **M25** | **.973 / .966 / 0.970** (tp144 fp4 fn5) | **.971 / .978 / 0.975** (tp134 fp4 fn3) |
+
+The 3 spurious M24 splits are gone: flash-list 2.0.2/2.0.3, permissions 5.2.5/5.3.0, gesture-handler 2.27.0/2.27.1. The remaining errors equal M23:
+- dev: crypto-js missed in synth-00; wrong version for screens ×2, fast-image, immer
+- test: wrong version for i18next, fast-image, immer; FP @react-navigation/native in synth-24
