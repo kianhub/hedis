@@ -2,10 +2,10 @@
 """Primary metric: pkg+version F1 where versions with byte-identical bundles (same Metro bundle SHA per RN in the
 release fingerprint run) count as one release; bundled truth; universe = target packages.
 Also prints per-category FN/FP diagnosis with --diag.
-usage: oneclass.py <pred_prefix> <dev|test> [--diag]"""
+usage: oneclass.py <pred_prefix> <dev|test|real> [--diag] [--subsha] [--split=data/split.v3.json]"""
 import sys, json, collections
 E_ = "/workspace/hedis-eval"; P, part = sys.argv[1], sys.argv[2]; diag = "--diag" in sys.argv
-UNI = set(json.load(open(f"{E_}/data/universe_targets.json"))); split = json.load(open(f"{E_}/data/split.json"))
+UNI = set(json.load(open(f"{E_}/data/universe_targets.json"))); SPL = next((a.split("=",1)[1] for a in sys.argv if a.startswith("--split=")), f"{E_}/data/split.json"); split = json.load(open(SPL))
 sha = {}  # release identity = root bundle SHA; --subsha (primary since M24) also the subpath bundle SHA
 for f in ("fp-rel-stats.jsonl",) + (("fp-sub-stats.jsonl", "fp-sub3-stats.jsonl") if "--subsha" in sys.argv else ()):
     try:
@@ -19,8 +19,8 @@ for f in ("fp-rel-stats.jsonl",) + (("fp-sub-stats.jsonl", "fp-sub3-stats.jsonl"
     except FileNotFoundError: pass
 indb = {(n, v) for n, v, r in sha}
 tp = fp = fn = 0; cat = collections.Counter(); ex = collections.defaultdict(list)
-for a in [x for x in split[part] if x.startswith("synth")]:
-    rn = "rn074" if "rn074" in a else "rn076"
+for a in [x for x in split[part] if x.startswith("synth") or part == "real"]:
+    rn = ("rn074" if split[part][a]["rn"].startswith("0.74") else "rn076") if part == "real" else ("rn074" if "rn074" in a else "rn076")
     T = {n: vs for n, vs in json.load(open(f"{E_}/data/groundtruth/{a}.json"))["bundled"].items() if n in UNI}
     Pr = {x["package"]: x["version"] for x in json.load(open(f"{E_}/data/predictions/{P}_{a}.json"))["predictions"] if x["package"] in UNI}
     same = lambda n, v, w: v == w or (sha.get((n, v, rn)) and sha.get((n, v, rn)) == sha.get((n, w, rn)))
