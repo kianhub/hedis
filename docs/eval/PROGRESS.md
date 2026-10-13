@@ -354,3 +354,8 @@ Not built (blockers):
 - zeus-0.11.4: git dep aprock/react-native-os tarball returns 404.
 - joplin-3.3.13: root.tsx uses `import x = require()`, which Metro's Babel TS transform rejects. It needs Joplin's own tsc prebuild.
 - bluewallet: the git dep rn-qr-generator repo is gone. Swapped to npm rn-qr-generator@1.4.3 (native QR wrapper) in package.json/lock, then ran the app's postinstall (rn-nodeify).
+
+## M27: track 2, split v3 frozen (2026-10-12 21:40 CT)
+- data/split.v3.json (sha256 in data/split.v3.sha256; copy in docs/eval/data/). It keeps v2 dev/test unchanged and adds a `real` held-out set of 8 apps with their hbc sha256 and RN version: mattermost-rel, rainbow-rel, mattermost-2.20.0, bluesky, inaturalist, valora, bluewallet, leather-mobile.
+- Frozen before any go_m23 run on these apps. These apps are never used for tuning.
+- oneclass.py: new `--split=` flag; partition `real` takes RN from the split entry. Dev reproduces 0.970.
