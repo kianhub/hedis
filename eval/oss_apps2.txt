@@ -1,0 +1,2 @@
+zeus-0.11.4|ZeusLN/zeus|v0.11.4|.||
+valora-1.110.0|valora-inc/wallet|valora-v1.110.0|.||

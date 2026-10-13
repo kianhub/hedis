@@ -1,0 +1,1 @@
+mattermost-2.20.0|mattermost/mattermost-mobile|v2.20.0|.||bash ./scripts/postinstall.sh

@@ -1,0 +1,1 @@
+bluesky-1.96.0|bluesky-social/social-app|1.96.0|.||npx lingui compile

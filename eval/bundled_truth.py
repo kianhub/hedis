@@ -9,7 +9,8 @@ for s in src:
     m = re.search(r"^(.*node_modules/((?:@[^/]+/)?[^/]+))/", s)
     if not m: continue
     root, name = m.group(1), m.group(2)
-    if not root.startswith("/"): root = os.path.join(d, root)
+    # Expo maps use project-root-relative paths that start with "/"
+    if not root.startswith("/") or not os.path.exists(root): root = os.path.join(d, root.lstrip("/"))
     try: v = json.load(open(os.path.join(root, "package.json")))["version"]
     except Exception: continue
     pk.setdefault(name, set()).add(v)

@@ -1,0 +1,755 @@
+{
+ "bundled": {
+  "@atproto/api": [
+   "0.13.21"
+  ],
+  "@atproto/common-web": [
+   "0.3.1"
+  ],
+  "@atproto/lexicon": [
+   "0.4.4"
+  ],
+  "@atproto/syntax": [
+   "0.3.1"
+  ],
+  "@atproto/xrpc": [
+   "0.6.5"
+  ],
+  "@babel/runtime": [
+   "7.22.10",
+   "7.23.2",
+   "7.26.0"
+  ],
+  "@bitdrift/react-native": [
+   "0.4.0"
+  ],
+  "@braintree/sanitize-url": [
+   "6.0.4"
+  ],
+  "@discord/bottom-sheet": [
+   "4.6.1"
+  ],
+  "@dominicstop/ts-event-emitter": [
+   "1.1.0"
+  ],
+  "@emoji-mart/react": [
+   "1.1.1"
+  ],
+  "@formatjs/ecma402-abstract": [
+   "2.3.1"
+  ],
+  "@formatjs/fast-memoize": [
+   "2.2.5"
+  ],
+  "@formatjs/intl-datetimeformat": [
+   "6.17.1"
+  ],
+  "@formatjs/intl-enumerator": [
+   "1.8.7"
+  ],
+  "@formatjs/intl-getcanonicallocales": [
+   "2.5.4"
+  ],
+  "@formatjs/intl-locale": [
+   "4.2.8"
+  ],
+  "@formatjs/intl-localematcher": [
+   "0.5.9"
+  ],
+  "@formatjs/intl-numberformat": [
+   "8.15.1"
+  ],
+  "@formatjs/intl-pluralrules": [
+   "5.4.1"
+  ],
+  "@fortawesome/fontawesome-svg-core": [
+   "6.4.2"
+  ],
+  "@fortawesome/free-regular-svg-icons": [
+   "6.4.2"
+  ],
+  "@fortawesome/free-solid-svg-icons": [
+   "6.4.2"
+  ],
+  "@fortawesome/react-native-fontawesome": [
+   "0.3.2"
+  ],
+  "@gorhom/portal": [
+   "1.0.14"
+  ],
+  "@haileyok/bluesky-video": [
+   "0.2.4"
+  ],
+  "@ide/backoff": [
+   "1.0.0"
+  ],
+  "@ipld/dag-cbor": [
+   "9.2.1"
+  ],
+  "@lingui/core": [
+   "4.14.1"
+  ],
+  "@lingui/react": [
+   "4.14.1"
+  ],
+  "@mattermost/react-native-paste-input": [
+   "0.7.1"
+  ],
+  "@mozzius/expo-dynamic-app-icon": [
+   "1.5.0"
+  ],
+  "@radix-ui/primitive": [
+   "1.1.0"
+  ],
+  "@radix-ui/react-compose-refs": [
+   "1.1.0"
+  ],
+  "@radix-ui/react-dismissable-layer": [
+   "1.1.1"
+  ],
+  "@radix-ui/react-primitive": [
+   "2.0.0"
+  ],
+  "@radix-ui/react-slot": [
+   "1.1.0"
+  ],
+  "@radix-ui/react-use-callback-ref": [
+   "1.1.0"
+  ],
+  "@radix-ui/react-use-escape-keydown": [
+   "1.1.0"
+  ],
+  "@react-native-async-storage/async-storage": [
+   "1.22.0",
+   "1.23.1"
+  ],
+  "@react-native-picker/picker": [
+   "2.10.2"
+  ],
+  "@react-native/assets-registry": [
+   "0.76.3"
+  ],
+  "@react-native/js-polyfills": [
+   "0.76.3"
+  ],
+  "@react-native/normalize-colors": [
+   "0.76.1"
+  ],
+  "@react-native/virtualized-lists": [
+   "0.76.3"
+  ],
+  "@react-navigation/bottom-tabs": [
+   "6.5.20"
+  ],
+  "@react-navigation/core": [
+   "6.4.16"
+  ],
+  "@react-navigation/elements": [
+   "1.3.30"
+  ],
+  "@react-navigation/native": [
+   "6.1.17"
+  ],
+  "@react-navigation/native-stack": [
+   "6.9.26"
+  ],
+  "@react-navigation/routers": [
+   "6.1.9"
+  ],
+  "@sentry-internal/feedback": [
+   "7.117.0"
+  ],
+  "@sentry-internal/replay-canvas": [
+   "7.117.0"
+  ],
+  "@sentry-internal/tracing": [
+   "7.117.0"
+  ],
+  "@sentry/browser": [
+   "7.117.0"
+  ],
+  "@sentry/core": [
+   "7.117.0"
+  ],
+  "@sentry/integrations": [
+   "7.117.0"
+  ],
+  "@sentry/react": [
+   "7.117.0"
+  ],
+  "@sentry/react-native": [
+   "5.24.3"
+  ],
+  "@sentry/replay": [
+   "7.117.0"
+  ],
+  "@sentry/utils": [
+   "7.117.0"
+  ],
+  "@tanstack/query-async-storage-persister": [
+   "5.25.0"
+  ],
+  "@tanstack/query-core": [
+   "5.25.0",
+   "5.8.1"
+  ],
+  "@tanstack/query-persist-client-core": [
+   "5.25.0"
+  ],
+  "@tanstack/react-query": [
+   "5.8.1"
+  ],
+  "@tanstack/react-query-persist-client": [
+   "5.25.0"
+  ],
+  "abort-controller": [
+   "3.0.0"
+  ],
+  "array.prototype.findlast": [
+   "1.2.3"
+  ],
+  "assert": [
+   "2.0.0"
+  ],
+  "available-typed-arrays": [
+   "1.0.5"
+  ],
+  "await-lock": [
+   "2.2.2"
+  ],
+  "base-64": [
+   "0.1.0"
+  ],
+  "base64-js": [
+   "1.5.1"
+  ],
+  "bcp-47": [
+   "2.1.0"
+  ],
+  "bcp-47-match": [
+   "2.0.3"
+  ],
+  "buffer": [
+   "5.7.1"
+  ],
+  "call-bind": [
+   "1.0.2"
+  ],
+  "cborg": [
+   "4.2.6"
+  ],
+  "color": [
+   "4.2.3"
+  ],
+  "color-convert": [
+   "2.0.1"
+  ],
+  "color-name": [
+   "1.1.4"
+  ],
+  "color-string": [
+   "1.9.1"
+  ],
+  "date-fns": [
+   "2.30.0"
+  ],
+  "decimal.js": [
+   "10.4.3"
+  ],
+  "decode-uri-component": [
+   "0.2.2"
+  ],
+  "define-properties": [
+   "1.2.0"
+  ],
+  "dijkstrajs": [
+   "1.0.3"
+  ],
+  "email-validator": [
+   "2.0.4"
+  ],
+  "emoji-mart": [
+   "5.5.2"
+  ],
+  "emoji-regex": [
+   "10.4.0"
+  ],
+  "es-abstract": [
+   "1.22.2"
+  ],
+  "es-shim-unscopables": [
+   "1.0.0"
+  ],
+  "es-to-primitive": [
+   "1.2.1"
+  ],
+  "es6-object-assign": [
+   "1.1.0"
+  ],
+  "escape-string-regexp": [
+   "4.0.0"
+  ],
+  "event-target-shim": [
+   "5.0.1"
+  ],
+  "eventemitter3": [
+   "5.0.1"
+  ],
+  "expo": [
+   "52.0.19"
+  ],
+  "expo-application": [
+   "6.0.1"
+  ],
+  "expo-asset": [
+   "11.0.1"
+  ],
+  "expo-blur": [
+   "14.0.1"
+  ],
+  "expo-camera": [
+   "16.0.7"
+  ],
+  "expo-clipboard": [
+   "7.0.0"
+  ],
+  "expo-constants": [
+   "17.0.3"
+  ],
+  "expo-device": [
+   "7.0.1"
+  ],
+  "expo-file-system": [
+   "18.0.6"
+  ],
+  "expo-font": [
+   "13.0.1"
+  ],
+  "expo-haptics": [
+   "14.0.0"
+  ],
+  "expo-image": [
+   "2.0.3"
+  ],
+  "expo-image-manipulator": [
+   "13.0.5"
+  ],
+  "expo-image-picker": [
+   "16.0.3"
+  ],
+  "expo-linear-gradient": [
+   "14.0.1"
+  ],
+  "expo-linking": [
+   "7.0.3"
+  ],
+  "expo-localization": [
+   "16.0.0"
+  ],
+  "expo-media-library": [
+   "17.0.3"
+  ],
+  "expo-modules-core": [
+   "2.1.1",
+   "2.1.2"
+  ],
+  "expo-navigation-bar": [
+   "4.0.4"
+  ],
+  "expo-notifications": [
+   "0.29.11"
+  ],
+  "expo-sharing": [
+   "13.0.0"
+  ],
+  "expo-splash-screen": [
+   "0.29.18"
+  ],
+  "expo-status-bar": [
+   "2.0.0"
+  ],
+  "expo-system-ui": [
+   "4.0.4"
+  ],
+  "expo-updates": [
+   "0.26.10"
+  ],
+  "expo-web-browser": [
+   "14.0.1"
+  ],
+  "fast-base64-decode": [
+   "1.0.0"
+  ],
+  "fast-text-encoding": [
+   "1.0.6"
+  ],
+  "fbemitter": [
+   "3.0.0"
+  ],
+  "fbjs": [
+   "3.0.5"
+  ],
+  "filter-obj": [
+   "1.1.0"
+  ],
+  "for-each": [
+   "0.3.3"
+  ],
+  "function-bind": [
+   "1.1.1"
+  ],
+  "get-intrinsic": [
+   "1.2.1"
+  ],
+  "gopd": [
+   "1.0.1"
+  ],
+  "graphemer": [
+   "1.4.0"
+  ],
+  "has": [
+   "1.0.3"
+  ],
+  "has-property-descriptors": [
+   "1.0.0"
+  ],
+  "has-proto": [
+   "1.0.1"
+  ],
+  "has-symbols": [
+   "1.0.3"
+  ],
+  "has-tostringtag": [
+   "1.0.0"
+  ],
+  "hoist-non-react-statics": [
+   "3.3.2"
+  ],
+  "humps": [
+   "2.0.1"
+  ],
+  "ieee754": [
+   "1.2.1"
+  ],
+  "inherits": [
+   "2.0.4"
+  ],
+  "invariant": [
+   "2.2.4"
+  ],
+  "is-alphabetical": [
+   "2.0.1"
+  ],
+  "is-alphanumerical": [
+   "2.0.1"
+  ],
+  "is-arguments": [
+   "1.1.1"
+  ],
+  "is-arrayish": [
+   "0.3.2"
+  ],
+  "is-callable": [
+   "1.2.7"
+  ],
+  "is-date-object": [
+   "1.0.5"
+  ],
+  "is-decimal": [
+   "2.0.1"
+  ],
+  "is-generator-function": [
+   "1.0.10"
+  ],
+  "is-nan": [
+   "1.3.2"
+  ],
+  "is-regex": [
+   "1.1.4"
+  ],
+  "is-symbol": [
+   "1.0.4"
+  ],
+  "is-typed-array": [
+   "1.1.12"
+  ],
+  "iso-datestring-validator": [
+   "2.2.2"
+  ],
+  "js-sha256": [
+   "0.10.1",
+   "0.9.0"
+  ],
+  "jwt-decode": [
+   "4.0.0"
+  ],
+  "lande": [
+   "1.0.10"
+  ],
+  "localforage": [
+   "1.10.0"
+  ],
+  "lodash": [
+   "4.17.21"
+  ],
+  "lodash.chunk": [
+   "4.2.0"
+  ],
+  "lodash.debounce": [
+   "4.0.8"
+  ],
+  "lodash.isequal": [
+   "4.5.0"
+  ],
+  "lodash.isobject": [
+   "3.0.2"
+  ],
+  "lodash.shuffle": [
+   "4.2.0"
+  ],
+  "lodash.throttle": [
+   "4.1.1"
+  ],
+  "lru-cache": [
+   "6.0.0"
+  ],
+  "memoize-one": [
+   "5.2.1"
+  ],
+  "metro-runtime": [
+   "0.81.0"
+  ],
+  "multiformats": [
+   "13.3.0",
+   "9.9.0"
+  ],
+  "nanoid": [
+   "3.3.6",
+   "5.0.5"
+  ],
+  "nullthrows": [
+   "1.1.1"
+  ],
+  "object-inspect": [
+   "1.12.3"
+  ],
+  "object-is": [
+   "1.1.5"
+  ],
+  "object-keys": [
+   "1.1.1"
+  ],
+  "promise": [
+   "8.3.0"
+  ],
+  "prop-types": [
+   "15.8.1"
+  ],
+  "psl": [
+   "1.9.0"
+  ],
+  "punycode": [
+   "2.3.0"
+  ],
+  "qrcode": [
+   "1.5.4"
+  ],
+  "query-string": [
+   "7.1.3"
+  ],
+  "react": [
+   "18.2.0"
+  ],
+  "react-compiler-runtime": [
+   "19.0.0-beta-a7bf2bd-20241110"
+  ],
+  "react-dom": [
+   "18.2.0"
+  ],
+  "react-fast-compare": [
+   "3.2.2"
+  ],
+  "react-freeze": [
+   "1.0.3"
+  ],
+  "react-is": [
+   "16.13.1",
+   "18.2.0"
+  ],
+  "react-keyed-flatten-children": [
+   "3.0.0"
+  ],
+  "react-native": [
+   "0.76.3"
+  ],
+  "react-native-compressor": [
+   "1.10.3"
+  ],
+  "react-native-date-picker": [
+   "5.0.7"
+  ],
+  "react-native-drawer-layout": [
+   "4.0.4"
+  ],
+  "react-native-gesture-handler": [
+   "2.20.2"
+  ],
+  "react-native-get-random-values": [
+   "1.10.0"
+  ],
+  "react-native-image-crop-picker": [
+   "0.41.6"
+  ],
+  "react-native-ios-context-menu": [
+   "1.15.3"
+  ],
+  "react-native-is-edge-to-edge": [
+   "1.1.6"
+  ],
+  "react-native-keyboard-controller": [
+   "1.14.5"
+  ],
+  "react-native-mmkv": [
+   "2.12.2"
+  ],
+  "react-native-pager-view": [
+   "6.6.1"
+  ],
+  "react-native-picker-select": [
+   "9.3.1"
+  ],
+  "react-native-progress": [
+   "5.0.0"
+  ],
+  "react-native-qrcode-styled": [
+   "0.3.3"
+  ],
+  "react-native-reanimated": [
+   "3.17.0-nightly-20241211-17e89ca24"
+  ],
+  "react-native-root-siblings": [
+   "4.1.1"
+  ],
+  "react-native-safe-area-context": [
+   "4.14.0"
+  ],
+  "react-native-screens": [
+   "4.3.0"
+  ],
+  "react-native-svg": [
+   "15.9.0"
+  ],
+  "react-native-uitextview": [
+   "1.4.0"
+  ],
+  "react-native-url-polyfill": [
+   "1.3.0"
+  ],
+  "react-native-uuid": [
+   "2.0.2"
+  ],
+  "react-native-view-shot": [
+   "4.0.3"
+  ],
+  "react-native-webview": [
+   "13.12.3"
+  ],
+  "react-responsive": [
+   "9.0.2"
+  ],
+  "regenerator-runtime": [
+   "0.13.11"
+  ],
+  "rn-fetch-blob": [
+   "0.12.0"
+  ],
+  "safe-regex-test": [
+   "1.0.0"
+  ],
+  "scheduler": [
+   "0.23.0",
+   "0.24.0-canary-efb381bbf-20230505"
+  ],
+  "semver": [
+   "7.6.0"
+  ],
+  "simple-swizzle": [
+   "0.2.2"
+  ],
+  "split-on-first": [
+   "1.1.0"
+  ],
+  "stacktrace-parser": [
+   "0.1.10"
+  ],
+  "statsig-js": [
+   "4.45.1"
+  ],
+  "statsig-react": [
+   "1.35.0"
+  ],
+  "statsig-react-native-expo": [
+   "4.6.1"
+  ],
+  "strict-uri-encode": [
+   "2.0.0"
+  ],
+  "string.prototype.trim": [
+   "1.2.8"
+  ],
+  "tlds": [
+   "1.242.0"
+  ],
+  "tldts": [
+   "6.1.46"
+  ],
+  "toygrad": [
+   "2.6.0"
+  ],
+  "tslib": [
+   "2.6.2",
+   "2.8.1"
+  ],
+  "uint8arrays": [
+   "3.0.0"
+  ],
+  "unraw": [
+   "3.0.0"
+  ],
+  "use-latest-callback": [
+   "0.1.9",
+   "0.2.1"
+  ],
+  "util": [
+   "0.12.5"
+  ],
+  "uuid": [
+   "8.3.2"
+  ],
+  "warn-once": [
+   "0.1.1"
+  ],
+  "webidl-conversions": [
+   "5.0.0"
+  ],
+  "whatwg-fetch": [
+   "3.6.17"
+  ],
+  "whatwg-url-without-unicode": [
+   "8.0.0-3"
+  ],
+  "which-typed-array": [
+   "1.1.11"
+  ],
+  "yallist": [
+   "4.0.0"
+  ],
+  "zeego": [
+   "1.7.0"
+  ],
+  "zod": [
+   "3.23.8"
+  ]
+ },
+ "bundled_modules": 3828
+}

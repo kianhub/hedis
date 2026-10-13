@@ -1,5 +1,4 @@
-bluewallet-7.0.9 BlueWallet/BlueWallet v7.0.9
-bluesky-1.96.0 bluesky-social/social-app 1.96.0
-inaturalist-1.0.7 inaturalist/iNaturalistReactNative v1.0.7+173
-metamask-7.47.3 MetaMask/metamask-mobile v7.47.3
-joplin-3.3.13 laurent22/joplin v3.3.13 packages/app-mobile
+bluewallet-7.0.9|BlueWallet/BlueWallet|v7.0.9|.||
+bluesky-1.96.0|bluesky-social/social-app|1.96.0|.||npx lingui compile
+inaturalist-1.0.7|inaturalist/iNaturalistReactNative|v1.0.7+173|.||
+metamask-7.47.3|MetaMask/metamask-mobile|v7.47.3|.||

@@ -11,6 +11,6 @@ mkdir -p src/graphql/__generated__
 for n in arc arcDev ens metadata metadataPOST; do
   echo "export const getSdk = (requester: any) => new Proxy({}, { get: (_t, op) => (vars?: any, opts?: any) => requester(String(op), vars, opts) });" > src/graphql/__generated__/$n.ts
 done
-npx react-native bundle --platform ios --dev false --minify true --entry-file index.js --bundle-output $A/out/rainbow-rel.js --sourcemap-output $A/out/rainbow-rel.js.map || exit 2
+npx react-native bundle --platform ios --dev false --minify true --config metro.hedis.js --entry-file index.js --bundle-output $A/out/rainbow-rel.js --sourcemap-output $A/out/rainbow-rel.js.map || exit 2
 node_modules/react-native/sdks/hermesc/linux64-bin/hermesc -O -emit-binary -out $A/out/rainbow-rel.hbc $A/out/rainbow-rel.js -w || exit 3
 echo RB_OK
