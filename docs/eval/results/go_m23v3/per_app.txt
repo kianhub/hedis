@@ -1,0 +1,8 @@
+mattermost-rel P 0.640 R 0.842 F1 0.727 (tp 16 fp 9 fn 3)
+rainbow-rel P 0.720 R 0.720 F1 0.720 (tp 18 fp 7 fn 7)
+mattermost-2.20.0 P 0.560 R 0.824 F1 0.667 (tp 14 fp 11 fn 3)
+bluesky-1.96.0 P 0.429 R 0.692 F1 0.529 (tp 9 fp 12 fn 4)
+inaturalist-1.0.7 P 0.583 R 0.875 F1 0.700 (tp 14 fp 10 fn 2)
+valora-1.110.0 P 0.440 R 0.647 F1 0.524 (tp 11 fp 14 fn 6)
+bluewallet-7.0.9 P 0.480 R 0.857 F1 0.615 (tp 12 fp 13 fn 2)
+leather-mobile-1.7.0 P 0.267 R 1.000 F1 0.421 (tp 4 fp 11 fn 0)
