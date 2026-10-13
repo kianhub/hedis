@@ -274,3 +274,31 @@ Remaining dev errors (go_m23):
 Test errors:
 - Wrong version (3): i18next 23.12.0 vs .1, fast-image 8.23 vs 8.25, immer 11.1.14 vs .15.
 - FP (1): @react-navigation/native 6.1.18 in synth-24 (not bundled).
+
+## M24: primary metric = root AND subpath bundle SHA (--subsha), frozen go_m23 rescored (2026-10-12)
+Run settings: worker effort level high (default).
+Kian's decision: two versions count as one release only if both the root bundle SHA and the subpath bundle SHA are identical (`oneclass.py --subsha`). Matcher, thresholds and predictions are unchanged (frozen go_m23, data/frozen_m23.json). This is only a rescore.
+
+| go_m23 one-class P / R / F1 | dev | test |
+|---|---|---|
+| root SHA only (M23) | .973 / .966 / 0.970 (tp144 fp4 fn5) | .971 / .978 / 0.975 (tp134 fp4 fn3) |
+| **root + subpath SHA (primary)** | **.959 / .953 / 0.956** (tp142 fp6 fn7) | **.964 / .971 / 0.967** (tp133 fp5 fn4) |
+
+Errors under --subsha:
+
+Dev:
+- FN missed (1): crypto-js 4.2.0 in synth-00.
+- Wrong version (6). These 4 carry over from M23:
+  - screens 3.35 vs 3.37
+  - screens 3.33 vs 3.37
+  - fast-image 9.0.1 vs 9.0.2
+  - immer 11.1.2 vs 11.1.3
+
+  These 2 are new because the subpath bundles differ while the root bundles are identical:
+  - flash-list 2.0.2 vs 2.0.3: different subpath SHAs.
+  - permissions 5.2.5 vs 5.3.0: 5.3.0 has no subpaths.
+
+Test:
+- Wrong version (4). The 3 from M23 carry over (i18next 23.12.0 vs .1, fast-image 8.23 vs 8.25, immer 11.1.14 vs .15). The new one:
+  - gesture-handler 2.27.0 vs 2.27.1: the 2.27.0 rn076 subpath job failed in Metro, so it has no subpath SHA and doesn't match the identical root bundle. This error comes from the failed job, not from a real difference between versions.
+- FP (1): @react-navigation/native 6.1.18 in synth-24.
