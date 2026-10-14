@@ -471,7 +471,7 @@ Run settings: executor effort high, model 'Grok Bot, default model'.
   - `HEDIS_VSET_OUT` (eval only) dumps every version's selector score and matched keys, for the Python prototype.
   - `HEDIS_MAX_OID` is also honoured by the thesis fast loader.
 - Go vs prototype: eval/m35_check_go.py compares Go `--floor 0.2 --vset-margin 0.003 --vset-samekeys` (v35g) with the Python prototype on the v35 dumps: 267 package predictions over real_dev + synth dev, **0 mismatches**. Go strict real_dev 0.795 = M31 floor.
-- Advisories: eval/fetch_advisories.py, OSV.dev npm API (GHSA records), all 30 universe packages. Output data/advisories_osv.json (fetched 2026-10-14 ~21:50 UTC, sha256 3fc5e620…7207 in data/advisories_osv.sha256): 104 advisories, 16 packages with any (axios 56, better-auth 22).
+- Advisories: eval/fetch_advisories.py, OSV.dev npm API (GHSA records), all 30 universe packages. Output data/advisories_osv.json (fetched 2026-10-14 ~21:50 UTC, sha256 3fc5e620…7207 in data/advisories_osv.sha256): 100 advisories, 16 packages with any (axios 56, better-auth 22).
 - eval/m35_eval.py (bundled truth, universe = 30 targets, same-bundle-SHA versions count as one, like oneclass --subsha):
   - strict: exact-version P/R/F1.
   - set: a hit if any truth version is in the set. Reported as set-hit rate (hits / truth packages), mean set size, and set P/R/F1.
