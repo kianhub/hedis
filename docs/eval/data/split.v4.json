@@ -1,0 +1,63 @@
+{
+ "frozen": "2026-10-14 16:25 CT, before any scoring of these apps (only .hbc triple dumps exist)",
+ "parent": "data/split.v3dev.json sha256 100cf8b8d68bc63443871c76624133818ed5f800039886b3c494e2d61e7c4531",
+ "rule_v4": "real_test = 8 new OSS RN Hermes release apps (release Metro bundle dev=false minify=true + app's own hermesc -O; bundled truth from source map, eval/bundled_truth.py), never scored, disjoint from the 8 v3 apps. Scored exactly once (--subsha) with frozen go_m23 / floor / gen_floor (data/m31_variants.json); depfilter configs scored separately by the Researcher track. Never tuned on.",
+ "real_test": {
+  "alby-go-1.13.1": {
+   "hbc_sha256": "60d9e5e2f876de9df27521ecc555977ffd6712f59ee19380745a92929149746e",
+   "rn": "0.76.8",
+   "truth_sha256": "9c4702357a7f7e418fb2edc2b4b24ad50814a3c725419c3f8fd6b1628c17e815",
+   "bundled_pkgs": 156,
+   "bundled_modules": 1850
+  },
+  "karakeep-mobile-0.25.0": {
+   "hbc_sha256": "b4ca0f768fd0686157cd22597436717a9fc74bb96499186bb7821b053fee6678",
+   "rn": "0.76.3",
+   "truth_sha256": "3afb6f733eb5dfb0cef1161c753d4049616da0d6180b2b09a7d9a12ade0b393f",
+   "bundled_pkgs": 116,
+   "bundled_modules": 3116
+  },
+  "trezor-mobile-25.5.3": {
+   "hbc_sha256": "cbd18e12c43c9624f6c7049407c5d32727d345dc1af8ad94a783e81b43819c19",
+   "rn": "0.76.9",
+   "truth_sha256": "72f4c426bf63f2a611a9d2b8e09687c1f787a25c5aa35ab42d304954c66478dd",
+   "bundled_pkgs": 364,
+   "bundled_modules": 4653
+  },
+  "expensify-9.0.91": {
+   "hbc_sha256": "4e009c4562b74fadceb7d25ad9788d1460c0ce8bdab058732b3575ecb1cc3ba9",
+   "rn": "0.76.3",
+   "truth_sha256": "56d3795a6f550bd35ffa25d4065250080991d0d5674a61e86b33364d813263da",
+   "bundled_pkgs": 214,
+   "bundled_modules": 3489
+  },
+  "rabby-mobile-0.6.44": {
+   "hbc_sha256": "6e52db58d204e1678b248d7dbf793c139a134ee9795ab139cb2bd16ad3cf151a",
+   "rn": "0.76.9",
+   "truth_sha256": "698dfd43f3dc55453f02ef38b8f36da40bc49dd6d4a7f2a233db8fc2128ec30d",
+   "bundled_pkgs": 463,
+   "bundled_modules": 14437
+  },
+  "edge-4.8.0": {
+   "hbc_sha256": "1f0c5884f7e599c5b039ee24d3ca3cdea85c653a79273c2959401c7d10c5ce87",
+   "rn": "0.74.1",
+   "truth_sha256": "87317b3f3e659a0099997e9f2d950a545e59462795d59541503fbcfbe739dcd1",
+   "bundled_pkgs": 283,
+   "bundled_modules": 2814
+  },
+  "eigen-8.73.0": {
+   "hbc_sha256": "af82515f83f2c8e3cf7deae58ad42be1de2f2be79f59eec91bd463e02504e6b3",
+   "rn": "0.76.9",
+   "truth_sha256": "ea04af424c417464198a87ac38b8deba49ffb50434a28f7523ab156f43673a52",
+   "bundled_pkgs": 307,
+   "bundled_modules": 5111
+  },
+  "chatwoot-4.3.0": {
+   "hbc_sha256": "1534cae99b4ef9bbad9c4a0eb492ce73b6c9291dd1a91322277f53ab39f3796d",
+   "rn": "0.76.9",
+   "truth_sha256": "ba0df8c9fde76c42882eca3dfb7e479ec8ab4e9291b8f21489900e8b104d9fb6",
+   "bundled_pkgs": 233,
+   "bundled_modules": 2967
+  }
+ }
+}

@@ -1,0 +1,1 @@
+edge-4.8.0|EdgeApp/edge-react-gui|v4.8.0|.||[ -f env.json ] || node -r sucrase/register ./scripts/configure.ts; [ -f src/controllers/edgeProvider/injectThisInWebView.js ] || { node ./node_modules/.bin/rollup -c && node -r sucrase/register ./scripts/stringifyBridge.ts; }
