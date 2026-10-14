@@ -1,0 +1,4 @@
+react-native-gesture-handler@2.24.0
+react-native-reanimated@3.17.5
+react-native-worklets@0.5.2
+react-native-nitro-modules@0.37.1

@@ -7,7 +7,10 @@ import sys, json, collections
 E_ = "/workspace/hedis-eval"; P, part = sys.argv[1], sys.argv[2]; diag = "--diag" in sys.argv
 UNI = set(json.load(open(f"{E_}/data/universe_targets.json"))); SPL = next((a.split("=",1)[1] for a in sys.argv if a.startswith("--split=")), f"{E_}/data/split.json"); split = json.load(open(SPL))
 sha = {}  # release identity = root bundle SHA; --subsha (primary since M24) also the subpath bundle SHA
-for f in ("fp-rel-stats.jsonl",) + (("fp-sub-stats.jsonl", "fp-sub3-stats.jsonl") if "--subsha" in sys.argv else ()):
+# M34: fp-rel34/fp-sub34 = ERESOLVE-failed jobs rerun (--force + peer pins) and added real_dev versions (attempt2 rows hold the SHAs of jobs skipped later)
+REL = ("fp-rel-stats.jsonl", "fp-rel34-stats.attempt2.jsonl", "fp-rel34-stats.jsonl", "fp-rel079b-stats.jsonl")
+SUB = ("fp-sub-stats.jsonl", "fp-sub3-stats.jsonl", "fp-sub34-stats.attempt2.jsonl", "fp-sub34-stats.jsonl", "fp-sub079b-stats.jsonl")
+for f in REL + (SUB if "--subsha" in sys.argv else ()):
     try:
         for l in open(f"{E_}/logs/{f}"):
             d = json.loads(l); k = (d["Name"], d["Version"], d["RN"])
