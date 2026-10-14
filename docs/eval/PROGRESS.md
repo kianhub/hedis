@@ -386,3 +386,12 @@ Details: docs/eval/results/go_m23v3/.
 - It needs `.npmrc legacy-peer-deps=true` in the env and in its envs/work/rn079_w* worker copies, because the react 19 peer conflict blocks every install. Attempts 1 and 2 failed on this; their logs are kept as logs/fp-rel079-stats.attempt{1,2}.jsonl.
 - eval/fp_rn079.sh runs root release fingerprints and then subpath fingerprints for all 1518 target package-versions, using bin/hedis-sub3 with the same tooling filter and no-subpath marker as M25. Stats go to logs/fp-rel079-stats.jsonl and logs/fp-sub079-stats.jsonl. The rn079 release baseline is built automatically.
 - Early results: 172/202 ok. The failures are mostly parse: Metro 0.82, as shipped with RN 0.79, fails to resolve `ws`. This is real RN 0.79 behaviour, so there is no config workaround.
+
+## M30: track 4, real_dev / real_test split frozen (2026-10-14 15:00 CT)
+Run settings: executor effort high, model 'Grok Bot, default model'.
+- data/split.v3dev.json (sha256 c5bad439…95bb in data/split.v3dev.sha256; copy in docs/eval/data/). Splits the 8 v3 `real` apps by app family so both Mattermost versions stay together:
+  - real_dev (tuning): mattermost-rel, mattermost-2.20.0, bluewallet-7.0.9, leather-mobile-1.7.0
+  - real_test (held out, scored once at the end): rainbow-rel, bluesky-1.96.0, inaturalist-1.0.7, valora-1.110.0
+- Frozen before any tuning. It is shared with the dependency-graph work, which is owned elsewhere; this track only does DF penalties and module clustering.
+- Caveat: M28 already printed aggregate go_m23 errors for all 8 apps. Nothing is tuned on real_test from here on.
+- oneclass.py accepts `real_dev` / `real_test` partitions. Baseline go_m23v3 real_dev: P .511 R .852 F1 0.639 (tp46 fp44 fn8).

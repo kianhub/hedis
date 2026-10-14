@@ -19,8 +19,8 @@ for f in ("fp-rel-stats.jsonl",) + (("fp-sub-stats.jsonl", "fp-sub3-stats.jsonl"
     except FileNotFoundError: pass
 indb = {(n, v) for n, v, r in sha}
 tp = fp = fn = 0; cat = collections.Counter(); ex = collections.defaultdict(list)
-for a in [x for x in split[part] if x.startswith("synth") or part == "real"]:
-    rn = ("rn074" if split[part][a]["rn"].startswith("0.74") else "rn076") if part == "real" else ("rn074" if "rn074" in a else "rn076")
+for a in [x for x in split[part] if x.startswith("synth") or part.startswith("real")]:
+    rn = ("rn074" if split[part][a]["rn"].startswith("0.74") else "rn076") if part.startswith("real") else ("rn074" if "rn074" in a else "rn076")
     T = {n: vs for n, vs in json.load(open(f"{E_}/data/groundtruth/{a}.json"))["bundled"].items() if n in UNI}
     Pr = {x["package"]: x["version"] for x in json.load(open(f"{E_}/data/predictions/{P}_{a}.json"))["predictions"] if x["package"] in UNI}
     same = lambda n, v, w: v == w or (sha.get((n, v, rn)) and sha.get((n, v, rn)) == sha.get((n, w, rn)))
