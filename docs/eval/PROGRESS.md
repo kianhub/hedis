@@ -436,3 +436,28 @@ Run settings: executor effort high, model 'Grok Bot, default model'.
 - data/split.v4.json, partition `real_test` (hbc sha256, RN, truth sha256 per app); sha256 168a81f8…8626 in data/split.v4.sha256; copy + truth in docs/eval/. Frozen before any scoring (only `--dump-only` triples exist).
 - Build fixes (env only, no app code changes): bundled_truth.py resolves Expo server-root paths in monorepos; edge built with plain `react-native bundle` (RNBUNDLE=1, its metro config is not Expo); eigen needs relay-compiler + Echo.json fetch + metaflags.json; chatwoot needs an `index.js` registerRootComponent shim (pnpm breaks expo/AppEntry's ../../App) and a hoisted pnpm install (undeclared redux); trezor/rabby need their workspace lib builds (PRE in eval/oss_apps_v4*.txt).
 - Not built: notesnook-3.0.31 (git dep yamill/react-native-orientation repo gone), uniswap-mobile-1.46 (expo-barcode-scanner config plugin unresolvable).
+
+## M33: track 4, frozen variants scored once on split v4 real_test (2026-10-14 16:35 CT)
+Run settings: executor effort high, model 'Grok Bot, default model'. split.v4.json checked against its sha256 (OK) before the run. A single run, with no tuning: eval/run_hits.sh h32 (frozen go_m23 flags, hedis_rel), then m31_filter.py with the frozen data/m31_variants.json params, then oneclass.py real_test --subsha --split=data/split.v4.json. Outputs are in docs/eval/results/m32/.
+
+| variant | real_test P / R / F1 | tp/fp/fn |
+|---|---|---|
+| go_m23 unfiltered (h32) | .436 / .607 / 0.508 | 82/106/53 |
+| floor 0.2 (h32floor) | .672 / .593 / **0.630** | 80/39/55 |
+| gen_floor m3+0.2 (h32genfloor) | .667 / .578 / 0.619 | 78/39/57 |
+
+Per app F1 (unfiltered / floor / gen_floor):
+- alby-go .375 / .571 / .571
+- karakeep .400 / .600 / .600
+- trezor .579 / .733 / .733
+- expensify .632 / .828 / .786
+- rabby .571 / .627 / .600
+- edge .564 / .733 / .733
+- eigen .375 / .368 / .368
+- chatwoot .524 / .629 / .629
+
+Reading:
+- The floor generalises: not-bundled FPs fall from 68 to 4 (watermelondb, url-polyfill again).
+- gen adds nothing on held-out apps and costs 2 TPs (expensify, rabby). The M31 +0.003 was noise.
+- Once the floor is applied, the remaining errors are wrong versions (25: svg, webview, gesture-handler, and @react-navigation/native 7.x predicted as 6.1.18) and versions not in the DB (16, including @gorhom/bottom-sheet ×5, fast-image).
+- Real held-out F1 is 0.63, against 0.80 on real_dev and 0.97 on synth.
