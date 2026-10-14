@@ -58,6 +58,7 @@ type Stat struct {
 	OK                                      bool   `json:"ok"`
 	Err                                     string `json:"err,omitempty"`
 	Skipped                                 string `json:"skipped,omitempty"`
+	Forced                                  bool   `json:"forced,omitempty"`
 	Install, Metro, Hermes, Hash, Db, Total float64
 	Funcs, Kept                             int
 	BundleSHA                               string
@@ -165,12 +166,26 @@ const bundleScript = `import Metro from 'metro';
 const config = await Metro.loadConfig();
 config.resetCache = %v;
 config.maxWorkers = 2;
+// M34: pinned peers installed only to satisfy npm are resolved as empty modules, so their code stays out of this package's keys
+const empty = new Set(%s);
+if (empty.size) {
+  const prev = config.resolver.resolveRequest;
+  config.resolver.resolveRequest = (ctx, name, platform) => {
+    const root = name.startsWith('@') ? name.split('/').slice(0, 2).join('/') : name.split('/')[0];
+    if (empty.has(root)) return { type: 'empty' };
+    return prev ? prev(ctx, name, platform) : ctx.resolveRequest(ctx, name, platform);
+  };
+}
 await Metro.runBuild(config, { entry: '%s', platform: 'ios', dev: %v, minify: %v, out: '%s' });`
 
 var releaseMode bool
 
-func writeBundleScript(env, entry, out string, reset bool) error {
-	return os.WriteFile(filepath.Join(env, "bundle-fast.mjs"), []byte(fmt.Sprintf(bundleScript, reset, entry, !releaseMode, releaseMode, out)), 0644)
+func writeBundleScript(env, entry, out string, reset bool, empty ...string) error {
+	if empty == nil {
+		empty = []string{}
+	}
+	ej, _ := json.Marshal(empty)
+	return os.WriteFile(filepath.Join(env, "bundle-fast.mjs"), []byte(fmt.Sprintf(bundleScript, reset, string(ej), entry, !releaseMode, releaseMode, out)), 0644)
 }
 
 func hashesFromHBC(path string) ([]*models.FunctionObjectHashModel, string, error) {
@@ -360,10 +375,45 @@ func (r *Runner) one(env string, j Job) {
 		return
 	}
 	t := time.Now()
-	if _, err := run(env, 10*time.Minute, "npm", "install", j.Name+"@"+j.Version, "--no-save", "--no-audit", "--no-fund",
-		"--ignore-scripts", "--prefer-offline", "--loglevel=error"); err != nil {
-		st.Err = "install: " + err.Error()
-		return
+	npmArgs := []string{"install", j.Name + "@" + j.Version, "--no-save", "--no-audit", "--no-fund", "--ignore-scripts", "--prefer-offline", "--loglevel=error"}
+	pins := []string{}
+	if b, err := os.ReadFile(filepath.Join(env, "peer-pins.txt")); err == nil {
+		for _, pin := range strings.Fields(string(b)) {
+			if i := strings.LastIndex(pin, "@"); i > 0 && pin[:i] != j.Name {
+				pins = append(pins, pin)
+			}
+		}
+	}
+	// M34: an env installed with legacy-peer-deps (rn079) never gets peers, so its pins go on every install
+	firstArgs := npmArgs
+	var empty []string // peers installed from pins: bundled as empty modules
+	pinNames := func() []string {
+		n := []string{}
+		for _, p := range pins {
+			n = append(n, p[:strings.LastIndex(p, "@")])
+		}
+		return n
+	}
+	if b, err := os.ReadFile(filepath.Join(env, ".npmrc")); err == nil && strings.Contains(string(b), "legacy-peer-deps=true") {
+		firstArgs = append(append([]string{}, npmArgs...), pins...)
+		empty = pinNames()
+	}
+	if _, err := run(env, 10*time.Minute, "npm", firstArgs...); err != nil {
+		// M34: a peer-dependency conflict (ERESOLVE) is retried with --force, which keeps the env's peer tree
+		// (metro etc.); legacy-peer-deps would prune it in the rn074/rn076 envs. The version guard below still applies.
+		if !strings.Contains(err.Error(), "ERESOLVE") && !strings.Contains(err.Error(), "upstream dependency conflict") {
+			st.Err = "install: " + err.Error()
+			return
+		}
+		// peer-pins.txt in the env (one "name@version" per line) pins RN-compatible peers for the forced install, so
+		// --force does not pull a latest peer that this RN version cannot transform (e.g. gesture-handler codegen specs).
+		forceArgs := append(append([]string{}, npmArgs...), pins...)
+		if _, err2 := run(env, 10*time.Minute, "npm", append(forceArgs, "--force")...); err2 != nil {
+			st.Err = "install: " + err2.Error()
+			return
+		}
+		st.Forced = true
+		empty = pinNames()
 	}
 	st.Install = time.Since(t).Seconds()
 	// guard: the version actually resolved in node_modules must be the requested one
@@ -401,7 +451,7 @@ func (r *Runner) one(env string, j Job) {
 	}
 	os.WriteFile(filepath.Join(env, "package_entry_fast.js"), []byte(entry), 0644)
 	out := "package_out_fast.js"
-	writeBundleScript(env, "package_entry_fast.js", out, false)
+	writeBundleScript(env, "package_entry_fast.js", out, false, empty...)
 	t = time.Now()
 	if _, err := run(env, 10*time.Minute, "node", "bundle-fast.mjs"); err != nil {
 		// per-subpath probing costs one Metro run each: only for packages with few subpaths (crypto-js, zod)
