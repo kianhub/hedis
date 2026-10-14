@@ -1,0 +1,41 @@
+{
+ "prefix": "v35g",
+ "partition": "real_dev",
+ "strict": {
+  "P": 0.815,
+  "R": 0.776,
+  "F1": 0.795,
+  "tp": 97,
+  "fp": 22,
+  "fn": 28
+ },
+ "set": {
+  "P": 0.908,
+  "R": 0.864,
+  "F1": 0.885,
+  "tp": 108,
+  "fp": 11,
+  "fn": 17
+ },
+ "set_hit_rate": 0.878,
+ "mean_set": 6.65,
+ "adv": {
+  "P": 1.0,
+  "R": 1.0,
+  "F1": 1.0,
+  "tp": 67,
+  "fp": 0,
+  "fn": 0
+ },
+ "adv_strict": {
+  "P": 1.0,
+  "R": 0.985,
+  "F1": 0.992,
+  "tp": 66,
+  "fp": 0,
+  "fn": 1
+ },
+ "app_acc": "8/8",
+ "app_acc_strict": "8/8",
+ "apps_vulnerable_truth": 2
+}

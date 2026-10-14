@@ -1,0 +1,3351 @@
+{
+ "fetched_utc": "2026-10-14T21:46:13+00:00",
+ "packages": {
+  "@gorhom/bottom-sheet": [],
+  "@nozbe/watermelondb": [
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "0"
+         },
+         {
+          "fixed": "0.15.1"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     },
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "0.16.0"
+         },
+         {
+          "fixed": "0.16.2"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2020-4035"
+    ],
+    "id": "GHSA-38f9-m297-6q9g",
+    "modified": "2026-07-08T06:28:24.356642065Z",
+    "summary": "DoS via malicious record IDs in WatermelonDB",
+    "withdrawn": null
+   }
+  ],
+  "@react-native-clipboard/clipboard": [],
+  "@react-navigation/native": [],
+  "@sentry/react-native": [
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "5.16.0"
+         },
+         {
+          "fixed": "5.19.1"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [],
+    "id": "GHSA-68c2-4mpx-qh95",
+    "modified": "2024-03-01T16:57:56Z",
+    "summary": "Potential leakage of Sentry auth tokens by React Native SDK with Expo plugin",
+    "withdrawn": null
+   }
+  ],
+  "@shopify/flash-list": [],
+  "axios": [
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "1.0.0"
+         },
+         {
+          "fixed": "1.16.0"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2026-44494"
+    ],
+    "id": "GHSA-35jp-ww65-95wh",
+    "modified": "2026-09-10T03:51:04.268287831Z",
+    "summary": "axios Vulnerable to Full Man-in-the-Middle via Prototype Pollution Gadget in `config.proxy`",
+    "withdrawn": null
+   },
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "1.0.0"
+         },
+         {
+          "fixed": "1.15.2"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     },
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "0.19.0"
+         },
+         {
+          "fixed": "0.31.1"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2026-44495"
+    ],
+    "id": "GHSA-3g43-6gmg-66jw",
+    "modified": "2026-09-10T03:51:04.440180855Z",
+    "summary": "axios Vulnerable to Credential Theft and Response Hijacking via Prototype Pollution Gadget in Config Merge",
+    "withdrawn": null
+   },
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "1.0.0"
+         },
+         {
+          "fixed": "1.15.0"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     },
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "0"
+         },
+         {
+          "fixed": "0.31.0"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2025-62718"
+    ],
+    "id": "GHSA-3p68-rc4w-qgx5",
+    "modified": "2026-09-10T03:50:42.452672741Z",
+    "summary": "Axios has a NO_PROXY Hostname Normalization Bypass that Leads to SSRF",
+    "withdrawn": null
+   },
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "1.13.0"
+         },
+         {
+          "fixed": "1.20.0"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2026-101898"
+    ],
+    "id": "GHSA-3pq3-5fj3-cg6v",
+    "modified": "2026-09-30T15:15:04.067807024Z",
+    "summary": "Axios: HTTP/2 adapter bypasses configured DNS lookup and proxy controls",
+    "withdrawn": null
+   },
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "1.0.0"
+         },
+         {
+          "fixed": "1.15.2"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2026-42044"
+    ],
+    "id": "GHSA-3w6x-2g7m-8v23",
+    "modified": "2026-09-10T03:50:45.398396828Z",
+    "summary": "Axios: Invisible JSON Response Tampering via Prototype Pollution Gadget in `parseReviver`",
+    "withdrawn": null
+   },
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "0.28.0"
+         },
+         {
+          "fixed": "0.33.0"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     },
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "1.0.0"
+         },
+         {
+          "fixed": "1.18.0"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2026-67313"
+    ],
+    "id": "GHSA-42h9-826w-cgv3",
+    "modified": "2026-09-10T03:51:10.187294734Z",
+    "summary": "Axios: Excessive recursion in formDataToJSON can cause denial of service",
+    "withdrawn": null
+   },
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "0"
+         },
+         {
+          "fixed": "0.18.1"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2019-10742"
+    ],
+    "id": "GHSA-42xw-2xvc-qx8m",
+    "modified": "2023-11-08T04:00:54.287876Z",
+    "summary": "Denial of Service in axios",
+    "withdrawn": null
+   },
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "1.0.0"
+         },
+         {
+          "fixed": "1.13.5"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     },
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "0"
+         },
+         {
+          "fixed": "0.30.3"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2026-25639"
+    ],
+    "id": "GHSA-43fc-jf86-j433",
+    "modified": "2026-09-10T03:50:34.100599628Z",
+    "summary": "Axios is Vulnerable to Denial of Service via __proto__ Key in mergeConfig",
+    "withdrawn": null
+   },
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "1.0.0"
+         },
+         {
+          "fixed": "1.15.1"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2026-42037"
+    ],
+    "id": "GHSA-445q-vr5w-6q77",
+    "modified": "2026-09-10T03:50:45.396631689Z",
+    "summary": "Axios: CRLF Injection in multipart/form-data body via unsanitized blob.type in formDataToStream",
+    "withdrawn": null
+   },
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "1.15.0"
+         },
+         {
+          "fixed": "1.20.0"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2026-101899"
+    ],
+    "id": "GHSA-44g4-m2mj-wpvx",
+    "modified": "2026-09-30T15:45:41.069795706Z",
+    "summary": "Axios: CIDR-form NO_PROXY entries are ignored, causing proxy exclusion bypass for internal IP ranges",
+    "withdrawn": null
+   },
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "1.0.0"
+         },
+         {
+          "fixed": "1.12.0"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     },
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "0.28.0"
+         },
+         {
+          "fixed": "0.30.2"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2025-58754"
+    ],
+    "id": "GHSA-4hjh-wcwx-xvwj",
+    "modified": "2026-09-10T03:50:27.860875468Z",
+    "summary": "Axios is vulnerable to DoS attack through lack of data size check",
+    "withdrawn": null
+   },
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "1.12.0"
+         },
+         {
+          "fixed": "1.20.0"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2026-101900"
+    ],
+    "id": "GHSA-4hqw-qxg8-jxx2",
+    "modified": "2026-09-30T15:46:17.701967512Z",
+    "summary": "Axios: Fetch Adapter Header Injection via Inherited FormData getHeaders",
+    "withdrawn": null
+   },
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "0"
+         },
+         {
+          "fixed": "0.21.1"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2020-28168"
+    ],
+    "id": "GHSA-4w2v-q235-vp99",
+    "modified": "2026-09-10T03:49:13.774730802Z",
+    "summary": "Axios vulnerable to Server-Side Request Forgery",
+    "withdrawn": null
+   },
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "1.13.0"
+         },
+         {
+          "fixed": "1.20.0"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2026-101901"
+    ],
+    "id": "GHSA-542g-h47m-68v8",
+    "modified": "2026-09-30T15:15:04.061469672Z",
+    "summary": "Axios: Denial of Service via Unhandled 'error' Event in HTTP/2 ClientHttp2Session Initialization",
+    "withdrawn": null
+   },
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "1.0.0"
+         },
+         {
+          "fixed": "1.15.1"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     },
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "0"
+         },
+         {
+          "fixed": "0.31.1"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2026-42034"
+    ],
+    "id": "GHSA-5c9x-8gcm-mpgx",
+    "modified": "2026-09-10T03:50:45.707956373Z",
+    "summary": "Axios' HTTP adapter-streamed uploads bypass maxBodyLength when maxRedirects: 0",
+    "withdrawn": null
+   },
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "1.0.0"
+         },
+         {
+          "fixed": "1.15.1"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     },
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "0"
+         },
+         {
+          "fixed": "0.31.1"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2026-42039"
+    ],
+    "id": "GHSA-62hf-57xw-28j9",
+    "modified": "2026-09-10T03:50:45.703789635Z",
+    "summary": "Axios: unbounded recursion in toFormData causes DoS via deeply nested request data",
+    "withdrawn": null
+   },
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "1.15.2"
+         },
+         {
+          "fixed": "1.16.0"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": [
+       "1.15.2"
+      ]
+     }
+    ],
+    "aliases": [
+     "CVE-2026-44489"
+    ],
+    "id": "GHSA-654m-c8p4-x5fp",
+    "modified": "2026-09-10T03:50:45.767891933Z",
+    "summary": "Axios has a Patch Bypass: Proxy-Authorization Header Injection via Prototype Pollution \u2014 Incomplete Null-Prototype Fix",
+    "withdrawn": null
+   },
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "1.0.0"
+         },
+         {
+          "fixed": "1.15.1"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     },
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "0"
+         },
+         {
+          "fixed": "0.31.1"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2026-42035"
+    ],
+    "id": "GHSA-6chq-wfr3-2hj9",
+    "modified": "2026-09-10T03:51:04.772235088Z",
+    "summary": "Axios: Header Injection via Prototype Pollution",
+    "withdrawn": null
+   },
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "1.7.0"
+         },
+         {
+          "fixed": "1.16.0"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2026-44488"
+    ],
+    "id": "GHSA-777c-7fjr-54vf",
+    "modified": "2026-09-10T03:50:48.738717543Z",
+    "summary": "Allocation of Resources Without Limits or Throttling in Axios",
+    "withdrawn": null
+   },
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "0.8.0"
+         },
+         {
+          "fixed": "0.33.0"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     },
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "1.0.0"
+         },
+         {
+          "fixed": "1.18.0"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2026-67319"
+    ],
+    "id": "GHSA-7q8q-rj6j-mhjq",
+    "modified": "2026-09-10T03:51:10.872027953Z",
+    "summary": "Axios: Nested axios option objects can consume polluted prototype values",
+    "withdrawn": null
+   },
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "1.0.0"
+         },
+         {
+          "fixed": "1.16.0"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     },
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "0"
+         },
+         {
+          "fixed": "0.32.0"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2026-44490"
+    ],
+    "id": "GHSA-898c-q2cr-xwhg",
+    "modified": "2026-09-10T03:51:04.811379218Z",
+    "summary": "axios has DoS & Header Injection via Prototype Pollution Read-Side Gadgets in axios merge functions",
+    "withdrawn": null
+   },
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "1.3.2"
+         },
+         {
+          "fixed": "1.7.4"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2024-39338"
+    ],
+    "id": "GHSA-8hc4-vh64-cxmj",
+    "modified": "2026-09-10T03:50:17.335771859Z",
+    "summary": "Server-Side Request Forgery in axios",
+    "withdrawn": null
+   },
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "0.27.2"
+         },
+         {
+          "fixed": "0.34.0"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     },
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "1.0.0"
+         },
+         {
+          "fixed": "1.20.0"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2026-101902"
+    ],
+    "id": "GHSA-9fr6-4gfg-395g",
+    "modified": "2026-09-30T15:30:03.718390401Z",
+    "summary": "Axios: Prototype-Pollution Gadget in the Default Instance Allows Inherited Object.prototype.method to Override HTTP Method",
+    "withdrawn": null
+   },
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "1.16.1"
+         },
+         {
+          "fixed": "1.20.0"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2026-101903"
+    ],
+    "id": "GHSA-c29m-xwm3-cm6r",
+    "modified": "2026-09-30T15:15:04.064301486Z",
+    "summary": "Axios: ReDoS in fromDataURI data: URL parser freezes the Node event loop (DoS)",
+    "withdrawn": null
+   },
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "0"
+         },
+         {
+          "fixed": "0.21.2"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2021-3749"
+    ],
+    "id": "GHSA-cph5-m8f7-6c5x",
+    "modified": "2026-09-10T03:49:08.788547249Z",
+    "summary": "axios Inefficient Regular Expression Complexity vulnerability",
+    "withdrawn": null
+   },
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "1.15.0"
+         },
+         {
+          "fixed": "1.18.0"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     },
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "0.31.0"
+         },
+         {
+          "fixed": "0.33.0"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2026-67315"
+    ],
+    "id": "GHSA-f4gw-2p7v-4548",
+    "modified": "2026-09-10T03:50:51.811859543Z",
+    "summary": "Axios: NO_PROXY bypass for 0.0.0.0 local addresses in axios",
+    "withdrawn": null
+   },
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "1.0.0"
+         },
+         {
+          "fixed": "1.15.0"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     },
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "0"
+         },
+         {
+          "fixed": "0.31.0"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2026-40175"
+    ],
+    "id": "GHSA-fvcv-3m26-pcqx",
+    "modified": "2026-09-10T03:50:44.273401032Z",
+    "summary": "Axios has Unrestricted Cloud Metadata Exfiltration via Header Injection Chain",
+    "withdrawn": null
+   },
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "0.31.1"
+         },
+         {
+          "fixed": "0.33.0"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     },
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "1.15.2"
+         },
+         {
+          "fixed": "1.18.0"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2026-67320"
+    ],
+    "id": "GHSA-gcfj-64vw-6mp9",
+    "modified": "2026-09-10T03:50:52.061533850Z",
+    "summary": "Axios Node HTTP adapter can use an inherited proxy after interceptor config cloning",
+    "withdrawn": null
+   },
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "0.31.1"
+         },
+         {
+          "fixed": "0.33.0"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     },
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "1.15.1"
+         },
+         {
+          "fixed": "1.18.0"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2026-67321"
+    ],
+    "id": "GHSA-hcpx-6fm6-wx23",
+    "modified": "2026-09-08T17:45:04.244507616Z",
+    "summary": "Axios form serializer maxDepth bypass via {} metatoken",
+    "withdrawn": null
+   },
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "1.0.0"
+         },
+         {
+          "fixed": "1.16.0"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     },
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "0"
+         },
+         {
+          "fixed": "0.32.0"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2026-44496"
+    ],
+    "id": "GHSA-hfxv-24rg-xrqf",
+    "modified": "2026-09-10T03:50:49.732285826Z",
+    "summary": "Axios: Regular Expression Denial of Service (ReDoS) via Cookie Name Injection",
+    "withdrawn": null
+   },
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "1.0.0"
+         },
+         {
+          "fixed": "1.16.0"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     },
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "0"
+         },
+         {
+          "fixed": "0.32.0"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2026-44486"
+    ],
+    "id": "GHSA-j5f8-grm9-p9fc",
+    "modified": "2026-09-10T03:50:50.017253448Z",
+    "summary": "Axios: Proxy-Authorization header leaks to redirect target when proxy is re-evaluated to direct connection",
+    "withdrawn": null
+   },
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "1.0.0"
+         },
+         {
+          "fixed": "1.20.0"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2026-101904"
+    ],
+    "id": "GHSA-j8rh-479h-cp32",
+    "modified": "2026-09-30T15:46:18.108444439Z",
+    "summary": "Axios: Header Injection via Inherited headers After Minimal Interceptor",
+    "withdrawn": null
+   },
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "1.7.0"
+         },
+         {
+          "fixed": "1.18.0"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2026-67317"
+    ],
+    "id": "GHSA-jqh4-m9w3-8hp9",
+    "modified": "2026-09-10T03:50:52.448472902Z",
+    "summary": "Axios: Fetch adapter `ReadableStream` uploads bypass `maxBodyLength`",
+    "withdrawn": null
+   },
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "1.0.0"
+         },
+         {
+          "fixed": "1.8.2"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     },
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "0"
+         },
+         {
+          "fixed": "0.30.0"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2025-27152"
+    ],
+    "id": "GHSA-jr5f-v2jv-69x6",
+    "modified": "2026-09-10T03:50:56.787685282Z",
+    "summary": "axios Requests Vulnerable To Possible SSRF and Credential Leakage via Absolute URL",
+    "withdrawn": null
+   },
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "1.0.0"
+         },
+         {
+          "fixed": "1.15.1"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     },
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "0"
+         },
+         {
+          "fixed": "0.31.1"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2026-42038"
+    ],
+    "id": "GHSA-m7pr-hjqh-92cm",
+    "modified": "2026-09-10T03:51:06.293033204Z",
+    "summary": "Axios: no_proxy bypass via IP alias allows SSRF",
+    "withdrawn": null
+   },
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "1.15.2"
+         },
+         {
+          "fixed": "1.20.0"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2026-101905"
+    ],
+    "id": "GHSA-m8m8-qj5v-23w3",
+    "modified": "2026-09-30T15:46:18.253717573Z",
+    "summary": "Axios: Node HTTP adapter prototype-pollution gadget allows request socket hijack via inherited createConnection",
+    "withdrawn": null
+   },
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "1.15.0"
+         },
+         {
+          "fixed": "1.20.0"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2026-101906"
+    ],
+    "id": "GHSA-mghh-pgcx-3jjj",
+    "modified": "2026-09-30T15:15:04.048176303Z",
+    "summary": "Axios: ReDoS (O(N\u00b2)) in shouldBypassProxy host normalization, reachable via untrusted redirect Location",
+    "withdrawn": null
+   },
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "1.0.0"
+         },
+         {
+          "fixed": "1.18.0"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     },
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "0"
+         },
+         {
+          "fixed": "0.33.0"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2026-67316"
+    ],
+    "id": "GHSA-mmx7-hfxf-jppx",
+    "modified": "2026-09-10T03:50:52.753640421Z",
+    "summary": "Axios: Prototype pollution gadgets can alter axios request construction",
+    "withdrawn": null
+   },
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "1.13.0"
+         },
+         {
+          "fixed": "1.18.0"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2026-67318"
+    ],
+    "id": "GHSA-mwf2-3pr3-8698",
+    "modified": "2026-09-10T03:50:12.260991190Z",
+    "summary": "Axios: HTTP/2 streamed uploads bypass `maxBodyLength`",
+    "withdrawn": null
+   },
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "1.0.0"
+         },
+         {
+          "fixed": "1.16.0"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     },
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "0"
+         },
+         {
+          "fixed": "0.32.0"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2026-44487"
+    ],
+    "id": "GHSA-p92q-9vqr-4j8v",
+    "modified": "2026-09-10T03:51:09.218790313Z",
+    "summary": "Axios: Proxy-Authorization Credential Leak to Origin Server Across HTTP-to-HTTPS Redirect in Axios Node.js HTTP Adapter",
+    "withdrawn": null
+   },
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "1.0.0"
+         },
+         {
+          "fixed": "1.15.1"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     },
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "0"
+         },
+         {
+          "fixed": "0.31.1"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2026-42033"
+    ],
+    "id": "GHSA-pf86-5x62-jrwf",
+    "modified": "2026-09-10T03:51:06.658921258Z",
+    "summary": "Axios: Prototype Pollution Gadgets - Response Tampering, Data Exfiltration, and Request Hijacking",
+    "withdrawn": null
+   },
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "1.15.0"
+         },
+         {
+          "fixed": "1.16.0"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     },
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "0"
+         },
+         {
+          "fixed": "0.32.0"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2026-44492"
+    ],
+    "id": "GHSA-pjwm-pj3p-43mv",
+    "modified": "2026-09-10T03:51:06.693575938Z",
+    "summary": "axios's shouldBypassProxy does not recognize IPv4-mapped IPv6 addresses, allowing NO_PROXY bypass (incomplete fix for CVE-2025-62718)",
+    "withdrawn": null
+   },
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "0.28.0"
+         },
+         {
+          "fixed": "0.33.0"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     },
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "1.0.0"
+         },
+         {
+          "fixed": "1.18.0"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2026-67312"
+    ],
+    "id": "GHSA-pmv8-rq9r-6j72",
+    "modified": "2026-09-10T03:51:11.689184227Z",
+    "summary": "Axios: Deep formToJSON Key Recursion Can Cause Denial of Service",
+    "withdrawn": null
+   },
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "1.0.0"
+         },
+         {
+          "fixed": "1.15.1"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     },
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "0"
+         },
+         {
+          "fixed": "0.31.1"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2026-42043"
+    ],
+    "id": "GHSA-pmwg-cvhr-8vh7",
+    "modified": "2026-09-10T03:51:06.691311805Z",
+    "summary": "Axios: Incomplete Fix for CVE-2025-62718 \u2014 NO_PROXY Protection Bypassed via RFC 1122 Loopback Subnet (127.0.0.0/8) in Axios 1.15.0",
+    "withdrawn": null
+   },
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "1.0.0"
+         },
+         {
+          "fixed": "1.15.2"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2026-42264"
+    ],
+    "id": "GHSA-q8qp-cvcw-x6jj",
+    "modified": "2026-09-10T03:50:55.280623838Z",
+    "summary": "Axios has prototype pollution read-side gadgets in HTTP adapter that allow credential injection and request hijacking",
+    "withdrawn": null
+   },
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "1.13.0"
+         },
+         {
+          "fixed": "1.13.2"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2026-39865"
+    ],
+    "id": "GHSA-qj83-cq47-w5f8",
+    "modified": "2026-09-10T03:51:02.817552720Z",
+    "summary": "Axios HTTP/2 Session Cleanup State Corruption Vulnerability",
+    "withdrawn": null
+   },
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "1.17.0"
+         },
+         {
+          "fixed": "1.20.0"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2026-101907"
+    ],
+    "id": "GHSA-r4gj-5m52-g5wh",
+    "modified": "2026-09-30T15:45:41.466464360Z",
+    "summary": "Axios: maxRedirects: 0 is not enforced by the fetch adapter, allowing redirect-based SSRF",
+    "withdrawn": null
+   },
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "1.0.0"
+         },
+         {
+          "fixed": "1.15.1"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     },
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "0"
+         },
+         {
+          "fixed": "0.31.1"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2026-42036"
+    ],
+    "id": "GHSA-vf2m-468p-8v99",
+    "modified": "2026-09-10T03:50:47.671121168Z",
+    "summary": "Axios: HTTP adapter streamed responses bypass maxContentLength",
+    "withdrawn": null
+   },
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "1.7.0"
+         },
+         {
+          "fixed": "1.20.0"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2026-101908"
+    ],
+    "id": "GHSA-vh66-26gq-q6x8",
+    "modified": "2026-09-30T15:30:04.438497820Z",
+    "summary": "Axios: Prototype pollution gadget in fetch adapter can alter outbound requests",
+    "withdrawn": null
+   },
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "1.0.0"
+         },
+         {
+          "fixed": "1.15.1"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     },
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "0"
+         },
+         {
+          "fixed": "0.31.1"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2026-42041"
+    ],
+    "id": "GHSA-w9j2-pvgh-6h63",
+    "modified": "2026-09-10T03:50:47.772907977Z",
+    "summary": "Axios: Authentication Bypass via Prototype Pollution Gadget in `validateStatus` Merge Strategy",
+    "withdrawn": null
+   },
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "1.0.0"
+         },
+         {
+          "fixed": "1.6.0"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     },
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "0.8.1"
+         },
+         {
+          "fixed": "0.28.0"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2023-45857"
+    ],
+    "id": "GHSA-wf5p-g6vw-rhxx",
+    "modified": "2026-09-10T03:49:47.742398623Z",
+    "summary": "Axios Cross-Site Request Forgery Vulnerability",
+    "withdrawn": null
+   },
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "0.28.0"
+         },
+         {
+          "fixed": "0.34.0"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     },
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "1.15.1"
+         },
+         {
+          "fixed": "1.20.0"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2026-101909"
+    ],
+    "id": "GHSA-x97p-jq2g-jp4f",
+    "modified": "2026-09-30T15:15:04.052506341Z",
+    "summary": "Axios: Prototype Pollution Gadget in axios toFormData Options",
+    "withdrawn": null
+   },
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "1.0.0"
+         },
+         {
+          "fixed": "1.15.1"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     },
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "0"
+         },
+         {
+          "fixed": "0.31.1"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2026-42040"
+    ],
+    "id": "GHSA-xhjh-pmcv-23jw",
+    "modified": "2026-09-10T03:50:48.032269033Z",
+    "summary": "Axios: Null Byte Injection via Reverse-Encoding in AxiosURLSearchParams",
+    "withdrawn": null
+   },
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "1.15.2"
+         },
+         {
+          "fixed": "1.18.0"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2026-67314"
+    ],
+    "id": "GHSA-xj6q-8x83-jv6g",
+    "modified": "2026-09-10T03:51:12.571803170Z",
+    "summary": "Axios: Prototype pollution auth subfields can inject Basic auth",
+    "withdrawn": null
+   },
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "1.0.0"
+         },
+         {
+          "fixed": "1.15.1"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     },
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "0"
+         },
+         {
+          "fixed": "0.31.1"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2026-42042"
+    ],
+    "id": "GHSA-xx6v-rp6x-q39c",
+    "modified": "2026-09-10T03:51:07.425895085Z",
+    "summary": "Axios: XSRF Token Cross-Origin Leakage via Prototype Pollution Gadget in `withXSRFToken` Boolean Coercion",
+    "withdrawn": null
+   },
+   {
+    "affected": [
+     {
+      "ranges": [],
+      "versions": [
+       "0.30.4",
+       "1.14.1"
+      ]
+     }
+    ],
+    "aliases": [
+     "GHSA-fw8c-xr5c-95f9"
+    ],
+    "id": "MAL-2026-2307",
+    "modified": "2026-04-07T14:52:30.013937Z",
+    "summary": "Malicious code in axios (npm)",
+    "withdrawn": null
+   }
+  ],
+  "better-auth": [
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "0.3.4"
+         },
+         {
+          "fixed": "1.6.11"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2026-67334"
+    ],
+    "id": "GHSA-2vg6-77g8-24mp",
+    "modified": "2026-09-10T03:50:51.291924042Z",
+    "summary": "Better Auth: Stale sessions persist after user deletion across admin, anonymous, and SCIM flows",
+    "withdrawn": null
+   },
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "0"
+         },
+         {
+          "fixed": "1.2.10"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2025-53535"
+    ],
+    "id": "GHSA-36rg-gfq2-3h56",
+    "modified": "2025-07-07T22:59:37.760604Z",
+    "summary": "Better Auth Open Redirect Vulnerability in originCheck Middleware Affects Multiple Routes",
+    "withdrawn": null
+   },
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "1.4.8-beta.7"
+         },
+         {
+          "fixed": "1.6.0"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2026-53517"
+    ],
+    "id": "GHSA-392p-2q2v-4372",
+    "modified": "2026-07-20T19:30:24.031992434Z",
+    "summary": "Better Auth: OAuth refresh-token rotation forks the token family on concurrent redemption",
+    "withdrawn": null
+   },
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "0"
+         },
+         {
+          "fixed": "1.4.2"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2025-71401"
+    ],
+    "id": "GHSA-569q-mpph-wgww",
+    "modified": "2026-09-01T19:02:52.599264581Z",
+    "summary": "Better Auth affected by external request basePath modification DoS",
+    "withdrawn": null
+   },
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "0"
+         },
+         {
+          "fixed": "1.6.11"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2026-53518"
+    ],
+    "id": "GHSA-7w99-5wm4-3g79",
+    "modified": "2026-07-20T19:30:24.125273382Z",
+    "summary": "@better-auth/oauth-provider's OAuth authorization-code grant allows concurrent redemption when two token requests race the find-then-delete primitive",
+    "withdrawn": null
+   },
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "0"
+         },
+         {
+          "fixed": "1.6.13"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     },
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "1.7.0-beta.0"
+         },
+         {
+          "fixed": "1.7.0-beta.4"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2026-67333"
+    ],
+    "id": "GHSA-86j7-9j95-vpqj",
+    "modified": "2026-08-02T03:56:48.086614485Z",
+    "summary": "Better Auth has stored XSS in the auth-server origin via javascript: redirect_uri in oidc-provider and mcp",
+    "withdrawn": null
+   },
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "0"
+         },
+         {
+          "fixed": "1.1.6"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2024-56734"
+    ],
+    "id": "GHSA-8jhw-6pjj-8723",
+    "modified": "2026-02-04T04:29:32.607975Z",
+    "summary": "Better Auth has an Open Redirect Vulnerability in Verify Email Endpoint",
+    "withdrawn": null
+   },
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "0"
+         },
+         {
+          "fixed": "1.3.26"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2025-61928"
+    ],
+    "id": "GHSA-99h5-pjcv-gr6v",
+    "modified": "2025-12-09T17:46:14.760166Z",
+    "summary": "Better Auth: Unauthenticated API key creation through api-key plugin",
+    "withdrawn": null
+   },
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "0"
+         },
+         {
+          "fixed": "1.6.11"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2026-67336"
+    ],
+    "id": "GHSA-9h47-pqcx-hjr4",
+    "modified": "2026-08-02T03:56:48.208414323Z",
+    "summary": "Better Auth has insecure cryptographic defaults in oidcProvider: alg=none advertised and plain PKCE accepted by default",
+    "withdrawn": null
+   },
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "0.0.2"
+         },
+         {
+          "fixed": "1.1.16"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2025-71404"
+    ],
+    "id": "GHSA-9x4v-xfq5-m8x5",
+    "modified": "2026-08-02T03:56:48.551422037Z",
+    "summary": "Better Auth URL parameter HTML Injection (Reflected Cross-Site scripting)",
+    "withdrawn": null
+   },
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "1.6.0"
+         },
+         {
+          "fixed": "1.6.11"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2026-45337"
+    ],
+    "id": "GHSA-cq3f-vc6p-68fh",
+    "modified": "2026-06-09T12:15:08.339532523Z",
+    "summary": "Better Auth: Device authorization approve and deny accept any authenticated session while the user code is pending",
+    "withdrawn": null
+   },
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "0"
+         },
+         {
+          "fixed": "1.6.11"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2026-53514"
+    ],
+    "id": "GHSA-fmh4-wcc4-5jm3",
+    "modified": "2026-07-20T19:30:23.985099293Z",
+    "summary": "Better Auth vulnerable to unauthorized invitation acceptance via unverified email match in organization plugin",
+    "withdrawn": null
+   },
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "0"
+         },
+         {
+          "fixed": "1.6.11"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2026-53516"
+    ],
+    "id": "GHSA-g38m-r43w-p2q7",
+    "modified": "2026-07-20T19:30:23.992960910Z",
+    "summary": "Better Auth has an account takeover issue via OAuth auto-link to unverified pre-registered email",
+    "withdrawn": null
+   },
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "0"
+         },
+         {
+          "fixed": "1.1.20"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2025-27143"
+    ],
+    "id": "GHSA-hjpm-7mrm-26w8",
+    "modified": "2026-02-04T02:15:17.765470Z",
+    "summary": "Beter Auth has an Open Redirect via Scheme-Less Callback Parameter",
+    "withdrawn": null
+   },
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "0"
+         },
+         {
+          "fixed": "1.4.17"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     },
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "1.5.0-beta.1"
+         },
+         {
+          "fixed": "1.5.0-beta.9"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2026-45364"
+    ],
+    "id": "GHSA-p6v2-xcpg-h6xw",
+    "modified": "2026-06-09T10:30:12.794111806Z",
+    "summary": "Better Auth: Rate limiter keys IPv6 addresses individually and is bypassable via prefix rotation",
+    "withdrawn": null
+   },
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "0"
+         },
+         {
+          "fixed": "1.6.11"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2026-53512"
+    ],
+    "id": "GHSA-pw9m-5jxm-xr6h",
+    "modified": "2026-07-20T19:30:24.092604956Z",
+    "summary": "Better Auth: OAuth refresh-token replay via missing client authentication on oidc-provider and mcp plugins",
+    "withdrawn": null
+   },
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "1.1.3"
+         },
+         {
+          "fixed": "1.6.22"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     },
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "1.7.0-beta.0"
+         },
+         {
+          "fixed": "1.7.0-beta.10"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2026-67327"
+    ],
+    "id": "GHSA-qq9h-g4jm-xgf3",
+    "modified": "2026-08-02T03:56:47.905103365Z",
+    "summary": "Better Auth: Account takeover via pre-account hijacking on magic-link and email-OTP sign-in",
+    "withdrawn": null
+   },
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "0"
+         },
+         {
+          "fixed": "1.1.21"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2025-71403"
+    ],
+    "id": "GHSA-vp58-j275-797x",
+    "modified": "2026-08-02T03:56:47.282836883Z",
+    "summary": "Better Auth allows bypassing the trustedOrigins Protection which leads to ATO",
+    "withdrawn": null
+   },
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "1.3.34"
+         },
+         {
+          "fixed": "1.4.0"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2025-71402"
+    ],
+    "id": "GHSA-wmjr-v86c-m9jj",
+    "modified": "2026-08-02T03:56:46.379093639Z",
+    "summary": "Better Auth's multi-session sign-out hook allows forged cookies to revoke arbitrary sessions",
+    "withdrawn": null
+   },
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "0"
+         },
+         {
+          "fixed": "1.6.2"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2026-67335"
+    ],
+    "id": "GHSA-wxw3-q3m9-c3jr",
+    "modified": "2026-08-02T03:56:45.903621172Z",
+    "summary": "Better Auth: OAuth callback accepts mismatched `state` when cookie-backed state storage is used without PKCE",
+    "withdrawn": null
+   },
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "0"
+         },
+         {
+          "fixed": "1.4.5"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2025-71399"
+    ],
+    "id": "GHSA-x732-6j76-qmhm",
+    "modified": "2026-08-03T03:41:44.584235266Z",
+    "summary": "Better Auth's rou3 Dependency has Double-Slash Path Normalization which can Bypass disabledPaths Config and Rate Limits",
+    "withdrawn": null
+   },
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "0"
+         },
+         {
+          "fixed": "1.4.9"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2026-67337"
+    ],
+    "id": "GHSA-xg6x-h9c9-2m83",
+    "modified": "2026-08-02T03:56:49.020545992Z",
+    "summary": "Better Auth Has Two-Factor Authentication Bypass via Premature Session Caching (session.cookieCache)",
+    "withdrawn": null
+   }
+  ],
+  "crypto-js": [
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "3.2.0"
+         },
+         {
+          "fixed": "3.2.1"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": [
+       "3.2.0"
+      ]
+     }
+    ],
+    "aliases": [
+     "CVE-2020-36732"
+    ],
+    "id": "GHSA-3w3w-pxmm-2w2j",
+    "modified": "2026-03-16T21:46:39.151944Z",
+    "summary": "crypto-js uses insecure random numbers",
+    "withdrawn": null
+   },
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "0"
+         },
+         {
+          "fixed": "4.0.0"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2026-71851"
+    ],
+    "id": "GHSA-rg76-677x-56q9",
+    "modified": "2026-08-07T19:10:56.177489Z",
+    "summary": "crypto-js: Insufficient Entropy in Cryptographic Secret Generation via Vulnerable CryptoJS Dependency Chain",
+    "withdrawn": null
+   },
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "0"
+         },
+         {
+          "fixed": "4.2.0"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2023-46233"
+    ],
+    "id": "GHSA-xwcq-pm8m-c4vf",
+    "modified": "2026-09-10T03:49:58.831533491Z",
+    "summary": "crypto-js PBKDF2 1,000 times weaker than specified in 1993 and 1.3M times weaker than current standard",
+    "withdrawn": null
+   }
+  ],
+  "dayjs": [],
+  "i18next": [
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "2.0.0"
+         },
+         {
+          "fixed": "3.4.4"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2017-16010"
+    ],
+    "id": "GHSA-cmh5-qc8w-xvcq",
+    "modified": "2023-11-08T03:58:59.586536Z",
+    "summary": "Cross-Site Scripting in i18next",
+    "withdrawn": null
+   },
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "0"
+         },
+         {
+          "fixed": "1.10.3"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2017-16008"
+    ],
+    "id": "GHSA-f89g-whpf-6q9m",
+    "modified": "2023-11-08T03:58:59.466803Z",
+    "summary": "Cross-Site Scripting in i18next",
+    "withdrawn": null
+   }
+  ],
+  "immer": [
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "7.0.0"
+         },
+         {
+          "fixed": "9.0.6"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2021-23436"
+    ],
+    "id": "GHSA-33f9-j839-rf8h",
+    "modified": "2025-01-14T09:12:14.521021Z",
+    "summary": "Prototype Pollution in immer",
+    "withdrawn": null
+   },
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "7.0.0"
+         },
+         {
+          "fixed": "8.0.1"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2020-28477"
+    ],
+    "id": "GHSA-9qmh-276g-x5pj",
+    "modified": "2025-01-14T08:57:00.110130Z",
+    "summary": "Prototype Pollution in immer",
+    "withdrawn": null
+   },
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "7.0.0"
+         },
+         {
+          "fixed": "9.0.6"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2021-3757"
+    ],
+    "id": "GHSA-c36v-fmgq-m8hx",
+    "modified": "2024-04-25T22:09:12Z",
+    "summary": "Prototype Pollution in immer",
+    "withdrawn": null
+   }
+  ],
+  "parse": [
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "0"
+         },
+         {
+          "fixed": "7.0.0"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2025-62374"
+    ],
+    "id": "GHSA-9f2h-7v79-mxw3",
+    "modified": "2025-10-14T22:57:35.569957Z",
+    "summary": "Parse Javascript SDK vulnerable to prototype pollution in `Parse.Object` and internal APIs",
+    "withdrawn": null
+   },
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "0"
+         },
+         {
+          "fixed": "7.0.0-alpha.1"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2025-57324"
+    ],
+    "id": "GHSA-9g8m-v378-pcg3",
+    "modified": "2025-11-27T09:16:24.140361Z",
+    "summary": "parse is vulnerable to prototype pollution",
+    "withdrawn": null
+   },
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "0"
+         },
+         {
+          "fixed": "2.10.0"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [],
+    "id": "GHSA-wvh7-5p38-2qfc",
+    "modified": "2021-09-22T21:05:43Z",
+    "summary": "Storing Password in Local Storage",
+    "withdrawn": null
+   }
+  ],
+  "react-freeze": [],
+  "react-native-document-picker": [
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "9.0.0"
+         },
+         {
+          "fixed": "9.1.1"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     },
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "0"
+         },
+         {
+          "fixed": "8.2.2"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2024-25466"
+    ],
+    "id": "GHSA-pmgm-h3cc-m4hj",
+    "modified": "2025-03-27T18:38:48Z",
+    "summary": "React Native Document Picker Directory Traversal vulnerability",
+    "withdrawn": null
+   }
+  ],
+  "react-native-fast-image": [
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "0"
+         },
+         {
+          "fixed": "8.3.0"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2020-7696"
+    ],
+    "id": "GHSA-6xhg-q9c8-rj32",
+    "modified": "2026-03-13T22:11:49.996817Z",
+    "summary": "Credential leak in react-native-fast-image",
+    "withdrawn": null
+   }
+  ],
+  "react-native-gesture-handler": [],
+  "react-native-keychain": [],
+  "react-native-keys": [
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "0"
+         },
+         {
+          "last_affected": "0.7.11"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2025-45001"
+    ],
+    "id": "GHSA-fj44-h6xw-896g",
+    "modified": "2025-07-02T20:29:47.356162Z",
+    "summary": "react-native-keys insecurely stores encryption cipher and Base64 chunks",
+    "withdrawn": null
+   }
+  ],
+  "react-native-mmkv": [
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "0"
+         },
+         {
+          "fixed": "2.11.0"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2024-21668"
+    ],
+    "id": "GHSA-4jh3-6jhv-2mgp",
+    "modified": "2026-09-10T03:50:04.757839686Z",
+    "summary": "react-native-mmkv Insertion of Sensitive Information into Log File vulnerability",
+    "withdrawn": null
+   }
+  ],
+  "react-native-permissions": [],
+  "react-native-reanimated": [
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "0"
+         },
+         {
+          "fixed": "2.10.0"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2022-24373"
+    ],
+    "id": "GHSA-2j79-8pqc-r7x6",
+    "modified": "2023-11-08T04:08:30.865103Z",
+    "summary": "react-native-reanimated vulnerable to ReDoS",
+    "withdrawn": null
+   }
+  ],
+  "react-native-safe-area-context": [],
+  "react-native-screens": [],
+  "react-native-share": [],
+  "react-native-svg": [],
+  "react-native-url-polyfill": [],
+  "react-native-webview": [
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "0"
+         },
+         {
+          "fixed": "11.0.0"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2020-6506"
+    ],
+    "id": "GHSA-36j3-xxf7-4pqg",
+    "modified": "2023-11-08T04:03:56.934077Z",
+    "summary": "Android WebView Universal Cross-site Scripting",
+    "withdrawn": null
+   }
+  ],
+  "semver": [
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "7.0.0"
+         },
+         {
+          "fixed": "7.5.2"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     },
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "6.0.0"
+         },
+         {
+          "fixed": "6.3.1"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     },
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "2.0.0-alpha"
+         },
+         {
+          "fixed": "5.7.2"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2022-25883"
+    ],
+    "id": "GHSA-c2qf-rxjj-qqgw",
+    "modified": "2026-09-10T03:50:02.224637541Z",
+    "summary": "semver vulnerable to Regular Expression Denial of Service",
+    "withdrawn": null
+   },
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "1.0.4"
+         },
+         {
+          "fixed": "4.3.2"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2015-8855"
+    ],
+    "id": "GHSA-x6fg-f45m-jf5q",
+    "modified": "2026-03-04T15:06:31.969299Z",
+    "summary": "Regular Expression Denial of Service in semver",
+    "withdrawn": null
+   }
+  ],
+  "zod": [
+   {
+    "affected": [
+     {
+      "ranges": [
+       {
+        "events": [
+         {
+          "introduced": "0"
+         },
+         {
+          "fixed": "3.22.3"
+         }
+        ],
+        "type": "SEMVER"
+       }
+      ],
+      "versions": []
+     }
+    ],
+    "aliases": [
+     "CVE-2023-4316"
+    ],
+    "id": "GHSA-m95q-7qp3-xv42",
+    "modified": "2024-09-06T19:11:37Z",
+    "summary": "Zod denial of service vulnerability",
+    "withdrawn": null
+   }
+  ]
+ },
+ "source": "https://api.osv.dev/v1 (ecosystem npm; GHSA records from the GitHub Advisory Database)"
+}

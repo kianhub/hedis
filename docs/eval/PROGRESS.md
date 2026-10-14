@@ -461,3 +461,42 @@ Reading:
 - gen adds nothing on held-out apps and costs 2 TPs (expensify, rabby). The M31 +0.003 was noise.
 - Once the floor is applied, the remaining errors are wrong versions (25: svg, webview, gesture-handler, and @react-navigation/native 7.x predicted as 6.1.18) and versions not in the DB (16, including @gorhom/bottom-sheet ×5, fast-image).
 - Real held-out F1 is 0.63, against 0.80 on real_dev and 0.97 on synth.
+
+## M35: version sets + vulnerability-level eval, frozen on real_dev (2026-10-14 17:10 CT)
+Run settings: executor effort high, model 'Grok Bot, default model'.
+- DB pin: hedis_rel is read-only here and M34 was inserting rows, so the matcher takes `HEDIS_MAX_OID` (ObjectId cutoff on hash rows and packages; 6acff32c… = 16:25 CT, the M31-M33 state). Check: the pinned rerun (v35) reproduces h31 predictions on all 8 real_dev + 15 synth dev apps (same package, version, score).
+- Go (feat/m35-vset, pkg/pipeline/normmatch.go, pkg/cmd/packages.go), new matcher flags:
+  - `--floor x`: drop final predictions (incl. dep-implied) with score < x. This is the M31 post-hoc floor, now in the matcher.
+  - `--vset-margin m` / `--vset-samekeys`: per predicted package, `version_set` in the JSON output. It holds the chosen version plus every DB version whose version-selector score (the same IDF formula on root keys with dfRoot under --rootver) is >= chosen - m, plus, with samekeys, every version whose set of app-matched selector keys equals the chosen one's.
+  - `HEDIS_VSET_OUT` (eval only) dumps every version's selector score and matched keys, for the Python prototype.
+  - `HEDIS_MAX_OID` is also honoured by the thesis fast loader.
+- Go vs prototype: eval/m35_check_go.py compares Go `--floor 0.2 --vset-margin 0.003 --vset-samekeys` (v35g) with the Python prototype on the v35 dumps: 267 package predictions over real_dev + synth dev, **0 mismatches**. Go strict real_dev 0.795 = M31 floor.
+- Advisories: eval/fetch_advisories.py, OSV.dev npm API (GHSA records), all 30 universe packages. Output data/advisories_osv.json (fetched 2026-10-14 ~21:50 UTC, sha256 3fc5e620…7207 in data/advisories_osv.sha256): 104 advisories, 16 packages with any (axios 56, better-auth 22).
+- eval/m35_eval.py (bundled truth, universe = 30 targets, same-bundle-SHA versions count as one, like oneclass --subsha):
+  - strict: exact-version P/R/F1.
+  - set: a hit if any truth version is in the set. Reported as set-hit rate (hits / truth packages), mean set size, and set P/R/F1.
+  - adv: (app, advisory) P/R/F1. Truth = advisories affecting any bundled truth version. Predicted = advisories affecting any version in a predicted set (adv_strict uses the chosen version only).
+  - app: 'has any vulnerable dep' accuracy.
+- Margin grid on real_dev (floor 0.2; set-hit / mean set; no samekeys → samekeys):
+
+| margin | set-hit | mean set | adv P/R |
+|---|---|---|---|
+| 0 (exact ties) | .846 | 4.82 → 5.92 | 1.0 / .985 |
+| 0.001 | .862 | 5.04 → 6.14 | 1.0 / 1.0 |
+| 0.002 | .870 | 5.15 → 6.25 | 1.0 / 1.0 |
+| **0.003** | **.878** | 5.55 → **6.65** | 1.0 / 1.0 |
+| 0.005 | .878 | 6.08 → 7.18 | .985 / 1.0 |
+| 0.05 | .878 | 12.1 → 12.6 | .944 / 1.0 (app 6/8) |
+
+- Frozen (data/m35_frozen.json): v35g = go_m23 + --floor 0.2 + --vset-margin 0.003 --vset-samekeys. 0.003 is the smallest margin at the max real_dev set-hit rate. samekeys stays on because it is part of the set definition (+1.1 set size on real_dev, no hit gain). Thesis baseline t35 = exact-3-hash HMV + versions within 0.003 of the top score.
+- v35g results:
+
+| | strict P/R/F1 | set-hit | mean set | adv P/R/F1 (set) | adv F1 strict | app acc |
+|---|---|---|---|---|---|---|
+| real_dev (8) | .815/.776/0.795 | .878 | 6.65 | 1.000/1.000/1.000 (tp67) | 0.992 | 8/8 (2 vulnerable) |
+| synth dev (15) | .973/.966/0.970 | .993 | 4.41 | .957/1.000/0.978 (tp315 fp14) | 0.990 | 15/15 (strict 14/15) |
+
+- Reading:
+  - Exact ties alone give sets of ~5 versions (many releases have identical fingerprints), and they recover most wrong-version errors (strict .776 → set .846 R).
+  - Only 2 of 8 real_dev apps bundle a vulnerable universe version (rainbow, inaturalist: axios), so the real_dev advisory metric is coarse.
+  - Sets trade advisory precision for recall on synth (fp14: crypto-js / react-native-keys / document-picker sets that span a fix boundary).
