@@ -395,3 +395,25 @@ Run settings: executor effort high, model 'Grok Bot, default model'.
 - Frozen before any tuning. It is shared with the dependency-graph work, which is owned elsewhere; this track only does DF penalties and module clustering.
 - Caveat: M28 already printed aggregate go_m23 errors for all 8 apps. Nothing is tuned on real_test from here on.
 - oneclass.py accepts `real_dev` / `real_test` partitions. Baseline go_m23v3 real_dev: P .511 R .852 F1 0.639 (tp46 fp44 fn8).
+
+## M31: track 4, generic-function penalty + module clustering on real_dev (2026-10-14)
+Run settings: executor effort high, model 'Grok Bot, default model'. Protocol change: all 8 v3 real apps were already scored in M28, so data/split.v3dev.json now makes all 8 of them **real_dev**. The held-out real_test is a new set of never-scored apps (split.v4, M32). The dependency-graph filter is owned by the Researcher track (research/depfilter) and is not done here.
+- bin/hedis-norm-hits = go_m23 matcher plus `HEDIS_HITS_OUT`, which dumps, for each predicted package@version, the app function indices hit by its keys (and each key's package df). Predictions are identical to go_m23: synth dev 0.970, real_dev 0.632.
+- eval/m31_filter.py works post hoc on the .hbc dump only:
+  - `floor`: drop predictions with score < t.
+  - `gen` (generic-function down-weighting): score × (non-generic unique hits / unique hits). A hit is generic if its key occurs >= m times in the same app (shared tiny helper), or (`gd`) if it was hit for the same package in >= d reference apps where that package scored < 0.2. That reference table (gentab) is built leave-one-out from synth dev + real_dev and is label-free.
+  - `clus` (module clustering): sort the package's unique-key hits by function index and split them into runs with gap <= 64 functions (Hermes emits a Metro module's functions contiguously). Keep the package if the largest run >= c, or if the largest run >= 3 and largest run / hits >= f. Packages with < 10 unique keys or 0 unique hits are exempt (dep-implied crypto-js would otherwise be lost on synth).
+- Grids: docs/eval/results/m31/grid{1,2,3}.txt. Synth dev stays at 0.970 for every variant below.
+
+| variant (frozen in data/m31_variants.json) | real_dev P / R / F1 |
+|---|---|
+| none (go_m23) | .530 / .784 / 0.632 |
+| floor 0.2 (Researcher's) | .815 / .776 / 0.795 |
+| clus alone (c40 f0.9) | .748 / .784 / 0.766 |
+| gen alone (needs a floor to act; m3 + floor 0.2) | .822 / .776 / **0.798** |
+| gen + clus + floor 0.2 | .822 / .776 / 0.798 |
+| genref d1 + floor 0.15 | .817 / .784 / 0.800 |
+
+- Reading: almost all of the not-bundled FPs have score < 0.1 with scattered hits. Clustering alone removes 54 of the 87 FPs without losing a TP. Once a 0.2 floor is in place, though, clustering adds nothing, and gen adds only 1 FP removed (+0.003), which is within noise.
+- Remaining real_dev errors are mostly wrong versions, which these filters can't fix. The few high-score not-bundled FPs look like code shared under another package name or vendored code: rainbow watermelondb .705, leather url-polyfill .945, valora keychain .818 / webview .740.
+- Headline (from the .hbc alone): gen_floor.

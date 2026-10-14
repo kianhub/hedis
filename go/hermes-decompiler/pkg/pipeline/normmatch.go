@@ -2,6 +2,7 @@ package pipeline
 
 import (
 	"context"
+	"encoding/json"
 	"math"
 	"os"
 	"strconv"
@@ -228,7 +229,53 @@ func NormMatchPairs(pairs [][2]string, rn string, cfg NormMatchConfig, base map[
 	if cfg.Dep > 0 {
 		out = addDeps(out, byPkg, A, cfg)
 	}
+	if f := os.Getenv("HEDIS_HITS_OUT"); f != "" {
+		writeHits(f, pairs, out, byPkg, df, cfg)
+	}
 	return out, nil
+}
+
+// writeHits (eval only, HEDIS_HITS_OUT): for each predicted package@version, the app function indices
+// whose key is one of that version's keys, with the key's package df (for post-hoc DF / clustering filters).
+func writeHits(f string, pairs [][2]string, out []*MatchResults, byPkg map[string][]*pvKeys, df map[nkey]map[string]struct{}, cfg NormMatchConfig) {
+	type hit struct {
+		I  int    `json:"i"`
+		K  string `json:"k"`
+		DF int    `json:"df"`
+	}
+	type rec struct {
+		Pkg   string `json:"package"`
+		Ver   string `json:"version"`
+		NKeys int    `json:"nkeys"`
+		NUniq int    `json:"nuniq"`
+		Hits  []hit  `json:"hits"`
+	}
+	var recs []rec
+	for _, r := range out {
+		var ks map[nkey]struct{}
+		for _, p := range byPkg[r.PackageInfo.PackageName] {
+			if p.pkg.PackageVersion == r.PackageInfo.PackageVersion {
+				ks = p.keys
+			}
+		}
+		u := 0
+		for k := range ks {
+			if len(df[k]) == 1 {
+				u++
+			}
+		}
+		x := rec{Pkg: r.PackageInfo.PackageName, Ver: r.PackageInfo.PackageVersion, NKeys: len(ks), NUniq: u}
+		for i, pr := range pairs {
+			k := cfg.key(pr[0], pr[1])
+			if _, ok := ks[k]; ok {
+				x.Hits = append(x.Hits, hit{i, k.s + "|" + k.c, len(df[k])})
+			}
+		}
+		recs = append(recs, x)
+	}
+	if b, err := json.Marshal(recs); err == nil {
+		os.WriteFile(f, b, 0o644)
+	}
 }
 
 func addDeps(out []*MatchResults, byPkg map[string][]*pvKeys, A map[nkey]struct{}, cfg NormMatchConfig) []*MatchResults {

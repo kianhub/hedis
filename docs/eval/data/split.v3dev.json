@@ -1,29 +1,19 @@
 {
- "frozen": "2026-10-14 15:00 CT",
+ "frozen": "2026-10-14 15:00 CT (revised 15:05 CT)",
  "parent": "data/split.v3.json sha256 8d20258113755f54153327acaa02f6d3b7ee7b6491e2c44843c27e3c18d21d79",
- "rule": "real apps split by app family (both Mattermost versions together, no cross-split leakage); real_dev = mattermost x2, bluewallet, leather (RN 0.74+0.76); real_test = rainbow, bluesky, inaturalist, valora. Tuning only on real_dev + synth dev. real_test scored once at the end. Caveat: M28 already reported aggregate go_m23 errors on all 8 apps before this split.",
+ "rule": "All 8 v3 real apps were already scored in M28, so all are real_dev (tuning). The held-out real_test is a new set of never-scored apps in data/split.v4.json, frozen before tuning and scored once.",
  "real_dev": {
   "mattermost-rel": {
    "hbc_sha256": "5007023b0d68f62a83dad74a2465374a6ca67b1df6e4199c22b654120d918c37",
    "rn": "0.76.9"
   },
-  "mattermost-2.20.0": {
-   "hbc_sha256": "69dc7623ed4195480fa2e28d7defe68e75450e3b95cfc72e3eeeb8188bd2706c",
-   "rn": "0.74.5"
-  },
-  "bluewallet-7.0.9": {
-   "hbc_sha256": "e3658ed96d87b4bf1544d05c19a689424344585763b8c134242478786509b4b9",
-   "rn": "0.76.6"
-  },
-  "leather-mobile-1.7.0": {
-   "hbc_sha256": "6fe9b6c2936aafcba82154cf5a842f28eba73beea629d6fb51bed8e6e3942084",
-   "rn": "0.74.1"
-  }
- },
- "real_test": {
   "rainbow-rel": {
    "hbc_sha256": "3c9f2bdfff636bb264f9798f58e869e8e77ab5399f997bc2dead1db3b0200688",
    "rn": "0.74.3"
+  },
+  "mattermost-2.20.0": {
+   "hbc_sha256": "69dc7623ed4195480fa2e28d7defe68e75450e3b95cfc72e3eeeb8188bd2706c",
+   "rn": "0.74.5"
   },
   "bluesky-1.96.0": {
    "hbc_sha256": "431dce6de6021a2fc8d61a095c543be84fb9a3474246ebb502317529780573b3",
@@ -36,6 +26,14 @@
   "valora-1.110.0": {
    "hbc_sha256": "495a76d014bf344f220f35343f2442c0ccac09e39c81c3a16687720f56235e49",
    "rn": "0.76.5"
+  },
+  "bluewallet-7.0.9": {
+   "hbc_sha256": "e3658ed96d87b4bf1544d05c19a689424344585763b8c134242478786509b4b9",
+   "rn": "0.76.6"
+  },
+  "leather-mobile-1.7.0": {
+   "hbc_sha256": "6fe9b6c2936aafcba82154cf5a842f28eba73beea629d6fb51bed8e6e3942084",
+   "rn": "0.74.1"
   }
  },
  "dev": {
