@@ -500,3 +500,36 @@ Run settings: executor effort high, model 'Grok Bot, default model'.
   - Exact ties alone give sets of ~5 versions (many releases have identical fingerprints), and they recover most wrong-version errors (strict .776 → set .846 R).
   - Only 2 of 8 real_dev apps bundle a vulnerable universe version (rainbow, inaturalist: axios), so the real_dev advisory metric is coarse.
   - Sets trade advisory precision for recall on synth (fp14: crypto-js / react-native-keys / document-picker sets that span a fix boundary).
+
+## M34 checkpoint (2026-10-14 17:17 CT, resumed worker)
+- Owner: M34 (main worktree /workspace/hedis, branch feat/m34-missing-versions, uncommitted: eval/oneclass.py, fastpipe.go, eval/fp_m34.sh, eval/fp_rn079b.sh, docs/eval/envs/peer-pins/). M35 is live in hedis-wt-m35 (do not touch).
+- Done: fp_m34.sh (rn074/rn076 root+sub, ROOT_DONE/SUB_DONE 17:15).
+- Running: fp_rn079b.sh (pid 662313, bin/hedis-sub4, envs/rn079 peer-pins, 1520 root jobs) writing straight into hedis_rel. zod 4.0.x jobs fail (metro), ignored.
+- Next: after SUB_DONE, rescore real_dev + synth dev with go_m23 + floor 0.2 (runs/v34*).
+
+## M36: thesis baseline on dev + frozen M35 variants scored once on split.v4 real_test (2026-10-14 17:45 CT)
+Run settings: executor effort high, model 'Grok Bot, default model'.
+- The config was committed first (M35, data/m35_frozen.json). split.v4.json checked against its sha256 (OK). One run per variant, with the same DB pin and no tuning:
+  - eval/run_vset.sh v35g (Go --floor 0.2 --vset-margin 0.003 --vset-samekeys)
+  - eval/run_thesis_vset.sh t35
+  - then eval/m35_eval.py real_test --split=data/split.v4.json
+- v35g strict predictions on v4 are identical to M33 h32floor (same packages and versions). Outputs: docs/eval/results/m35/*.real_test.{json,txt}.
+
+| variant / partition | strict P/R/F1 | set-hit | mean set | adv P/R/F1 (set) | adv F1 strict | app acc (set / strict) |
+|---|---|---|---|---|---|---|
+| v35g real_dev | .815/.776/0.795 | .878 | 6.65 | 1.000/1.000/1.000 | 0.992 | 8/8 / 8/8 |
+| t35 real_dev (thesis) | .193/.344/0.247 | .789 | 16.97 | .180/1.000/0.305 | 0.327 | 2/8 / 2/8 |
+| v35g synth dev | .973/.966/0.970 | .993 | 4.41 | .957/1.000/0.978 | 0.990 | 15/15 / 14/15 |
+| t35 synth dev | .234/.651/0.344 | .899 | 14.69 | .474/.994/0.641 | 0.696 | 12/15 / 12/15 |
+| **v35g v4 real_test** | **.672/.593/0.630** | **.724** | **7.45** | **.947/.967/0.957** (tp89 fp5 fn3) | 0.940 | **8/8** / 7/8 |
+| t35 v4 real_test | .174/.289/0.217 | .709 | 16.68 | .228/.935/0.367 | 0.371 | 4/8 / 4/8 |
+
+- v4 has 4 of 8 apps with a vulnerable universe dep (rabby, edge, eigen, chatwoot).
+- v35g advisory errors on v4:
+  - edge: axios 0.21.2 is bundled but has no DB row, so the nearest set {0.28.0, 0.28.1} gives 5 FP and 1 FN.
+  - rabby: 4 nested axios versions and 5 semver versions are bundled; only one version set per package is output, so 2 FN.
+- Thesis baseline: no package threshold, so nearly every universe package is predicted in every app. Advisory recall is high but precision is ~0.2, and it flags every app as vulnerable.
+- Reading:
+  - Version sets lift recall of the right version from strict .593 to a .724 set-hit rate on held-out apps, at ~7 versions per set.
+  - For vulnerability scanning, which only needs to know whether the set straddles a fix boundary, Hedis gets advisory F1 0.957 and every app's vulnerable/clean status right on v4.
+  - Remaining limits: versions not in the DB, and nested duplicate versions of one package.

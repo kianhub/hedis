@@ -1,0 +1,9 @@
+{"prefix": "v35g", "partition": "real_test", "strict": {"P": 0.672, "R": 0.593, "F1": 0.63, "tp": 80, "fp": 39, "fn": 55}, "set": {"P": 0.773, "R": 0.681, "F1": 0.724, "tp": 92, "fp": 27, "fn": 43}, "set_hit_rate": 0.724, "mean_set": 7.45, "adv": {"P": 0.947, "R": 0.967, "F1": 0.957, "tp": 89, "fp": 5, "fn": 3}, "adv_strict": {"P": 0.945, "R": 0.935, "F1": 0.94, "tp": 86, "fp": 5, "fn": 6}, "app_acc": "8/8", "app_acc_strict": "7/8", "apps_vulnerable_truth": 4}
+   ('alby-go-1.13.1', 0, 0, 0, [], [])
+   ('karakeep-mobile-0.25.0', 0, 0, 0, [], [])
+   ('trezor-mobile-25.5.3', 0, 0, 0, [], [])
+   ('expensify-9.0.91', 0, 0, 0, [], [])
+   ('rabby-mobile-0.6.44', 36, 34, 34, ['GHSA-pjwm-pj3p-43mv', 'GHSA-wf5p-g6vw-rhxx'], [])
+   ('edge-4.8.0', 23, 27, 22, ['GHSA-wf5p-g6vw-rhxx'], ['GHSA-42h9-826w-cgv3', 'GHSA-4hjh-wcwx-xvwj', 'GHSA-9fr6-4gfg-395g', 'GHSA-pmv8-rq9r-6j72', 'GHSA-x97p-jq2g-jp4f'])
+   ('eigen-8.73.0', 1, 1, 1, [], [])
+   ('chatwoot-4.3.0', 32, 32, 32, [], [])
