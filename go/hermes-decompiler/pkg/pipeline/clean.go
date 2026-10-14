@@ -533,6 +533,7 @@ type MatchResults struct {
 	ContentIR2MatchPercentage float64
 	TotalAmountOfMatches      int
 	TotalMatchPercentage      float64
+	VersionSet                []string // M35 --vset-margin: versions the bundle cannot distinguish (incl. the chosen one)
 }
 
 // CompareAppWithPackage compares an app bundle's function fingerprints against a known package's

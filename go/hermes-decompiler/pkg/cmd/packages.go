@@ -194,7 +194,7 @@ var (
 						pairs = append(pairs, [2]string{f[3], nc})
 					}
 				}
-				cfg := pipeline.NormMatchConfig{KeyMode: normMatchFlag, TieBreak: tieBreakFlag, Thresholds: map[string]float64{"_global": 0}, LowUniq: lowUniqFlag, LowDf: lowDfFlag, Dep: depFlag, RootVer: rootVerFlag}
+				cfg := pipeline.NormMatchConfig{KeyMode: normMatchFlag, TieBreak: tieBreakFlag, Thresholds: map[string]float64{"_global": 0}, LowUniq: lowUniqFlag, LowDf: lowDfFlag, Dep: depFlag, RootVer: rootVerFlag, Floor: floorFlag, VsetMargin: vsetMarginFlag, VsetSameKeys: vsetSameKeysFlag}
 				if depsFlag != "" {
 					if db, err := os.ReadFile(depsFlag); err == nil {
 						json.Unmarshal(db, &cfg.Deps)
@@ -282,7 +282,7 @@ var (
 				utils.L.Printf("Found %d hashes for app bundle that matched the best RN baseline: %s\n", len(filteredAppHashes), bestMatchRNVersion)
 
 				if normMatchFlag != "" {
-					cfg := pipeline.NormMatchConfig{KeyMode: normMatchFlag, TieBreak: tieBreakFlag, Thresholds: map[string]float64{"_global": 0}, LowUniq: lowUniqFlag, LowDf: lowDfFlag, Dep: depFlag, RootVer: rootVerFlag}
+					cfg := pipeline.NormMatchConfig{KeyMode: normMatchFlag, TieBreak: tieBreakFlag, Thresholds: map[string]float64{"_global": 0}, LowUniq: lowUniqFlag, LowDf: lowDfFlag, Dep: depFlag, RootVer: rootVerFlag, Floor: floorFlag, VsetMargin: vsetMarginFlag, VsetSameKeys: vsetSameKeysFlag}
 					if depsFlag != "" {
 						if db, err := os.ReadFile(depsFlag); err == nil {
 							json.Unmarshal(db, &cfg.Deps)
@@ -369,11 +369,12 @@ var (
 // writeMatchResultsJSON writes every (package, version) score plus run metadata next to the text output.
 func writeMatchResultsJSON(rs []*pipeline.MatchResults, hbcVersion, rnVersion string, nApp, nFiltered int, timings map[string]float64) error {
 	type row struct {
-		Package string  `json:"package"`
-		Version string  `json:"version"`
-		Matched int     `json:"matched_fos"`
-		Total   int     `json:"total_fos"`
-		Score   float64 `json:"score"`
+		Package string   `json:"package"`
+		Version string   `json:"version"`
+		Matched int      `json:"matched_fos"`
+		Total   int      `json:"total_fos"`
+		Score   float64  `json:"score"`
+		VSet    []string `json:"version_set,omitempty"`
 	}
 	out := struct {
 		HBC      string             `json:"hbc_version"`
@@ -384,7 +385,7 @@ func writeMatchResultsJSON(rs []*pipeline.MatchResults, hbcVersion, rnVersion st
 		Results  []row              `json:"results"`
 	}{hbcVersion, rnVersion, nApp, nFiltered, timings, nil}
 	for _, r := range rs {
-		out.Results = append(out.Results, row{r.PackageInfo.PackageName, r.PackageInfo.PackageVersion, r.CombinedMatches, r.TotalPackageHashes, r.TotalMatchPercentage / 100})
+		out.Results = append(out.Results, row{r.PackageInfo.PackageName, r.PackageInfo.PackageVersion, r.CombinedMatches, r.TotalPackageHashes, r.TotalMatchPercentage / 100, r.VersionSet})
 	}
 	p := outputFilePath
 	if p == "" {
@@ -457,17 +458,20 @@ func amountOfUniquePackages(packages []models.PackageWithVulnerabilitiesModel) i
 }
 
 var (
-	fromDumpFlag   string
-	normMatchFlag  string
-	tieBreakFlag   bool
-	thresholdsFlag string
-	depsFlag       string
-	depFlag        float64
-	lowUniqFlag    int
-	lowDfFlag      int
-	rootVerFlag    bool
-	dumpAppFlag    string
-	dumpOnlyFlag   bool
+	fromDumpFlag     string
+	normMatchFlag    string
+	tieBreakFlag     bool
+	thresholdsFlag   string
+	depsFlag         string
+	depFlag          float64
+	lowUniqFlag      int
+	lowDfFlag        int
+	rootVerFlag      bool
+	dumpAppFlag      string
+	dumpOnlyFlag     bool
+	floorFlag        float64
+	vsetMarginFlag   float64
+	vsetSameKeysFlag bool
 )
 
 func init() {
@@ -487,6 +491,9 @@ func init() {
 	packagesCmd.Flags().Float64Var(&depFlag, "dep", 0, "with --norm: dependency implication min coverage of parent-shared keys (0 = off)")
 	packagesCmd.Flags().IntVar(&lowUniqFlag, "lowuniq", 0, "with --norm: packages with <= N unique keys score on keys with df <= --lowdf")
 	packagesCmd.Flags().IntVar(&lowDfFlag, "lowdf", 2, "with --norm --lowuniq: max package df of fallback keys")
+	packagesCmd.Flags().Float64Var(&floorFlag, "floor", 0, "with --norm: drop final predictions (incl. dep-implied) with score < x (0 = off)")
+	packagesCmd.Flags().Float64Var(&vsetMarginFlag, "vset-margin", -1, "with --norm: report per package the version set within this score margin of the chosen version (-1 = off)")
+	packagesCmd.Flags().BoolVar(&vsetSameKeysFlag, "vset-samekeys", false, "with --norm --vset-margin: also add versions with the chosen version's exact set of matched keys")
 	packagesCmd.Flags().StringVar(&thresholdsFlag, "thresholds", "", "with --norm: JSON {package: min score, _global: x} tuned on dev")
 	packagesCmd.Flags().StringVar(&dumpAppFlag, "dump-app", "", "Write filtered app triples (S C1 C2 per line) to this file")
 	packagesCmd.Flags().BoolVar(&dumpOnlyFlag, "dump-only", false, "With --dump-app: exit after dumping (skip DB match)")

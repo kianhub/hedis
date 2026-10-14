@@ -27,7 +27,11 @@ func GetHashesFromDatabaseFast(rnVersion string) ([]*HashGroup, error) {
 	}
 	defer cl.Disconnect(ctx)
 	db := cl.Database(dbName)
-	cur, err := db.Collection("hashes").Find(ctx, bson.M{"react_native_version": rnVersion},
+	hq := bson.M{"react_native_version": rnVersion}
+	if o, err := primitive.ObjectIDFromHex(os.Getenv("HEDIS_MAX_OID")); err == nil { // M35: DB pin, see loadNormKeys
+		hq["_id"] = bson.M{"$lte": o}
+	}
+	cur, err := db.Collection("hashes").Find(ctx, hq,
 		options.Find().SetProjection(bson.M{"_id": 0, "package_id": 1, "react_native_version": 1, "structural.hash": 1, "ar1.hash": 1, "ar2.hash": 1}).
 			SetHint("cover_rn_pkg_3hash").SetBatchSize(50000))
 	if err != nil {

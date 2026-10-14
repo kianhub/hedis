@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"math"
 	"os"
+	"sort"
 	"strconv"
 	"strings"
 
@@ -35,6 +36,13 @@ type NormMatchConfig struct {
 	// so they bias the version fraction); the package decision still uses all keys.
 	RootVer bool
 	Deps    map[string]map[string][]string
+	// Floor (M35): drop final predictions (incl. dep-implied) whose score is below Floor (0 = off).
+	Floor float64
+	// VsetMargin (M35, < 0 = off): per predicted package also report the version set the bundle cannot
+	// distinguish: every version whose version-selector score is >= the chosen version's score - VsetMargin,
+	// plus (VsetSameKeys) every version whose set of app-matched selector keys equals the chosen version's.
+	VsetMargin   float64
+	VsetSameKeys bool
 }
 
 // vless compares dotted versions numerically (pre-release parts count as -1).
@@ -229,8 +237,25 @@ func NormMatchPairs(pairs [][2]string, rn string, cfg NormMatchConfig, base map[
 	if cfg.Dep > 0 {
 		out = addDeps(out, byPkg, A, cfg)
 	}
+	if cfg.Floor > 0 {
+		kept := out[:0]
+		for _, r := range out {
+			if r.TotalMatchPercentage/100 >= cfg.Floor {
+				kept = append(kept, r)
+			}
+		}
+		out = kept
+	}
+	if cfg.VsetMargin >= 0 {
+		for _, r := range out {
+			r.VersionSet = versionSet(r, byPkg, A, df, dfRoot, N, cfg)
+		}
+	}
 	if f := os.Getenv("HEDIS_HITS_OUT"); f != "" {
 		writeHits(f, pairs, out, byPkg, df, cfg)
+	}
+	if f := os.Getenv("HEDIS_VSET_OUT"); f != "" {
+		writeVset(f, out, byPkg, A, df, dfRoot, N, cfg)
 	}
 	return out, nil
 }
@@ -272,6 +297,126 @@ func writeHits(f string, pairs [][2]string, out []*MatchResults, byPkg map[strin
 			}
 		}
 		recs = append(recs, x)
+	}
+	if b, err := json.Marshal(recs); err == nil {
+		os.WriteFile(f, b, 0o644)
+	}
+}
+
+type verScore struct {
+	V       string   `json:"v"`
+	Sc      float64  `json:"sc"`
+	M       int      `json:"m"`
+	Tot     int      `json:"tot"`
+	NKeys   int      `json:"nkeys"`
+	SameAll bool     `json:"same_all"`
+	Hit     []string `json:"hit"`
+}
+
+// versionScores: every DB version of r's package scored as the version selector does (pick formula on root
+// keys with dfRoot when RootVer, else all keys), with its sorted app-matched selector keys.
+func versionScores(r *MatchResults, byPkg map[string][]*pvKeys, A map[nkey]struct{}, df, dfRoot map[nkey]map[string]struct{}, N float64, cfg NormMatchConfig) []verScore {
+	vs := byPkg[r.PackageInfo.PackageName]
+	keysOf := func(p *pvKeys) map[nkey]struct{} { return p.keys }
+	d := df
+	if cfg.RootVer {
+		keysOf = func(p *pvKeys) map[nkey]struct{} { return p.root }
+		d = dfRoot
+	}
+	var chosen *pvKeys
+	for _, p := range vs {
+		if p.pkg.PackageVersion == r.PackageInfo.PackageVersion {
+			chosen = p
+		}
+	}
+	var res []verScore
+	for _, p := range vs {
+		maxdf := 1
+		if cfg.LowUniq > 0 {
+			u := 0
+			for k := range keysOf(p) {
+				if len(d[k]) == 1 {
+					u++
+				}
+			}
+			if u <= cfg.LowUniq {
+				maxdf = cfg.LowDf
+			}
+		}
+		var wAll, wHit float64
+		v := verScore{V: p.pkg.PackageVersion, NKeys: len(p.keys)}
+		for k := range keysOf(p) {
+			if len(d[k]) > maxdf {
+				continue
+			}
+			w := math.Log(1 + N/float64(len(d[k])))
+			wAll += w
+			v.Tot++
+			if _, ok := A[k]; ok {
+				wHit += w
+				v.M++
+				v.Hit = append(v.Hit, k.s+"|"+k.c)
+			}
+		}
+		if wAll > 0 {
+			v.Sc = wHit / wAll
+		}
+		sort.Strings(v.Hit)
+		if chosen != nil && len(chosen.keys) == len(p.keys) {
+			v.SameAll = true
+			for k := range p.keys {
+				if _, ok := chosen.keys[k]; !ok {
+					v.SameAll = false
+					break
+				}
+			}
+		}
+		res = append(res, v)
+	}
+	return res
+}
+
+// versionSet: the chosen version plus near-tied (score >= chosen - VsetMargin) and, with VsetSameKeys,
+// identical-matched-key-set versions; sorted by version.
+func versionSet(r *MatchResults, byPkg map[string][]*pvKeys, A map[nkey]struct{}, df, dfRoot map[nkey]map[string]struct{}, N float64, cfg NormMatchConfig) []string {
+	vs := versionScores(r, byPkg, A, df, dfRoot, N, cfg)
+	var c *verScore
+	for i := range vs {
+		if vs[i].V == r.PackageInfo.PackageVersion {
+			c = &vs[i]
+		}
+	}
+	set := []string{r.PackageInfo.PackageVersion}
+	if c == nil {
+		return set
+	}
+	ck := strings.Join(c.Hit, ",")
+	for _, v := range vs {
+		if v.V == c.V {
+			continue
+		}
+		if v.Sc >= c.Sc-cfg.VsetMargin-1e-12 || (cfg.VsetSameKeys && strings.Join(v.Hit, ",") == ck) {
+			set = append(set, v.V)
+		}
+	}
+	sort.Slice(set, func(i, j int) bool { return vless(set[i], set[j]) })
+	return set
+}
+
+// writeVset (M35, HEDIS_VSET_OUT): for each predicted package, every DB version with the score the version
+// selector computes (pick formula on root keys with dfRoot when RootVer, else all keys), its hit count, and the
+// sorted list of app-matched scoring keys (so versions with identical matched-key sets can be grouped), plus
+// whether the version's full key set equals the chosen version's. Read-only, eval only.
+func writeVset(f string, out []*MatchResults, byPkg map[string][]*pvKeys, A map[nkey]struct{}, df, dfRoot map[nkey]map[string]struct{}, N float64, cfg NormMatchConfig) {
+	type rec struct {
+		Pkg  string     `json:"package"`
+		Ver  string     `json:"version"`
+		Sc   float64    `json:"score"`
+		Vers []verScore `json:"versions"`
+	}
+	var recs []rec
+	for _, r := range out {
+		recs = append(recs, rec{r.PackageInfo.PackageName, r.PackageInfo.PackageVersion, r.TotalMatchPercentage / 100, versionScores(r, byPkg, A, df, dfRoot, N, cfg)})
 	}
 	if b, err := json.Marshal(recs); err == nil {
 		os.WriteFile(f, b, 0o644)
@@ -357,7 +502,17 @@ func loadNormKeys(rn string, cfg NormMatchConfig, base map[nkey]struct{}) ([]*pv
 	for _, d := range drows {
 		done[d.K] = true
 	}
-	cur, err := db.Collection("hashes").Find(ctx, bson.M{"react_native_version": rn},
+	// M35: HEDIS_MAX_OID (24-hex ObjectId) pins the DB to its state at that time: hash rows and packages
+	// inserted later are ignored (read-only reproducibility while another job adds versions).
+	hq := bson.M{"react_native_version": rn}
+	var maxOID primitive.ObjectID
+	if s := os.Getenv("HEDIS_MAX_OID"); s != "" {
+		if o, err := primitive.ObjectIDFromHex(s); err == nil {
+			maxOID = o
+			hq["_id"] = bson.M{"$lte": o}
+		}
+	}
+	cur, err := db.Collection("hashes").Find(ctx, hq,
 		options.Find().SetProjection(bson.M{"_id": 0, "package_id": 1, "ns": 1, "nc": 1, "sub": 1}).SetBatchSize(50000))
 	if err != nil {
 		return nil, err
@@ -392,7 +547,11 @@ func loadNormKeys(rn string, cfg NormMatchConfig, base map[nkey]struct{}) ([]*pv
 			}
 		}
 	}
-	pc, err := db.Collection("packages").Find(ctx, bson.M{"_id": bson.M{"$in": ids}})
+	pq := bson.M{"_id": bson.M{"$in": ids}}
+	if !maxOID.IsZero() {
+		pq = bson.M{"$and": []bson.M{{"_id": bson.M{"$in": ids}}, {"_id": bson.M{"$lte": maxOID}}}}
+	}
+	pc, err := db.Collection("packages").Find(ctx, pq)
 	if err != nil {
 		return nil, err
 	}
