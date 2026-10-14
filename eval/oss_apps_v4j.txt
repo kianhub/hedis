@@ -1,0 +1,2 @@
+chatwoot-4.3.0|chatwoot/chatwoot-mobile-app|v4.3.0|.|index.js|
+eigen-8.73.0|artsy/eigen|ios-8.73.0-2025.05.16.16-submission|.||cp -n .env.example .env.shared 2>/dev/null; cp -n .env.example .env.ci 2>/dev/null; [ -f data/complete.queryMap.json ] || echo '{}' > data/complete.queryMap.json; node_modules/.bin/relay-compiler

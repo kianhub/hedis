@@ -10,7 +10,12 @@ for s in src:
     if not m: continue
     root, name = m.group(1), m.group(2)
     # Expo maps use project-root-relative paths that start with "/"
-    if not root.startswith("/") or not os.path.exists(root): root = os.path.join(d, root.lstrip("/"))
+    # Expo maps use server-root-relative paths that start with "/"; in a monorepo the server root is an ancestor of the app dir
+    if not root.startswith("/") or not os.path.exists(root):
+        for up in ("", "..", "../..", "../../.."):
+            r2 = os.path.normpath(os.path.join(d, up, root.lstrip("/")))
+            if os.path.exists(os.path.join(r2, "package.json")): root = r2; break
+        else: root = os.path.join(d, root.lstrip("/"))
     try: v = json.load(open(os.path.join(root, "package.json")))["version"]
     except Exception: continue
     pk.setdefault(name, set()).add(v)

@@ -22,7 +22,7 @@ cd $SUB
 [ -n "$PRE" ] && { bash -c "$PRE" || exit 6; }   # per-app codegen step (e.g. lingui compile)
 [ -n "$ENTRY" ] || for f in index.js index.ts index.tsx; do [ -f $f ] && ENTRY=$f && break; done
 ENTRY=$(realpath $ENTRY)  # absolute: expo export:embed resolves relative entries from the monorepo root
-if [ -z "$RNBUNDLE" ] && grep -q '"expo"' package.json && { [ -d node_modules/@expo/cli ] || [ -d ../node_modules/@expo/cli ] || [ -d ../../node_modules/@expo/cli ] || [ -d ../../../node_modules/@expo/cli ]; }; then
+if [ -z "$RNBUNDLE" ] && grep -q '"expo"' package.json && { [ -d node_modules/@expo/cli ] || [ -x node_modules/.bin/expo ] || [ -d ../node_modules/@expo/cli ] || [ -d ../../node_modules/@expo/cli ] || [ -d ../../../node_modules/@expo/cli ]; }; then
   npx expo export:embed --platform ios --dev false --minify true --entry-file $ENTRY --bundle-output $A/out/$N.js --sourcemap-output $A/out/$N.js.map --reset-cache || exit 3
 else
   npx react-native bundle --platform ios --dev false --minify true --entry-file $ENTRY --bundle-output $A/out/$N.js --sourcemap-output $A/out/$N.js.map --reset-cache || exit 3

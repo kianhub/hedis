@@ -417,3 +417,22 @@ Run settings: executor effort high, model 'Grok Bot, default model'. Protocol ch
 - Reading: almost all of the not-bundled FPs have score < 0.1 with scattered hits. Clustering alone removes 54 of the 87 FPs without losing a TP. Once a 0.2 floor is in place, though, clustering adds nothing, and gen adds only 1 FP removed (+0.003), which is within noise.
 - Remaining real_dev errors are mostly wrong versions, which these filters can't fix. The few high-score not-bundled FPs look like code shared under another package name or vendored code: rainbow watermelondb .705, leather url-polyfill .945, valora keychain .818 / webview .740.
 - Headline (from the .hbc alone): gen_floor.
+
+## M32: track 4, split v4 real_test frozen (2026-10-14 16:25 CT)
+Run settings: executor effort high, model 'Grok Bot, default model'.
+- Same pipeline as M26 (eval/build_oss.sh: release Metro bundle dev=false minify=true + source map, app's own hermesc -O, bundled truth from the map). 8 new OSS apps, never scored, disjoint from the 8 v3 apps:
+
+| app | RN | bundled pkgs | modules |
+|---|---|---|---|
+| alby-go-1.13.1 | 0.76.8 | 156 | 1850 |
+| karakeep-mobile-0.25.0 | 0.76.3 | 116 | 3116 |
+| trezor-mobile-25.5.3 (suite-native) | 0.76.9 | 364 | 4653 |
+| expensify-9.0.91 | 0.76.3 | 214 | 3489 |
+| rabby-mobile-0.6.44 | 0.76.9 | 463 | 14437 |
+| edge-4.8.0 | 0.74.1 | 283 | 2814 |
+| eigen-8.73.0 (Artsy) | 0.76.9 | 307 | 5111 |
+| chatwoot-4.3.0 | 0.76.9 | 233 | 2967 |
+
+- data/split.v4.json, partition `real_test` (hbc sha256, RN, truth sha256 per app); sha256 168a81f8…8626 in data/split.v4.sha256; copy + truth in docs/eval/. Frozen before any scoring (only `--dump-only` triples exist).
+- Build fixes (env only, no app code changes): bundled_truth.py resolves Expo server-root paths in monorepos; edge built with plain `react-native bundle` (RNBUNDLE=1, its metro config is not Expo); eigen needs relay-compiler + Echo.json fetch + metaflags.json; chatwoot needs an `index.js` registerRootComponent shim (pnpm breaks expo/AppEntry's ../../App) and a hoisted pnpm install (undeclared redux); trezor/rabby need their workspace lib builds (PRE in eval/oss_apps_v4*.txt).
+- Not built: notesnook-3.0.31 (git dep yamill/react-native-orientation repo gone), uniswap-mobile-1.46 (expo-barcode-scanner config plugin unresolvable).
