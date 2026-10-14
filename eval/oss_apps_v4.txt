@@ -1,0 +1,7 @@
+alby-go-1.13.1|getAlby/go|v1.13.1|.||
+karakeep-mobile-0.25.0|karakeep-app/karakeep|v0.25.0|apps/mobile||
+edge-4.8.0|EdgeApp/edge-react-gui|v4.8.0|.||
+notesnook-3.0.31|streetwriters/notesnook|v3.0.31|apps/mobile||
+trezor-mobile-25.5.3|trezor/trezor-suite|v25.5.3@mobile|suite-native/app||
+uniswap-mobile-1.46|Uniswap/interface|mobile/1.46|apps/mobile||
+expensify-9.0.91|Expensify/App|9.0.91-0|.||

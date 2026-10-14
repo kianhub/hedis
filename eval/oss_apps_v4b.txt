@@ -1,0 +1,4 @@
+karakeep-mobile-0.25.0|karakeep-app/karakeep|v0.25.0|apps/mobile||
+edge-4.8.0|EdgeApp/edge-react-gui|v4.8.0|.||echo {} > env.json
+trezor-mobile-25.5.3|trezor/trezor-suite|v25.5.3@mobile|suite-native/app|index.js|
+notesnook-3.0.31|streetwriters/notesnook|v3.0.31|apps/mobile/native|index.js|cd ../../.. && node scripts/bootstrap.mjs --scope=mobile

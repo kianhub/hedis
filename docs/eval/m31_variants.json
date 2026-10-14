@@ -1,0 +1,9 @@
+{"frozen": "2026-10-14 15:25 CT, chosen on synth dev + real_dev (split.v3dev.json) only, before any real_test (split.v4) or synth test run",
+ "src": "frozen go_m23 flags via bin/hedis-norm-hits (eval/run_hits.sh), filters eval/m31_filter.py, G=64, MINN=1",
+ "variants": {
+  "floor":        "0.2 0 0 0 0",
+  "clus":         "0 0 0 40 0.9",
+  "gen_floor":    "0.2 3 0 0 0",
+  "gen_clus_floor": "0.2 3 0 40 0.9",
+  "genref_floor": "0.15 0 1 0 0"},
+ "headline": "gen_floor (works from the .hbc alone: intra-app key multiplicity + score floor, no package.json, no reference table)"}
