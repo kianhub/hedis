@@ -1,0 +1,36 @@
+{
+  "frozen": "2026-10-15 10:22 CT",
+  "commit": "359ec3f5b3df9723a6810ced2b502877e527a280",
+  "branch": "v2",
+  "db": "hedis_rel pinned with HEDIS_MAX_OID=6ad0ea700000000000000000 (2026-10-15 15:00 UTC / 10:00 CT; after last M37 hash import 6ad0e7dd078b11681d0ffcaf at 14:49 UTC). Read-only for scoring.",
+  "cutoff_oid": "6ad0ea700000000000000000",
+  "matcher": "bin/hedis-m37 (go, feat/m37-rn-fallback) packages -d --norm nsnc --thresholds data/thresholds_m4f_dlr.json --lowuniq 2 --lowdf 2 --dep 0.6 --deps data/deps.json --rootver --floor 0.2 --vset-margin 0.003 --vset-samekeys",
+  "fallback": "HEDIS_RN_FALLBACK=nearest",
+  "fingerprints": "M37 RN fingerprint builds RN 0.72/0.75/0.78/0.80 (fp-rel37-rn0{72,75,78,80}-stats.jsonl + fp-sub37 counterparts); nearest RN fallback when app RN has no exact fingerprint row",
+  "metric": "eval/oneclass.py <prefix> <partition> --subsha --split=data/split.v3dev.json",
+  "prefix": "m37f",
+  "run_settings": "effort high, model Grok Bot default model",
+  "scores": {
+    "real_dev": {
+      "P": 0.84,
+      "R": 0.84,
+      "F1": 0.84,
+      "tp": 105,
+      "fp": 20,
+      "fn": 20
+    },
+    "dev_synth": {
+      "P": 0.973,
+      "R": 0.966,
+      "F1": 0.97,
+      "tp": 144,
+      "fp": 4,
+      "fn": 5,
+      "note": "oneclass.py m37f dev --subsha (apps whose names start with synth)"
+    }
+  },
+  "merged_branches": [
+    "feat/m37-rn-fallback",
+    "feat/m37-hbc98"
+  ]
+}

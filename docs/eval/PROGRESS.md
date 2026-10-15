@@ -533,3 +533,69 @@ Run settings: executor effort high, model 'Grok Bot, default model'.
   - Version sets lift recall of the right version from strict .593 to a .724 set-hit rate on held-out apps, at ~7 versions per set.
   - For vulnerability scanning, which only needs to know whether the set straddles a fix boundary, Hedis gets advisory F1 0.957 and every app's vulnerable/clean status right on v4.
   - Remaining limits: versions not in the DB, and nested duplicate versions of one package.
+- 17:43 CT fp_rn079b ROOT_DONE+SUB_DONE (1200/1520 ok; better-auth/zod fail). Scoring: eval/m34_score.sh h34b
+## M34: missing versions added to hedis_rel, rescored (2026-10-14 17:55 CT)
+Run settings: executor effort high, model 'Grok Bot, default model'. Frozen go_m23 (--norm nsnc --thresholds data/thresholds_m4f_dlr.json --lowuniq 2 --lowdf 2 --dep 0.6 --deps data/deps.json --rootver) via eval/run_hits.sh, floor 0.2 via m31_filter.py, oneclass --subsha (now also reads fp-rel079b/fp-sub079b SHAs).
+- rn079 stop cause: envs/rn079 .npmrc legacy-peer-deps=true never installs peers. Fix: bin/hedis-sub4 (fastpipe.go) puts envs/<rn>/peer-pins.txt on install and bundles the pins as empty modules. fp_m34 (rn074/rn076) and fp_rn079b (1520 root + 1520 sub jobs, 1200 ok; better-auth/zod/parse/screens fail) were written straight into hedis_rel.
+- real_dev: h34b 0.552/0.848/0.669 (tp106 fp86 fn19); **h34b+floor 0.840/0.840/0.840 (tp105 fp20 fn20)**; same-truth baseline h31+floor 0.824/0.784/0.803 (tp98 fp21 fn27).
+- synth dev: 0.973/0.966/0.970 (tp144 fp4 fn5), unchanged, with or without the floor.
+
+## M37 checkpoint (2026-10-14 19:27 CT)
+Run settings: executor effort high, model 'Grok Bot, default model'.
+- Task 3 (pinned real_dev repro) skipped per instruction: Researcher's runs/pc5 (d942f0a + pin 6ad005ec) reproduced 0.840 (105/20/20); pc5 = pre-fix real_dev baseline.
+- Crash cause: loadNormKeys (and thesis GetHashesFromDatabaseFast) build `$in: ids` with a nil slice when no hash rows exist for the app's RN -> mongo BadValue.
+- Running: t35 on v5 (eval/run_thesis_vset.sh t35v5, bin/hedis-vset, MAXOID=6ad005ec...) -> runs/t35v5.
+- Next: Go fix (feat/m37-rn-fallback), leave-own-RN-out nearest vs union on real_dev+synth dev, then fp builds rn072/075/078/080.
+- 20:10 CT: t35 v5 done (runs/t35v5, research/v5/result/t35.*): oneclass P .178 R .254 F1 0.209 (tp47 fp217 fn138); thesis crashed (BadValue) on showtime, subwallet, tooot (no baseline matched -> empty RN), scored empty.
+- Fix committed 0ec9f50 on feat/m37-rn-fallback (bin/hedis-m37). m37base (no exclusion, pin 6ad005ec) real_dev 0.840 (105/20/20) = pc5; synth dev 0.970 (144/4/5).
+- LOO nearest (m37loon): real_dev .820/.840/0.830 (105/23/20); synth dev .882/.953/0.916 (142/19/7). LOO union (m37loou) running.
+- envs rn072/075/078/080 created (package.json + peer-pins), npm install running (logs/m37_envs.log).
+- 20:17 CT resume: envs rn072/075/078/080 npm install all rc=0 (ENVS_DONE). LOO union still running (pid 740734 loop). Next: fp builds serial after union.
+- 20:25 CT: LOO union done. oneclass --subsha: real_dev nearest .820/.840/0.830 (105/23/20) vs union .810/.816/0.813 (102/24/23); synth dev nearest .882/.953/0.916 (142/19/7) vs union .894/.966/0.929 (144/17/5). Chosen: nearest (real_dev primary; pooled tie 247/42/27 vs 246/41/28). Default already nearest.
+- 20:26 CT: started eval/fp_m37.sh (nohup, logs/fp_m37.log, one RN at a time, 2 workers, per-RN done markers logs/fp-m37-rnXXX.done -> rerun script to resume). Do NOT start a second copy if `pgrep -f fp_m37.sh` is alive.
+- 20:40 CT: fp_m37 rn072 root ~330/1520 jobs (~33/min); t35 m35_eval v5: strict .167/.238/.196 (44/220/141), set F1 .454, adv F1 .325, app_acc 5/12.
+- 21:22 CT: BOX RESTARTED (~21:07, restored to ~20:57 state): lost fp_m37 progress after rn072 root 1497/1520, task4 work (uncommitted code + /workspace/rn085), env node_modules. mongod dead; restart fails: WT error -31802 in collection-7 during log recovery. Backup: mongo-data-rel.bak-2120. Trying --repair on mongo-data-rel.
+- 21:23 CT: mongo-data-rel collection-7 (.wt 3.80GB) shorter than journal expects (read at 4.13GB) -> snapshot captured mid-write. --repair aborts in log recovery. Trying: journal moved to mongo-data-rel.journal-aside, then --repair (bak-2120 untouched).
+- 21:29 CT: plain start w/o journal crashes on hashes reads; repair2 salvaged hashes (18.38M docs) but hit mongo index-build yield fassert. Retrying repair on fresh no-journal copy with maxIndexBuildMemoryUsageMegabytes=6000.
+- 21:30 CT: task4 redone + committed: feat/m37-hbc98 e9f0e06 (on feat/m37-rn-fallback 5714814 = 0ec9f50 + fp_m37.sh); pushed both. Own RN 0.85.3 bundle (/workspace/rn085) 5336 funcs/206767 instrs exact vs hermesc dump. mongod repair4 running.
+- 21:30 CT: root cause: box snapshot agent drops *.box-store-snap-* files into mongo journal dir; WT log-removal server errors on the bad name -> mongod panic. Now running mongod with wiredTigerEngineConfigString log=(remove=false). repair5 on fresh no-journal copy.
+- 21:36 CT: repair6 OK (internalIndexBuildBulkLoadYieldIterations=2e9 avoids yield fassert). mongod up (log remove=false). hashes 16.94M. Verifying pin repro (m37base_r).
+- 21:47 CT: integrity OK: per-job row counts vs fp_done.kept match for all 0.74/0.76/0.79 jobs (M34 sub reruns have extra rows, pre-existing); only 0.72 lost (548 root jobs w/ rows missing). m37base_r (pin 6ad005ec) predictions identical as sets to m37base on all 24 apps: real_dev 0.840 (105/20/20), synth dev 0.970 (144/4/5).
+- 21:48 CT: fp restarted: eval/fp_m37.sh (03fe7de, bin/hedis-m37fp, HEDIS_FP_REDO=logs/m37_fp_redo.txt 548 keys), log logs/fp_m37b.log. Resume = rerun script (done markers per RN). mongod MUST be started with --wiredTigerEngineConfigString 'log=(remove=false)' (cmd in logs/mongod-2140.log header).
+- 21:53 CT resume #3: fp_m37.sh (pid 47259) alive on rn072, mongod up; not duplicated.
+- 22:11 CT: fp rn072 root redo progressing (~18 bundles/min, ~404 bundles since 21:47 restart). Waiting; no duplicate.
+- 22:43 CT resume #4: fp_m37.sh (pid 47259) alive, rn072 ROOT done, sub phase (76 stats rows); mongod up (remove=false). Waiting, no duplicate.
+- 23:03 CT: rn072 ROOT_DONE 22:41, SUB_DONE 22:58 (done marker). rn075 running (~1h/RN expected). Waiting.
+- 00:02 CT resume #5: fp_m37.sh (pid 47259) alive, rn072 done; rn075 in progress; mongod up (remove=false). Waiting, no duplicate.
+- 02:04 CT resume #6: fp_m37.sh (pid 47259) alive; rn072+rn075 done; rn078 root in progress (~228 stats rows); rn080 pending; mongod up (remove=false). Waiting, no duplicate.
+- 02:32 CT resume #7: fp_m37.sh (pid 47259) alive; rn072+rn075 done; rn078/rn080 pending (active HBCD in fp_m37b.log); mongod up (remove=false). Waiting, no duplicate.
+- 03:09 CT resume #8: fp_m37.sh (pid 47259) alive; rn072+rn075 done; rn078 in progress (703 stats rows), rn080 pending; mongod up (remove=false). Waiting, no duplicate.
+- 03:34 CT resume #9: fp_m37.sh (pid 47259) alive; rn072+rn075 done; rn078 in progress (935 stats rows), rn080 pending; mongod up (remove=false). Waiting, no duplicate.
+- 04:03 CT resume #10: fp_m37.sh (pid 47259) alive; rn072+rn075 done; rn078 in progress (1211 stats rows), rn080 pending; mongod up (remove=false). Waiting, no duplicate.
+- 04:32 CT resume #11: fp_m37.sh (pid 47259) alive; rn072+rn075 done; rn078 in progress (1352 stats rows), rn080 pending; mongod up (remove=false). Waiting, no duplicate.
+- 05:01 CT resume #12: fp_m37.sh (pid 47259) alive; rn072+rn075 done; rn078 in progress (1504 stats rows), rn080 pending; mongod up (remove=false). Waiting, no duplicate.
+- 05:37 CT resume #13: fp_m37.sh (pid 47259) alive; rn072+rn075 done; rn078 ROOT_DONE 05:02, sub phase in progress, rn080 pending; mongod up (remove=false). Waiting, no duplicate.
+- 06:03 CT resume #14: fp_m37.sh (pid 47259) alive; rn072+rn075 done; rn078 ROOT_DONE 05:02, sub phase (~1093 stats rows), rn080 pending; mongod up (remove=false). Waiting, no duplicate.
+- 09:15 CT resume #15: fp_m37.sh (pid 47259) alive; rn072+rn075+rn078 done; rn080 sub phase (~1226 stats rows); mongod up (remove=false). Waiting, no duplicate.
+- 09:38 CT resume #16: fp_m37.sh (pid 47259) alive; rn072+rn075+rn078 done; rn080 sub phase (~1446 stats rows); mongod up (remove=false). Waiting, no duplicate.
+- 10-15 10:10 CT resume #17: all four done markers present (rn080 SUB_DONE 09:49, FP_ALL_DONE); fp_m37.sh not running; mongod up (remove=false). Starting M37 finish worker (rescore + merge + freeze). Run settings: effort high, model Grok Bot default model.
+
+- 10-15 10:11 CT resume #18: finish worker confirmed markers+mongod; verifying cutoff OID then oneclass M37 stats + rebuild + rescore. Run settings: effort high, model Grok Bot default model.
+
+- 10-15 10:12 CT resume #19: oneclass.py M37 stats committed (f2513ad); rebuilding hedis-m37; cutoff verified 0 hashes > 6ad0ea700000000000000000 (max 6ad0e7dd...); starting m37f rescore. Run settings: effort high, model Grok Bot default model.
+
+- 10-15 10:22 CT resume #20: m37f rescore done (23 apps, MAXOID=6ad0ea70..., FALLBACK=nearest). Scoring oneclass. Run settings: effort high, model Grok Bot default model.
+
+## M37: RN fallback + rn072/075/078/080 fingerprints frozen (2026-10-15 ~10:22 CT)
+- Run settings: effort high, model Grok Bot default model. No cloud agents. No CI.
+- Fingerprints: RN 0.72 / 0.75 / 0.78 / 0.80 (fp_m37.sh); done markers rn072..rn080; last hash import ObjectId 6ad0e7dd078b11681d0ffcaf at 2026-10-15T14:49:01Z (09:49 CT).
+- Cutoff: HEDIS_MAX_OID=6ad0ea700000000000000000 (2026-10-15 15:00 UTC / 10:00 CT); mongocount hashes _id > cutoff = 0.
+- Flags: bin/hedis-m37 packages -d --norm nsnc --thresholds data/thresholds_m4f_dlr.json --lowuniq 2 --lowdf 2 --dep 0.6 --deps data/deps.json --rootver --floor 0.2 --vset-margin 0.003 --vset-samekeys; HEDIS_RN_FALLBACK=nearest.
+- Prefix m37f (eval/run_m37.sh); oneclass --subsha --split=data/split.v3dev.json.
+- real_dev: P 0.840 R 0.840 F1 0.840 (tp 105 fp 20 fn 20)
+- synth/dev: P 0.973 R 0.966 F1 0.970 (tp 144 fp 4 fn 5)
+- Merged into v2 (never main): feat/m37-rn-fallback, feat/m37-hbc98 (--no-ff). Freeze commit follows; Frozen on v2 (includes merges of feat/m37-rn-fallback + feat/m37-hbc98).
+- Frozen file: data/m37_frozen.json (hedis-eval + docs/eval/data/). Freeze DONE.
+- Go tests: go test ./pkg/pipeline/ -count=1 OK.
+
+- Freeze commit on v2: see git log -1 on v2 (message: M37: RN fallback + rn072/075/078/080 fingerprints frozen).
