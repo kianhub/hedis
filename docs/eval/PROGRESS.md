@@ -598,4 +598,60 @@ Run settings: executor effort high, model 'Grok Bot, default model'.
 - Frozen file: data/m37_frozen.json (hedis-eval + docs/eval/data/). Freeze DONE.
 - Go tests: go test ./pkg/pipeline/ -count=1 OK.
 
-- Freeze commit on v2: see git log -1 on v2 (message: M37: RN fallback + rn072/075/078/080 fingerprints frozen).
+- Freeze commit on v2: 876e043d2bce2d64669c3fbd3b630d7e7e9114d2
+
+- 10-15 10:24 CT resume #21: M37 FREEZE DONE. v2 876e043 pushed; feat/m37-rn-fallback + feat/m37-hbc98 pushed; main untouched. Run settings: effort high, model Grok Bot default model.
+
+## 2026-10-15 10:49 CT — binary overwrite recovery (hedis-m37 / hedis-norm-hits)
+Run settings: effort high, model 'Grok Bot, default model'.
+- Incident: another agent overwrote bin/hedis-m37 and bin/hedis-norm-hits with a fresh 359ec3f build (sha256 647bfead…); prior hedis-m37 was 36d63cb0….
+- Original hedis-m37 (36d63cb0…): NOT bit-reproduced. Searched PROGRESS/logs/v6 notes/reflog/worktrees; rebuilt 0ec9f50/5714814/03fe7de/f2513ad/359ec3f/876e043 with/without -trimpath, CGO, dirty, and path binds (/workspace/hedis, hedis-wt-359, …). No sha256 prefix match. Provenance most likely feat/m37-rn-fallback @ 03fe7de/f2513ad (pre-hbc98; resume #19 rebuild before v2 merge), unrecovered path/VCS/dirty stamp. Go delta 03fe7de→359ec3f is HEDIS_FP_REDO + hbc98 only (matcher/--from-dump unaffected).
+- Restored bin/hedis-m37: sha256 647bfeadac67671d94c9fe2aa1a3bdcea57f1c0263a8d963e426af9ec61c29d7 from commit 359ec3f (hedis-wt-359, `go build -buildvcs=false`); same as freeze Go tree 876e043.
+- Restored bin/hedis-norm-hits: sha256 a29d0be7e692ccbffaf0ce3a4cf2c1d2526ff237bae228037977cf918b73139f from M31 caf039a (HEDIS_HITS_OUT / hits dump).
+- Functional check (frozen flags, MAXOID=6ad0ea70…, FALLBACK=nearest, prefix m37r, oneclass --subsha split.v3dev): real_dev P/R/F1 0.840/0.840/0.840 (tp105 fp20 fn20); synth/dev 0.973/0.966/0.970 (tp144 fp4 fn5). Matches freeze.
+- Survival audit: data/m37_frozen.json OK; fp-m37-rn072/075/078/080.done all present; runs/apps_rel triples + data/groundtruth for real_dev+synth OK; real_dev/synth .hbc files missing on disk (apps/out only has partial v6 rebuilds); DB hedis_rel hashes=34300538 max_id=6ad0e7dd078b11681d0ffcaf, 0 docs with _id>6ad0ea700000000000000000; fp_done=19236 packages=1520; mongod pid 41550 untouched (log=remove=false). research/v6/MANIFEST.md has scoring config only — no original .hbc hash table (lost). docs/eval m37_frozen.json lacks freeze_commit field vs data/ copy.
+
+## 2026-10-15 11:34 CT — Optimizer: HBC98 rn085 diag + M38 missing-version plan
+Run settings: effort high, model 'Grok Bot, default model'. No CI. No v6 open/rescore. mongod untouched (mongo-data-rel, log=remove=false).
+
+### Task A — HBC98 zero-pred on self-compiled RN 0.85 only
+- Sample: `/workspace/rn085/app.hbc` (e9f0e06 self-compile; axios@1.7.9 zod@3.23.8 safe-area-context@5.6.1). No fuller non-zeus RN 0.85 bundle in hedis-eval; bcv98_sample/tg.hbc toy only.
+- Dump+match with `bin/hedis-m37` `647bfead…` @ 359ec3f, frozen flags, `HEDIS_RN_FALLBACK=nearest` `HEDIS_MAX_OID=6ad0ea70…`.
+- Result: HBC98 OK, 5336 funcs/triples; fallback→0.80; **0 packages predicted** (`runs/rn085_diag/`).
+- Root cause: **HBC98 app hashes ≠ RN 0.72–0.80 fingerprints** (nsnc coverage of axios/zod/sac @0.80 ≈ 0.07–0.13 << floor 0.2). Control pubky HBC96 coverage ≈ 0.92–0.96. Structural presence 29/500 vs pubky 285/500. DB has no RN 0.85 rows.
+- **No matcher code fix claimed.** Next: fingerprint existing package universe under RN 0.85; prove on rn085 only. Notes: `docs/eval/results/m37/hbc98_rn085_diag.md`.
+
+### Task B — Missing-version triage + M38 (non-leaky fill)
+- V6 paths: `research/v6/RESULT.md`, `research/v6/result/oneclass.{covered,fallback,full}.txt` — 62 FN version-not-in-DB (all truths absent from packages collection; names present).
+- Top FN packages (count): navigation/gesture-handler/reanimated/screens/svg (5 each), immer/safe-area/share (4), …
+- **Fill rule (fixed ex ante, not the 62):** packages already in `hedis_rel.packages` (30); every stable npm `X.Y.Z` in [2022-01-01, 2026-10-01] UTC missing from DB → **~690** pkg@ver; × rn072/075/078/080 ≈ **~2760** root fp jobs; reuse `fp_m37.sh`; new OID cutoff; rescore real_dev+synth only (never v6).
+- Payoff estimate only: complete-range side-effect covers ~58/62 FN cases → naive F1 upper bound ~0.72 (all 62 → ~0.733). Plan: `docs/eval/results/m37/m38_missing_version_plan.md`.
+
+## 2026-10-15 11:37 CT — M38 start: non-leaky missing-version fingerprint fill
+Run settings: effort high, model 'Grok Bot, default model'. No CI. Never touch main. mongod untouched (mongo-data-rel, log=remove=false, pid 41550).
+
+### Fill list (locked rule)
+- Universe: 30 package names already in `hedis_rel.packages` (same as targets_ext.m34 / M37).
+- Versions: every stable npm `X.Y.Z` with publish time in **[2022-01-01, 2026-10-01] UTC** not already in DB.
+- **Not** the 62 v6 miss list (non-leaky).
+- Fill size: **690** pkg@version → ×4 RN = **2760** root fp jobs (+ subpath pass).
+- Largest gaps: i18next 98, @sentry/react-native 66, react-native-webview 50, zod 46, react-native-share 40, …
+- Artifacts: `data/m38_fill_list.json`, `db/targets_m38.json` (hedis-eval); committed on `feat/m38-version-fill` @ 7c56f0f (off v2 876e043).
+
+### Fingerprint
+- Script: `eval/fp_m38.sh` (adapt of fp_m37.sh; resume markers `logs/fp-m38-rnXXX.done`; optional HEDIS_FP_REDO).
+- Binary: `bin/hedis-m37fp`; envs rn072/075/078/080; one RN at a time, 2 workers.
+- Started: nohup `eval/fp_m38.sh` → `logs/fp_m38.log`, **pid 738487**, first RN **rn072** (690 root jobs).
+- Do NOT start a second copy if `pgrep -f fp_m38.sh` is alive.
+- Do NOT rescore yet; do NOT touch v6; do NOT change matcher for fill.
+
+### Parallel: unsupported-bytecode match signal (same branch)
+- When max package nsnc coverage vs selected RN fingerprints is far below healthy baseline, refuse empty "clean" preds: error "React Native or bytecode version not supported" + non-zero exit.
+- Threshold tuned **only** on real_dev + synth (m37f) + self-compiled `/workspace/rn085/app.hbc` (diag coverages). **No zeus/v6.**
+
+#### Unsupported-bytecode signal (committed on feat/m38-version-fill)
+- Threshold **0.40** (`DefaultUnsupportedMinCov` / `--unsupported-cov`): max package-level nsnc coverage `|fp∩app|/|fp|` over DB versions with ≥20 keys.
+- Tuning apps (ONLY): real_dev + synth m37f max predicted scores (min **0.938**, median **0.998**); unsupported from self-compiled rn085 diag package coverages (axios **0.071**, zod **0.126**, safe-area-context **0.068** → max **0.126**). **No zeus/v6.**
+- Behavior: clear error `React Native or bytecode version not supported`, JSON `status=unsupported_bytecode`, **exit 1** (not an empty clean pred list).
+- Test: `TestMaxPackageNSNCCoverage`, `TestUnsupportedBytecodeError` in `pkg/pipeline`.
+- Optional later: RN 0.85 env fingerprint (HBC98 track) — do not start until M38 fill is underway (now underway on rn072).
