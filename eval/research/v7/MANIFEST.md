@@ -65,3 +65,13 @@ Also reported: "covered at pin", meaning the RN minor has fingerprints in `hedis
 
 ### RN 0.85 group scoring rule (pre-registered, verbatim)
 RN 0.85 group scoring rule (pre-registered): an `unsupported_bytecode` / unsupported flag = **correct abstention**; report in its **own table**; those apps are **excluded from exact F1** (neither inflate nor drag).
+
+## Appended candidates, batch 1 (2026-10-15 16:42 CT; sha256 order, after the initial queue)
+| sha256[:12] | app | repo | tag | RN | intended group |
+|---|---|---|---|---|---|
+| 44518b81b983 | safe-1.54.0 | safe-global/safe-wallet-monorepo | v1.54.0 | 0.76.3 | control |
+| 4efaf8ed6c54 | xaman-2.8.0 | XRPL-Labs/xaman-app | v2.8.0 | 0.72.7 | fill |
+| 725bdcba4f09 | temple-1.54 | madfish-solutions/templewallet-mobile | 1.54(1476) | 0.72.17 | fill |
+| a933e29f9d42 | bbplayer-2.5.2 | bbplayer-app/BBPlayer | v2.5.2 | 0.85.3 | unsupported_hbc98 |
+
+One tag per app: if bbplayer-2.5.2 (0.85) builds, the earlier bbplayer-2.4.4 (0.83) attempt is dropped from the set; the 0.85 group is prioritized per the Optimizer addendum.

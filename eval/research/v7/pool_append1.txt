@@ -1,0 +1,4 @@
+temple-1.54|madfish-solutions/templewallet-mobile|1.54(1476)|.||||
+xaman-2.8.0|XRPL-Labs/xaman-app|v2.8.0|.||||
+safe-1.54.0|safe-global/safe-wallet-monorepo|v1.54.0|apps/mobile||||
+bbplayer-2.5.2|bbplayer-app/BBPlayer|v2.5.2|apps/mobile||H=$(find node_modules/hermes-compiler ../node_modules/hermes-compiler ../../node_modules/hermes-compiler -path "*linux64-bin/hermesc" -print -quit 2>/dev/null); test -n "$H" && mkdir -p node_modules/react-native/sdks/hermesc/linux64-bin && ln -sf $(realpath $H) node_modules/react-native/sdks/hermesc/linux64-bin/hermesc; true||
