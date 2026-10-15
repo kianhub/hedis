@@ -18,6 +18,14 @@ We treat each substantial experiment as a dated log entry under [`log/`](./log/)
 | [paper-outline.md](./paper-outline.md) | Outline for an extended paper beyond the thesis |
 | [log/](./log/) | Chronological experiment and decision log |
 
+### Log entries (chronological)
+
+| Date | Entry |
+|------|--------|
+| 2026-10-12 | [baseline reproduction](./log/2026-10-12-baseline-reproduction.md), [thesis PDF verification](./log/2026-10-12-thesis-pdf-verification.md), [matcher / NS/NC eval](./log/2026-10-12-eval-matcher-optimizer.md) |
+| 2026-10-14 | [M34 Go matcher](./log/2026-10-14-m34-go-matcher.md), [v5 held-out](./log/2026-10-14-v5-held-out.md), [M37 RN fallback freeze](./log/2026-10-14-m37-rn-fallback-freeze.md) |
+| 2026-10-15 | [snapshot restore incident](./log/2026-10-15-snapshot-restore-incident.md), [v6 held-out](./log/2026-10-15-v6-held-out.md), [M38 version fill](./log/2026-10-15-m38-version-fill.md) |
+
 ## Repository entry points
 
 - Go CLI: `go/hermes-decompiler/` (`hermes-decompiler analyze`, `maintain-database`, `disassemble`)
