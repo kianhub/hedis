@@ -1,0 +1,41 @@
+{
+ "prefix": "M37v7",
+ "partition": "real_test",
+ "strict": {
+  "P": 0.321,
+  "R": 0.375,
+  "F1": 0.346,
+  "tp": 9,
+  "fp": 19,
+  "fn": 15
+ },
+ "set": {
+  "P": 0.357,
+  "R": 0.417,
+  "F1": 0.385,
+  "tp": 10,
+  "fp": 18,
+  "fn": 14
+ },
+ "set_hit_rate": 0.417,
+ "mean_set": 7.68,
+ "adv": {
+  "P": 0,
+  "R": 0.0,
+  "F1": 0,
+  "tp": 0,
+  "fp": 0,
+  "fn": 2
+ },
+ "adv_strict": {
+  "P": 0,
+  "R": 0.0,
+  "F1": 0,
+  "tp": 0,
+  "fp": 0,
+  "fn": 2
+ },
+ "app_acc": "3/4",
+ "app_acc_strict": "3/4",
+ "apps_vulnerable_truth": 1
+}

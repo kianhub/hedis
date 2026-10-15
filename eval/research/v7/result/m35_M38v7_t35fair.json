@@ -1,0 +1,41 @@
+{
+ "prefix": "M38v7",
+ "partition": "real_test",
+ "strict": {
+  "P": 0.576,
+  "R": 0.62,
+  "F1": 0.598,
+  "tp": 49,
+  "fp": 36,
+  "fn": 30
+ },
+ "set": {
+  "P": 0.765,
+  "R": 0.823,
+  "F1": 0.793,
+  "tp": 65,
+  "fp": 20,
+  "fn": 14
+ },
+ "set_hit_rate": 0.833,
+ "mean_set": 7.47,
+ "adv": {
+  "P": 0.919,
+  "R": 1.0,
+  "F1": 0.958,
+  "tp": 34,
+  "fp": 3,
+  "fn": 0
+ },
+ "adv_strict": {
+  "P": 0.971,
+  "R": 1.0,
+  "F1": 0.986,
+  "tp": 34,
+  "fp": 1,
+  "fn": 0
+ },
+ "app_acc": "7/9",
+ "app_acc_strict": "8/9",
+ "apps_vulnerable_truth": 2
+}

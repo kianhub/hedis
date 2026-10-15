@@ -1,0 +1,13 @@
+jitsi-9.1.0 ok
+xaman-2.8.0 ok
+daimo-audit-1 ok
+gsy-4.0.2 ok
+safe-1.54.0 ok
+jfaudio-2.4.4 ok
+vega-3.1.1 ok
+blink-beta-3.0.31 FAIL rc0 
+breathly-ios-2.2-18 FAIL rc0 
+bbplayer-2.5.2 FAIL rc0 
+yoroi-4.12.0 FAIL rc0 needs an array
+readany-1.3.4 ok
+ogam-0.0.49 ok
