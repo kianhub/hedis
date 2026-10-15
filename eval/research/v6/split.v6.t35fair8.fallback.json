@@ -1,0 +1,47 @@
+{
+ "frozen": "v6-t35-fair8-fallback",
+ "real_test": {
+  "zingo-2.0.24": {
+   "hbc_sha256": "ab72bac51d83c3e3374982bee1f74eed9a4b10c0afc9e4d81771676f7530fbe4",
+   "rn": "0.81.6",
+   "truth_sha256": "34fd5c5fea5b5e93b49ab81cba5c1273b623157dcd4116d0aa4c50760e5b8fcc",
+   "repo": "zingolabs/zingo-mobile",
+   "tag": "zingo-2.0.24-320",
+   "commit": "8000dc88e667d7230b0697b1a731a08d9420dd6f",
+   "triples_sha256": "d92a1dde3acb7fd346fd6db1aa7602c666ba2568b933a5910f50d97a18805be7",
+   "js_sha256": "223c8fbdce0be62203316bd5f6eda913738b7781ab76bdf661758b27143eb006",
+   "map_sha256": "ec2ffa731a11d383389c55a186a0395bd6a1a1455c78b72764338e8ce89fdc0b",
+   "hbc_version": 96,
+   "group": "fallback",
+   "rn_minor": "0.81"
+  },
+  "cozy-1.1.39": {
+   "hbc_sha256": "6b1519db179e517adcbf3a50dfb240bdfde58876105192809998f1084fdb93e4",
+   "rn": "0.77.3",
+   "truth_sha256": "87cb844931d48ac57144caacfc82c802eec2b94830140e9856c80fd1eed49755",
+   "repo": "cozy/cozy-flagship-app",
+   "tag": "1.1.39",
+   "commit": "62f966fcf9f07d015fb2612e7bc6587270602133",
+   "triples_sha256": "06a3657405a591757da841210d5f07e5fa64f46676582b3a4ab2ede6671af767",
+   "js_sha256": "9daa195746f37b1b59bdbbbd4ce9fa4d1405823360df14529aa37b075b2065fb",
+   "map_sha256": "764c1d9f022addcbaa76ae9a406c6891f57d7f8bde0b1cdc58661cbd641ed27f",
+   "hbc_version": 96,
+   "group": "fallback",
+   "rn_minor": "0.77"
+  },
+  "keeper-2.5.9": {
+   "hbc_sha256": "061b24e2a3c05b69105aeb5ceb652d950d46f353e298e01710d3d33b95ebc1b1",
+   "rn": "0.77.3",
+   "truth_sha256": "d254bd67221aab0be99455f647084f68cf0d280b39407639987d7c626358572a",
+   "repo": "bithyve/bitcoin-keeper",
+   "tag": "v2.5.9",
+   "commit": "ecf9a5b9c5fbb56370522adea802e2edff8ed84d",
+   "triples_sha256": "3f746de57b1b29b77408e5aec3b585b3abbcfde536898509dd679e6214d14181",
+   "js_sha256": "43ae6ec766f53e30d3b970d8ef5d442cfe5c865e56a99397e03a8d84b58ab707",
+   "map_sha256": "5e1bbdc11b15c056c06bce59bb01fb2ffb4069bf339c4cf45f305b513ea7a0fe",
+   "hbc_version": 96,
+   "group": "fallback",
+   "rn_minor": "0.77"
+  }
+ }
+}

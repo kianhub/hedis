@@ -1,0 +1,1 @@
+v6m37 real_test one-class(bundle) P 0.492 R 0.508 F1 0.500 (tp 32 fp 33 fn 31)
