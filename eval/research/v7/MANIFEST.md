@@ -45,3 +45,23 @@ Same as v5/v6: `/workspace/hedis/eval/build_oss.sh` (clone at tag, lockfile inst
 | 12 | e189e878e341 | berty-2.471.14 | berty/berty | v2.471.14 | js |
 | 13 | ea273dc86d6c | readany-1.3.4 | codedogQBY/ReadAny | v1.3.4 | packages/app-expo |
 | 14 | f714bfc5be1d | station-2.0.0 | terra-money/station-mobile | v2.0.0 | . |
+
+## Methods and groups (added 2026-10-15 16:40 CT, before any v7 matcher run)
+
+### Three methods, same apps
+1. **M37:** `bin/hedis-m37` sha256 `647bfeadac67671d94c9fe2aa1a3bdcea57f1c0263a8d963e426af9ec61c29d7` @ 359ec3f. Config from `data/m37_frozen.json` and research/v6 MANIFEST. `HEDIS_MAX_OID=6ad0ea700000000000000000`, `HEDIS_RN_FALLBACK=nearest`, with **no** `--unsupported-cov`.
+2. **M38:** `bin/hedis-m38` sha256 `cc3f2b3e39fc12de16e088dd578b6e5506c8528fe8441ca8b08c729ea269877c` @ 7db3c19. `HEDIS_MAX_OID=6ad13ed00000000000000000`, `HEDIS_RN_FALLBACK=nearest`, M37 flags plus `--unsupported-cov 0.40`.
+3. **t35** (thesis baseline): run at both pins, 6ad0ea70… (paired with M37) and 6ad13ed0… (paired with M38), with `HEDIS_RN_FALLBACK=nearest`. Apps where t35 crashes are reported separately as a fair subset.
+
+All three methods run once on exactly the same frozen apps. The **fill effect** is M37 vs M38 on the fill group.
+
+### Groups (stratified; sizes are recorded in GROUPS.md before any matcher run)
+1. **fill:** app RN minor is 0.72, 0.75, 0.78 or 0.80, where the M38 fingerprint fill landed.
+2. **control:** app RN minor is 0.74 or 0.76 (dev-like RN; isolates app-mix effects).
+3. **unsupported_hbc98:** app RN minor is 0.85 (HBC 98). This group is dumped with the HBC 98 path, either `hedis-m37` 647bfead or `hedis-m38`.
+4. **fallback:** any other RN minor (not in {0.72, 0.74, 0.75, 0.76, 0.78, 0.79, 0.80} and not 0.85).
+
+Also reported: "covered at pin", meaning the RN minor has fingerprints in `hedis_rel` at each method's pin (queried before scoring).
+
+### RN 0.85 group scoring rule (pre-registered, verbatim)
+RN 0.85 group scoring rule (pre-registered): an `unsupported_bytecode` / unsupported flag = **correct abstention**; report in its **own table**; those apps are **excluded from exact F1** (neither inflate nor drag).
