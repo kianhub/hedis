@@ -17,7 +17,7 @@ const (
 	// in pkg/hbc/types/opcodes/bcv96/. Files with a version above this value trigger a
 	// warning in GetParser but may still partially parse via closest-version fallback.
 	// To add support for a newer version, run download_all.sh then genopcodes.
-	LatestBytecodeVersion uint32 = 96
+	LatestBytecodeVersion uint32 = 98
 	SHA1NumBytes          int    = 20
 )
 
@@ -80,6 +80,8 @@ type HBCHeader struct {
 	CjsModuleCount               uint32
 	FunctionSourceCount          uint32 // added in v0.8.1 - bcv84
 	DebugInfoOffset              uint32
+	ObjShapeTableCount           uint32 // bcv >= 98 (ArrayBufferSize holds literalValueBufferSize)
+	NumStringSwitchImms          uint32 // bcv >= 98
 	StaticBuiltins               bool
 	CjsModulesStaticallyResolved bool
 	HasAsync                     bool
@@ -290,10 +292,11 @@ type HBCReader struct {
 	OverflowStringTable []OffsetLengthPair
 	Strings             []string
 
-	Arrays       []byte
-	ObjectKeys   []byte
-	ObjectValues []byte
-	BigIntValues []int64
+	Arrays           []byte
+	ObjectKeys       []byte
+	ObjectValues     []byte
+	ObjectShapeTable []byte // bcv >= 98
+	BigIntValues     []int64
 
 	RegExpTable   []OffsetLengthPair
 	RegExpStorage *bytes.Reader
@@ -491,7 +494,15 @@ func (h *HBCReader) ReadHeader() error {
 	if err = binary.Read(h.FileBuffer, binary.LittleEndian, &h.Header.ObjKeyBufferSize); err != nil {
 		return err
 	}
-	if err = binary.Read(h.FileBuffer, binary.LittleEndian, &h.Header.ObjValueBufferSize); err != nil {
+	if h.Header.Version >= 98 {
+		// bcv98: objValueBuffer replaced by the object shape table; StringSwitchImm count added
+		if err = binary.Read(h.FileBuffer, binary.LittleEndian, &h.Header.ObjShapeTableCount); err != nil {
+			return err
+		}
+		if err = binary.Read(h.FileBuffer, binary.LittleEndian, &h.Header.NumStringSwitchImms); err != nil {
+			return err
+		}
+	} else if err = binary.Read(h.FileBuffer, binary.LittleEndian, &h.Header.ObjValueBufferSize); err != nil {
 		return err
 	}
 	if err = binary.Read(h.FileBuffer, binary.LittleEndian, &h.Header.SegmentID); err != nil {
@@ -677,15 +688,18 @@ func (h *HBCReader) ReadDebugInfo() error {
 	}
 	h.DebugInfoHeader.FileRegionCount = binary.LittleEndian.Uint32(fileRegionCountData)
 
-	scopeDescDataOffsetData := make([]byte, 4)
-	_, err = io.ReadFull(h.FileBuffer, scopeDescDataOffsetData)
-	if err != nil {
-		return fmt.Errorf("failed to read debug info scope desc data offset: %v", err)
+	// bcv98: DebugInfoHeader is {filenameCount, filenameStorageSize, fileRegionCount, debugDataSize}
+	if h.Header.Version < 98 {
+		scopeDescDataOffsetData := make([]byte, 4)
+		_, err = io.ReadFull(h.FileBuffer, scopeDescDataOffsetData)
+		if err != nil {
+			return fmt.Errorf("failed to read debug info scope desc data offset: %v", err)
+		}
+		h.DebugInfoHeader.ScopeDescDataOffset = binary.LittleEndian.Uint32(scopeDescDataOffsetData)
 	}
-	h.DebugInfoHeader.ScopeDescDataOffset = binary.LittleEndian.Uint32(scopeDescDataOffsetData)
 
 	// bcv >= bcv91 read some more fields
-	if h.Header.Version >= 91 {
+	if h.Header.Version >= 91 && h.Header.Version < 98 {
 		textifiedDataOffsetData := make([]byte, 4)
 		_, err := io.ReadFull(h.FileBuffer, textifiedDataOffsetData)
 		if err != nil {
@@ -707,6 +721,9 @@ func (h *HBCReader) ReadDebugInfo() error {
 		return fmt.Errorf("failed to read debug info debug data size: %v", err)
 	}
 	h.DebugInfoHeader.DebugDataSize = binary.LittleEndian.Uint32(debugDataSizeData)
+	if h.Header.Version >= 98 {
+		h.DebugInfoHeader.ScopeDescDataOffset = h.DebugInfoHeader.DebugDataSize // all debug data = sources
+	}
 
 	// read debug string table
 	h.DebugStringTable = make([]OffsetLengthPair, h.DebugInfoHeader.FilenameCount)
@@ -764,7 +781,7 @@ func (h *HBCReader) ReadDebugInfo() error {
 	}
 
 	// read remaining debug data based on bcv
-	if h.Header.Version < 91 {
+	if h.Header.Version < 91 || h.Header.Version >= 98 {
 		sourcesDataSize := h.DebugInfoHeader.ScopeDescDataOffset
 		scopeDescDataSize := h.DebugInfoHeader.DebugDataSize - h.DebugInfoHeader.ScopeDescDataOffset
 
@@ -1107,6 +1124,17 @@ func (h *HBCReader) ReadArrays() error {
 	}
 	h.ObjectKeys = objectKeysBuffer
 
+	if h.Header.Version >= 98 {
+		// bcv98: object shape table, ObjShapeTableCount x {keyBufferOffset, numProps} uint32 pairs
+		h.alignOverPadding(4)
+		shapes := make([]byte, 8*int(h.Header.ObjShapeTableCount))
+		if _, err = io.ReadFull(h.FileBuffer, shapes); err != nil {
+			return fmt.Errorf("failed to read object shape table: %v", err)
+		}
+		h.ObjectShapeTable = shapes
+		return nil
+	}
+
 	h.alignOverPadding(4)
 	objectValuesBuffer := make([]byte, h.Header.ObjValueBufferSize)
 	_, err = io.ReadFull(h.FileBuffer, objectValuesBuffer)
@@ -1418,6 +1446,9 @@ func (h *HBCReader) ReadStringKinds() error {
 // header can be read sequentially. Returns an error if any read or seek
 // operation fails.
 func (h *HBCReader) ReadFunctions() error {
+	if h.Header.Version >= 98 {
+		return h.readFunctionsV98()
+	}
 	h.FunctionHeaders = make([]any, 0, h.Header.FunctionCount)
 	h.FunctionIDToExcHandlers = make(map[int][]ExceptionHandlerInfo)
 	h.FunctionIDToDebugOffsets = make(map[int]DebugOffsets)
