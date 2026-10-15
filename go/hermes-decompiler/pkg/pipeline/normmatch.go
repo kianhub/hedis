@@ -3,6 +3,8 @@ package pipeline
 import (
 	"context"
 	"encoding/json"
+	"errors"
+	"fmt"
 	"math"
 	"os"
 	"sort"
@@ -43,6 +45,14 @@ type NormMatchConfig struct {
 	// plus (VsetSameKeys) every version whose set of app-matched selector keys equals the chosen version's.
 	VsetMargin   float64
 	VsetSameKeys bool
+	// UnsupportedMinCov (M38): if > 0, refuse when the best package-level nsnc coverage
+	// (|fp_keys ∩ app_keys| / |fp_keys|) across DB package versions with >= UnsupportedMinKeys
+	// keys is below this floor. Distinguishes unsupported RN/bytecode (empty preds that look
+	// "clean") from a real empty match. 0 = off. Default CLI: DefaultUnsupportedMinCov.
+	UnsupportedMinCov float64
+	// UnsupportedMinKeys: min fingerprint keys a package version must have to vote on coverage
+	// (tiny packages with shared trivial shapes are ignored). 0 -> defaultUnsupportedMinKeys.
+	UnsupportedMinKeys int
 }
 
 // vless compares dotted versions numerically (pre-release parts count as -1).
@@ -80,6 +90,64 @@ type pvKeys struct {
 	pkg  *models.PackageWithVulnerabilitiesModel
 	keys map[nkey]struct{}
 	root map[nkey]struct{} // keys from the root entry bundle (not subpath rows)
+}
+
+// DefaultUnsupportedMinCov is the M38 match-time gate for unsupported RN/bytecode.
+// Tuned 2026-10-15 on real_dev + synth (m37f predicted max nsnc scores: min 0.938, median 0.998)
+// vs self-compiled /workspace/rn085/app.hbc package coverages (axios 0.071, zod 0.126,
+// safe-area-context 0.068; max 0.126). No zeus/v6 apps used. Mid-gap value well above the
+// unsupported ceiling (~0.13) and well below the healthy floor of max package scores (~0.94).
+const DefaultUnsupportedMinCov = 0.40
+
+const defaultUnsupportedMinKeys = 20
+
+// ErrUnsupportedBytecode is returned when overall package nsnc coverage vs the selected RN
+// fingerprints is far below the healthy baseline (see DefaultUnsupportedMinCov).
+var ErrUnsupportedBytecode = errors.New("React Native or bytecode version not supported")
+
+// UnsupportedBytecodeError carries the observed max package coverage for logs/JSON status.
+type UnsupportedBytecodeError struct {
+	Coverage float64
+	Min      float64
+	BestPkg  string
+}
+
+func (e *UnsupportedBytecodeError) Error() string {
+	return fmt.Sprintf("%s (max package nsnc coverage %.3f < %.3f; best %s)",
+		ErrUnsupportedBytecode.Error(), e.Coverage, e.Min, e.BestPkg)
+}
+
+func (e *UnsupportedBytecodeError) Is(target error) bool {
+	return target == ErrUnsupportedBytecode
+}
+
+// MaxPackageNSNCCoverage returns the highest |keys ∩ A| / |keys| among package versions with
+// at least minKeys fingerprint keys, plus the best package@version name.
+func MaxPackageNSNCCoverage(A map[nkey]struct{}, pvs []*pvKeys, minKeys int) (float64, string) {
+	if minKeys <= 0 {
+		minKeys = defaultUnsupportedMinKeys
+	}
+	best := 0.0
+	bestName := ""
+	for _, p := range pvs {
+		if len(p.keys) < minKeys {
+			continue
+		}
+		hit := 0
+		for k := range p.keys {
+			if _, ok := A[k]; ok {
+				hit++
+			}
+		}
+		cov := float64(hit) / float64(len(p.keys))
+		if cov > best {
+			best = cov
+			if p.pkg != nil {
+				bestName = p.pkg.PackageName + "@" + p.pkg.PackageVersion
+			}
+		}
+	}
+	return best, bestName
 }
 
 // NormMatch implements method (a)+(b)[+(c)]: normalized keys minus RN baseline, keep only keys unique
@@ -120,6 +188,12 @@ func NormMatchPairs(pairs [][2]string, rn string, cfg NormMatchConfig, base map[
 	pvs, err := loadNormKeys(rn, cfg, base)
 	if err != nil {
 		return nil, err
+	}
+	if cfg.UnsupportedMinCov > 0 {
+		cov, best := MaxPackageNSNCCoverage(A, pvs, cfg.UnsupportedMinKeys)
+		if cov < cfg.UnsupportedMinCov {
+			return nil, &UnsupportedBytecodeError{Coverage: cov, Min: cfg.UnsupportedMinCov, BestPkg: best}
+		}
 	}
 	byPkg := map[string][]*pvKeys{}
 	df := map[nkey]map[string]struct{}{}

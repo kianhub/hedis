@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"hermes-decompiler/pkg/database"
 	"hermes-decompiler/pkg/database/models"
@@ -194,7 +195,7 @@ var (
 						pairs = append(pairs, [2]string{f[3], nc})
 					}
 				}
-				cfg := pipeline.NormMatchConfig{KeyMode: normMatchFlag, TieBreak: tieBreakFlag, Thresholds: map[string]float64{"_global": 0}, LowUniq: lowUniqFlag, LowDf: lowDfFlag, Dep: depFlag, RootVer: rootVerFlag, Floor: floorFlag, VsetMargin: vsetMarginFlag, VsetSameKeys: vsetSameKeysFlag}
+				cfg := pipeline.NormMatchConfig{KeyMode: normMatchFlag, TieBreak: tieBreakFlag, Thresholds: map[string]float64{"_global": 0}, LowUniq: lowUniqFlag, LowDf: lowDfFlag, Dep: depFlag, RootVer: rootVerFlag, Floor: floorFlag, VsetMargin: vsetMarginFlag, VsetSameKeys: vsetSameKeysFlag, UnsupportedMinCov: unsupportedCovFlag}
 				if depsFlag != "" {
 					if db, err := os.ReadFile(depsFlag); err == nil {
 						json.Unmarshal(db, &cfg.Deps)
@@ -208,6 +209,10 @@ var (
 				rs, err := pipeline.NormMatchPairs(pairs, rn, cfg, nil)
 				if err != nil {
 					utils.F.Println(err)
+					if errors.Is(err, pipeline.ErrUnsupportedBytecode) {
+						_ = writeUnsupportedStatusJSON(err, hbcV, rn, len(pairs), map[string]float64{"total_s": time.Since(tStart).Seconds()})
+						os.Exit(1)
+					}
 					return
 				}
 				if err := writeMatchResultsJSON(rs, hbcV, rn, len(pairs), len(pairs), map[string]float64{"total_s": time.Since(tStart).Seconds()}); err != nil {
@@ -282,7 +287,7 @@ var (
 				utils.L.Printf("Found %d hashes for app bundle that matched the best RN baseline: %s\n", len(filteredAppHashes), bestMatchRNVersion)
 
 				if normMatchFlag != "" {
-					cfg := pipeline.NormMatchConfig{KeyMode: normMatchFlag, TieBreak: tieBreakFlag, Thresholds: map[string]float64{"_global": 0}, LowUniq: lowUniqFlag, LowDf: lowDfFlag, Dep: depFlag, RootVer: rootVerFlag, Floor: floorFlag, VsetMargin: vsetMarginFlag, VsetSameKeys: vsetSameKeysFlag}
+					cfg := pipeline.NormMatchConfig{KeyMode: normMatchFlag, TieBreak: tieBreakFlag, Thresholds: map[string]float64{"_global": 0}, LowUniq: lowUniqFlag, LowDf: lowDfFlag, Dep: depFlag, RootVer: rootVerFlag, Floor: floorFlag, VsetMargin: vsetMarginFlag, VsetSameKeys: vsetSameKeysFlag, UnsupportedMinCov: unsupportedCovFlag}
 					if depsFlag != "" {
 						if db, err := os.ReadFile(depsFlag); err == nil {
 							json.Unmarshal(db, &cfg.Deps)
@@ -297,6 +302,12 @@ var (
 					rs, err := pipeline.NormMatch(appHashes, bestMatchRNVersion, cfg)
 					if err != nil {
 						utils.F.Printf("norm match failed: %v\n", err)
+						if errors.Is(err, pipeline.ErrUnsupportedBytecode) {
+							timings["norm_match_s"] = time.Since(tN).Seconds()
+							timings["total_s"] = time.Since(tStart).Seconds()
+							_ = writeUnsupportedStatusJSON(err, appHBCVersion, bestMatchRNVersion, len(appHashes), timings)
+							os.Exit(1)
+						}
 						return
 					}
 					timings["norm_match_s"] = time.Since(tN).Seconds()
@@ -365,6 +376,39 @@ var (
 		},
 	}
 )
+
+// writeUnsupportedStatusJSON records a structured status when the M38 unsupported-bytecode
+// gate fires, so callers do not mistake an empty prediction list for a clean miss.
+func writeUnsupportedStatusJSON(err error, hbcVersion, rnVersion string, nApp int, timings map[string]float64) error {
+	cov, min, best := 0.0, 0.0, ""
+	var ue *pipeline.UnsupportedBytecodeError
+	if errors.As(err, &ue) {
+		cov, min, best = ue.Coverage, ue.Min, ue.BestPkg
+	}
+	out := struct {
+		Status   string             `json:"status"`
+		Error    string             `json:"error"`
+		Coverage float64            `json:"max_package_nsnc_coverage"`
+		MinCov   float64            `json:"unsupported_min_cov"`
+		BestPkg  string             `json:"best_package,omitempty"`
+		HBC      string             `json:"hbc_version"`
+		RN       string             `json:"rn_version"`
+		AppFOs   int                `json:"app_fos"`
+		Timings  map[string]float64 `json:"timings"`
+		Results  any                `json:"results"`
+		Fallback string             `json:"rn_fallback,omitempty"`
+	}{"unsupported_bytecode", "React Native or bytecode version not supported", cov, min, best,
+		hbcVersion, rnVersion, nApp, timings, nil, pipeline.LastRNFallback}
+	p := outputFilePath
+	if p == "" {
+		p = filepath.Base(compareToSpecificAppBundleFlag) + "_match_results.txt"
+		if fromDumpFlag != "" {
+			p = filepath.Base(fromDumpFlag) + "_match_results.txt"
+		}
+	}
+	b, _ := json.MarshalIndent(out, "", " ")
+	return os.WriteFile(p+".json", b, 0644)
+}
 
 // writeMatchResultsJSON writes every (package, version) score plus run metadata next to the text output.
 func writeMatchResultsJSON(rs []*pipeline.MatchResults, hbcVersion, rnVersion string, nApp, nFiltered int, timings map[string]float64) error {
@@ -459,20 +503,21 @@ func amountOfUniquePackages(packages []models.PackageWithVulnerabilitiesModel) i
 }
 
 var (
-	fromDumpFlag     string
-	normMatchFlag    string
-	tieBreakFlag     bool
-	thresholdsFlag   string
-	depsFlag         string
-	depFlag          float64
-	lowUniqFlag      int
-	lowDfFlag        int
-	rootVerFlag      bool
-	dumpAppFlag      string
-	dumpOnlyFlag     bool
-	floorFlag        float64
-	vsetMarginFlag   float64
-	vsetSameKeysFlag bool
+	fromDumpFlag       string
+	normMatchFlag      string
+	tieBreakFlag       bool
+	thresholdsFlag     string
+	depsFlag           string
+	depFlag            float64
+	lowUniqFlag        int
+	lowDfFlag          int
+	rootVerFlag        bool
+	dumpAppFlag        string
+	dumpOnlyFlag       bool
+	floorFlag          float64
+	unsupportedCovFlag float64
+	vsetMarginFlag     float64
+	vsetSameKeysFlag   bool
 )
 
 func init() {
@@ -494,6 +539,7 @@ func init() {
 	packagesCmd.Flags().IntVar(&lowUniqFlag, "lowuniq", 0, "with --norm: packages with <= N unique keys score on keys with df <= --lowdf")
 	packagesCmd.Flags().IntVar(&lowDfFlag, "lowdf", 2, "with --norm --lowuniq: max package df of fallback keys")
 	packagesCmd.Flags().Float64Var(&floorFlag, "floor", 0, "with --norm: drop final predictions (incl. dep-implied) with score < x (0 = off)")
+	packagesCmd.Flags().Float64Var(&unsupportedCovFlag, "unsupported-cov", pipeline.DefaultUnsupportedMinCov, "with --norm: error+exit 1 when max package nsnc coverage vs DB is below this (0 = off; M38 unsupported RN/bytecode signal)")
 	packagesCmd.Flags().Float64Var(&vsetMarginFlag, "vset-margin", -1, "with --norm: report per package the version set within this score margin of the chosen version (-1 = off)")
 	packagesCmd.Flags().BoolVar(&vsetSameKeysFlag, "vset-samekeys", false, "with --norm --vset-margin: also add versions with the chosen version's exact set of matched keys")
 	packagesCmd.Flags().StringVar(&thresholdsFlag, "thresholds", "", "with --norm: JSON {package: min score, _global: x} tuned on dev")
