@@ -140,3 +140,10 @@ Retries (one per app, env-only): gsy ignoreConfig.js = README placeholder (`CLIE
 - unsupported_hbc98: blink-beta-3.0.31, breathly-ios-2.2-18 (clean dumps) + bbplayer-2.5.2 (dumper failure, empty rnversion) = **3 / ≥2 ✓**
 - fallback: yoroi-4.12.0 (0.71), readany-1.3.4 (0.81), ogam-0.0.49 (0.83)
 - Not represented: RN 0.75, 0.78 (no non-burned public app found). Dumpers are mixed: hedis-m37 for HBC 98, hedis-norm-hits otherwise (as v6 zeus).
+
+## safe-1.54.0 selection audit (Lab Notebook, before freeze commit)
+Same app, **same tag** `v1.54.0` (safe-global/safe-wallet-monorepo). First attempt failed (rc=3: entry `./App` missing; `package.json` main is `expo-router/entry`) and was listed among drops. **Reversed drop** after an env-only entry shim (`hedis_entry.js` → `import 'expo-router/entry'`), then BUILD_OK → control (RN 0.76). Not a different tag. Keep this row in the audit trail; do not treat it as a silent re-admission of a new candidate.
+
+## Fill-group generalization limit (pre-registered before scoring)
+Fill has **4** apps: **3× RN 0.72** (jitsi-9.1.0, xaman-2.8.0, daimo-audit-1) and **1× RN 0.80** (gsy-4.0.2). **No** app on RN 0.75 or 0.78 (burned-only public hits). The M37 vs M38 **fill effect must be reported per app** (and may be summarized for the 0.72 subset and the single 0.80 app separately). It **must not be generalized** to RN 0.75 or 0.78.
+
