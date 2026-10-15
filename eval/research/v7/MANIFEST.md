@@ -75,3 +75,30 @@ RN 0.85 group scoring rule (pre-registered): an `unsupported_bytecode` / unsuppo
 | a933e29f9d42 | bbplayer-2.5.2 | bbplayer-app/BBPlayer | v2.5.2 | 0.85.3 | unsupported_hbc98 |
 
 One tag per app: if bbplayer-2.5.2 (0.85) builds, the earlier bbplayer-2.4.4 (0.83) attempt is dropped from the set; the 0.85 group is prioritized per the Optimizer addendum.
+
+## Target group sizes (committed 2026-10-15 before further sourcing; stopping rule locked)
+Do not score until these minima are met (or MANIFEST records an explicit shortfall waiver after pool exhaustion):
+- **fill** (RN 0.72 / 0.75 / 0.78 / 0.80): **≥4** apps
+- **control** (RN 0.74 / 0.76): **≥3** apps
+- **unsupported_hbc98** (RN 0.85): **≥2** apps
+Fallback apps may be kept for coverage but do not count toward the three minima above.
+
+## Dropped candidates (auditable; every non-kept attempt)
+| app | reason |
+|---|---|
+| memmy-1.1 | git dep gitpkg.now.sh expo-image 402 Payment Required |
+| blixt-0.6.9 | protobuf codegen failure |
+| cherry-0.2.1 | workspace webview asset not built |
+| olas-0.1.9 | pnpm lock outdated |
+| berty-2.471.14 | RN 0.64 CLI missing |
+| jellyfin-1.8.0.5 | build failed (rc=3 then rc=4 on retry; RNBUNDLE workaround insufficient) |
+| bbplayer-2.4.4 | build failed; superseded by bbplayer-2.5.2 if 0.85 group priority |
+| backpack-0.5.2 | build failed (rc=3; RNBUNDLE workaround insufficient) |
+| bcwallet-1.0.12 | build failed (rc=2; Node 18 workaround insufficient) |
+| station-2.0.0 | build failed (rc=3 then rc=4; openssl-legacy insufficient) |
+| safe-1.54.0 | build failed (rc=3; entry ./App missing, main=expo-router/entry) |
+| temple-1.54 | build failed (rc=3; @airgap/beacon-dapp linked to absent node_modules/.cache/null) |
+
+## bbplayer-2.5.2 dumper failure (pre-registered measurement)
+Build OK (HBC 98). Detected rnversion empty at dump time → **dumper failure** (do not feed package.json RN to the matcher or dump `--rn-version`). `package.json` reports `react-native@0.85.3` and may label the app into **unsupported_hbc98** in this MANIFEST / GROUPS only. Quarantined any triples produced after a package.json rnversion patch (`triples/bbplayer-2.5.2.triples.INVALID_patched_rnversion`). Matcher must detect unsupported bytecode without that label.
+
