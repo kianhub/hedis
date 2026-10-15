@@ -8,7 +8,10 @@
   "hedis-m37": "647bfeadac67671d94c9fe2aa1a3bdcea57f1c0263a8d963e426af9ec61c29d7",
   "hedis-m37_commit": "359ec3f5b3df9723a6810ced2b502877e527a280",
   "hedis-norm-hits": "a29d0be7e692ccbffaf0ce3a4cf2c1d2526ff237bae228037977cf918b73139f",
-  "hedis-norm-hits_note": "shared bin/hedis-norm-hits (Optimizer: built from caf039a); used for all dumps. Zeus HBC 98 dump fails with this binary (HBC 98 support landed in 359ec3f / e9f0e06)."
+  "hedis-norm-hits_note": "shared bin/hedis-norm-hits (Optimizer: built from caf039a); used for all dumps. Zeus HBC 98 dump fails with this binary (HBC 98 support landed in 359ec3f / e9f0e06).",
+  "zeus_triples_note": "zeus-13.1.3 dumped with hedis-m37 647bfead/359ec3f (HBC 98); other 11 with hedis-norm-hits a29d0be7/caf039a. Cross-check: lxmusic-1.0.2 re-dump with 647bfead matched a29d0be7 byte-for-byte (sha256 a309254085f2fe1204e04654eb78ca96335a85ce3376ffd4234f8e47ba5d6cb5).",
+  "crosscheck_app": "lxmusic-1.0.2",
+  "crosscheck_triples_sha256": "a309254085f2fe1204e04654eb78ca96335a85ce3376ffd4234f8e47ba5d6cb5"
  },
  "real_test": {
   "alephium-1.0.2": {
@@ -21,7 +24,9 @@
    "triples_sha256": "724ad9b6d9e8ca88c936efa59dd13874f8e042bf1da3f206047b098b62051f0a",
    "js_sha256": "bf496edf40c7682948c848cacf74f097050a73483e4102f76a8812bf1b652634",
    "map_sha256": "18b756ad31860353f3694b32c3de76f565f90c98b1777b4490a9191817a0b117",
-   "hbc_version": 94
+   "hbc_version": 94,
+   "group": "covered",
+   "rn_minor": "0.72"
   },
   "minds-4.37.0": {
    "hbc_sha256": "2aef456f86901b398c5e11faed10eeafa4f7784c4a73418d7616dde68dda44fe",
@@ -33,7 +38,9 @@
    "triples_sha256": "b7de95ed4d414eff51ed15d26025ee997ed72f4380c45382e7e97393d12ef74b",
    "js_sha256": "7e0925968187f916880716b92d7f9b1558ca22f43988128235e0473b4175186c",
    "map_sha256": "18675a6c41f3c3d76c9306493fefdd4b6028fbb716cc85734838637c7ab55c34",
-   "hbc_version": 90
+   "hbc_version": 90,
+   "group": "fallback",
+   "rn_minor": "0.71"
   },
   "hexa-2.4.2": {
    "hbc_sha256": "e482600f78dab50f7f96f5bc0cd0241a9b6152a2a48323854cb1f412db566cbb",
@@ -45,7 +52,9 @@
    "triples_sha256": "54a036f0778ab7133df2350b70157498e49b596d31172cdb9a0a680a67bda916",
    "js_sha256": "0e110524df630b298e0b0c2e9755b20437df74703712be3e922be731f4774164",
    "map_sha256": "0917111daca557209d209e4f33ae234c993d25ca659408f1ae23bb7d37848159",
-   "hbc_version": 90
+   "hbc_version": 90,
+   "group": "fallback",
+   "rn_minor": "0.71"
   },
   "zeus-13.1.3": {
    "hbc_sha256": "88b88145447954bf6699fa5b47f70788b7a8f36ae89c6b566ea701800f825944",
@@ -54,10 +63,13 @@
    "repo": "ZeusLN/zeus",
    "tag": "v13.1.3",
    "commit": "73db3bf97ee1569ed527af972c525c776b037b6b",
-   "triples_sha256": null,
+   "triples_sha256": "e9230d4e4ea522c6382dd7c4a67fe5b2dd54ef38ffb215fb0b461df510c332b3",
    "js_sha256": "dcd435c2b10643f81f89339e44f516307bd31f1e09f83f4bd78e5d476749f5cc",
    "map_sha256": "92b0f6cc8b0c6f1c244ab772330d75fa3857a6d38284e0bd4a5f1028cd7ab4d2",
-   "hbc_version": 98
+   "hbc_version": 98,
+   "triples_dumper": "bin/hedis-m37 647bfeadac67671d94c9fe2aa1a3bdcea57f1c0263a8d963e426af9ec61c29d7 @ 359ec3f5b3df9723a6810ced2b502877e527a280 (HBC 98)",
+   "group": "zeus",
+   "rn_minor": "0.85"
   },
   "zingo-2.0.24": {
    "hbc_sha256": "ab72bac51d83c3e3374982bee1f74eed9a4b10c0afc9e4d81771676f7530fbe4",
@@ -69,7 +81,9 @@
    "triples_sha256": "d92a1dde3acb7fd346fd6db1aa7602c666ba2568b933a5910f50d97a18805be7",
    "js_sha256": "223c8fbdce0be62203316bd5f6eda913738b7781ab76bdf661758b27143eb006",
    "map_sha256": "ec2ffa731a11d383389c55a186a0395bd6a1a1455c78b72764338e8ce89fdc0b",
-   "hbc_version": 96
+   "hbc_version": 96,
+   "group": "fallback",
+   "rn_minor": "0.81"
   },
   "cozy-1.1.39": {
    "hbc_sha256": "6b1519db179e517adcbf3a50dfb240bdfde58876105192809998f1084fdb93e4",
@@ -81,7 +95,9 @@
    "triples_sha256": "06a3657405a591757da841210d5f07e5fa64f46676582b3a4ab2ede6671af767",
    "js_sha256": "9daa195746f37b1b59bdbbbd4ce9fa4d1405823360df14529aa37b075b2065fb",
    "map_sha256": "764c1d9f022addcbaa76ae9a406c6891f57d7f8bde0b1cdc58661cbd641ed27f",
-   "hbc_version": 96
+   "hbc_version": 96,
+   "group": "fallback",
+   "rn_minor": "0.77"
   },
   "enuts-0.3.0": {
    "hbc_sha256": "93688fe42871c10f6fd7fb1e4cf4765cbf02bab02adcd7dd4d51e9ce32448bd5",
@@ -93,7 +109,9 @@
    "triples_sha256": "06b061eb67e99e31f091df83998160bf1bb6890546bf3b75b5e034ffe6e4fe5f",
    "js_sha256": "a7bbe92e130d2f4489c55f42fa5a60346d1c658df6384427c89d5bd2ce7da0e8",
    "map_sha256": "27c2a68ac20910254829c45b74aa20ac42cb79af656cfc94283dcae8215462c1",
-   "hbc_version": 94
+   "hbc_version": 94,
+   "group": "covered",
+   "rn_minor": "0.72"
   },
   "keeper-2.5.9": {
    "hbc_sha256": "061b24e2a3c05b69105aeb5ceb652d950d46f353e298e01710d3d33b95ebc1b1",
@@ -105,7 +123,9 @@
    "triples_sha256": "3f746de57b1b29b77408e5aec3b585b3abbcfde536898509dd679e6214d14181",
    "js_sha256": "43ae6ec766f53e30d3b970d8ef5d442cfe5c865e56a99397e03a8d84b58ab707",
    "map_sha256": "5e1bbdc11b15c056c06bce59bb01fb2ffb4069bf339c4cf45f305b513ea7a0fe",
-   "hbc_version": 96
+   "hbc_version": 96,
+   "group": "fallback",
+   "rn_minor": "0.77"
   },
   "lxmusic-1.0.2": {
    "hbc_sha256": "76c7bb2fda6440d06d4e8d8f9cedb549b78548df7fa59796f83642dadad33562",
@@ -117,7 +137,9 @@
    "triples_sha256": "a309254085f2fe1204e04654eb78ca96335a85ce3376ffd4234f8e47ba5d6cb5",
    "js_sha256": "6266c1a319ffa2f2004d24bf9404d9ae450160dbbabea484f37704463cf2fefb",
    "map_sha256": "fe0e1560d7b11f059499f68b42439e6a922f12dc8ce9fb7f8dd607f6db1578da",
-   "hbc_version": 90
+   "hbc_version": 90,
+   "group": "fallback",
+   "rn_minor": "0.71"
   },
   "mangareader-0.7.7": {
    "hbc_sha256": "c2713530e85dcd6e569fda4119c0b6063e76db339a695b356a11ac0196a500ab",
@@ -129,7 +151,9 @@
    "triples_sha256": "0974da6541f5dcfb322629ca190f7a63b768c112cd3e8dcf6f16939a057db8d6",
    "js_sha256": "745681ca6df5e187e372fa29a792719e3ab5506e7a7cc5aaf3303f1b39f95151",
    "map_sha256": "4bc8bb0a401b948e6f7b1e32a1230552686b2c8391df8462533d638e8529758c",
-   "hbc_version": 94
+   "hbc_version": 94,
+   "group": "covered",
+   "rn_minor": "0.72"
   },
   "pixelfed-2.0.0": {
    "hbc_sha256": "3e3df025c3455996f080d8a713c64678929aeb10a185e4d339ee60ab12b00ada",
@@ -141,7 +165,9 @@
    "triples_sha256": "f217d3ebcfba3fef7cba9b2eeaa7cd8f09c33a193e2e2830f9d9c3bd64fd341b",
    "js_sha256": "4ecbcc2efd9c08d8a8cef2ca070c1203285188abfd6abab37d88c3849cc9f20b",
    "map_sha256": "26847477caf0597bbaaed456dd06146d70d154685586b8c2477aa2f1f425e5fd",
-   "hbc_version": 96
+   "hbc_version": 96,
+   "group": "covered",
+   "rn_minor": "0.76"
   },
   "pubky-ring-0.0.16": {
    "hbc_sha256": "9220caada1722e9eff36e88a3814b48bb8790cd72ae49d9cd1a603a7083f002c",
@@ -153,7 +179,35 @@
    "triples_sha256": "a1c9f7b2ec137b2e9e10af1928661961ea9a971a69e08d55d7e27811c308c1d0",
    "js_sha256": "bbdf54e89c8561adb279e4c7d648ff1dcb60eee2e7c40bc639d9cf9fe677ca3b",
    "map_sha256": "13fd5aafc9b1bdbb263f85afcd1ac88677dac5d0548dceef5212ff72b358029d",
-   "hbc_version": 96
+   "hbc_version": 96,
+   "group": "covered",
+   "rn_minor": "0.78"
+  }
+ },
+ "groups": {
+  "pin": "6ad0ea700000000000000000",
+  "covered_rn_minors": [
+   "0.72",
+   "0.74",
+   "0.75",
+   "0.76",
+   "0.78",
+   "0.79",
+   "0.80"
+  ],
+  "apps": {
+   "alephium-1.0.2": "covered",
+   "minds-4.37.0": "fallback",
+   "hexa-2.4.2": "fallback",
+   "zeus-13.1.3": "zeus",
+   "zingo-2.0.24": "fallback",
+   "cozy-1.1.39": "fallback",
+   "enuts-0.3.0": "covered",
+   "keeper-2.5.9": "fallback",
+   "lxmusic-1.0.2": "fallback",
+   "mangareader-0.7.7": "covered",
+   "pixelfed-2.0.0": "covered",
+   "pubky-ring-0.0.16": "covered"
   }
  }
 }

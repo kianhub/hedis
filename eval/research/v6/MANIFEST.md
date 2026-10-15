@@ -20,7 +20,7 @@ Same as v5: build_oss.sh (clone at tag, lockfile install, release Metro bundle +
 ## v6 re-freeze (2026-10-15)
 The original freeze (`data/split.v6.json` sha256 `99ee8a214ba9921d60af7d5b529730e44a37fd6099c11163969a316cd79b26d7`) was lost to a box restore on 2026-10-15. The same 12 apps were rebuilt unscored from the same tags/commits (never matched or scored). **Original `.hbc` hashes were not recoverable** (the MANIFEST app/hash table was wiped with the restore), so **bytecode identity versus the lost freeze is unverified**. Ground-truth JSON was compared against surviving `data/groundtruth/` copies (see below).
 
-New freeze: `data/split.v6.json` sha256 `1b8e1d195000dc1f9276e1286a3995ed3ce6dddef13840ea18618a602b5ea080`.
+New freeze: `data/split.v6.json` sha256 `16f22fea07227bd50b1a712ccf0842904fe1aaee62000e40b776e8e60dea2bb8`.
 
 ### Binaries (recorded at freeze)
 | binary | sha256 | source |
@@ -28,7 +28,8 @@ New freeze: `data/split.v6.json` sha256 `1b8e1d195000dc1f9276e1286a3995ed3ce6ddd
 | `bin/hedis-m37` (matcher, for later scoring) | `647bfeadac67671d94c9fe2aa1a3bdcea57f1c0263a8d963e426af9ec61c29d7` | v2 @ `359ec3f5b3df9723a6810ced2b502877e527a280` |
 | `bin/hedis-norm-hits` (triples dumper) | `a29d0be7e692ccbffaf0ce3a4cf2c1d2526ff237bae228037977cf918b73139f` | shared (Optimizer: built from `caf039a`) |
 
-Note: `research/v6/bin/hedis-norm-hits` (647bfead from 359ec3f) was built earlier by mistake and must **not** be used for dumps. Zeus HBC 98 dump **fails** with the caf039a dumper (`failed to read exception handler: unexpected EOF`); HBC 98 support landed in 359ec3f (`e9f0e06`). Zeus stays in the split with `triples_sha256: null`.
+Note: `research/v6/bin/hedis-norm-hits` (647bfead from 359ec3f) was built earlier by mistake and must **not** be used as the general dumper. **Dumper split (Lab Notebook cross-check):** re-dumped `lxmusic-1.0.2.hbc` with `bin/hedis-m37` `647bfead` @ 359ec3f and compared to the existing `a29d0be7` triples — **IDENTICAL** byte-for-byte (sha256 `a309254085f2fe1204e04654eb78ca96335a85ce3376ffd4234f8e47ba5d6cb5` both). Therefore the other 11 apps keep `bin/hedis-norm-hits` `a29d0be7` (caf039a) dumps; **zeus-13.1.3** alone was dumped with `bin/hedis-m37` `647bfead` @ 359ec3f for HBC 98 (caf039a failed with EOF). Zeus triples sha256 `e9230d4e4ea522c6382dd7c4a67fe5b2dd54ef38ffb215fb0b461df510c332b3`.
+
 
 ### Ground-truth rebuild diffs (vs surviving originals)
 | app | result |
@@ -52,7 +53,7 @@ Note: `research/v6/bin/hedis-norm-hits` (647bfead from 359ec3f) was built earlie
 | alephium-1.0.2 | alephium/mobile-wallet | v1.0.2 | `e71931fdcd` | 0.72.3 | 94 | 257 | 3839 | ok |
 | minds-4.37.0 | Minds/mobile-native | v4.37.0 | `7e8a4e542c` | 0.71.7 | 90 | 376 | 3759 | ok |
 | hexa-2.4.2 | bithyve/hexa | v2.4.2 | `1a58b3c492` | 0.71.13 | 90 | 285 | 2517 | ok |
-| zeus-13.1.3 | ZeusLN/zeus | v13.1.3 | `73db3bf97e` | 0.85.3 | 98 | 288 | 3006 | FAIL (HBC98 vs caf039a dumper) |
+| zeus-13.1.3 | ZeusLN/zeus | v13.1.3 | `73db3bf97e` | 0.85.3 | 98 | 288 | 3006 | ok (647bfead) |
 | zingo-2.0.24 | zingolabs/zingo-mobile | zingo-2.0.24-320 | `8000dc88e6` | 0.81.6 | 96 | 114 | 2947 | ok |
 | cozy-1.1.39 | cozy/cozy-flagship-app | 1.1.39 | `62f966fcf9` | 0.77.3 | 96 | 228 | 3098 | ok |
 | enuts-0.3.0 | cashubtc/eNuts | v0.3.0 | `faea4d6425` | 0.72.10 | 94 | 139 | 1679 | ok |
@@ -68,7 +69,7 @@ Note: `research/v6/bin/hedis-norm-hits` (647bfead from 359ec3f) was built earlie
 | alephium-1.0.2 | `e041a8438dd09a3df78d5294b68d1ec2180b96d2d055ed718cd5695e78276030` | `bf496edf40c7682948c848cacf74f097050a73483e4102f76a8812bf1b652634` | `18b756ad31860353f3694b32c3de76f565f90c98b1777b4490a9191817a0b117` | `97978b57e063b6e2f8da305859112370a953a0c6f6c4bc1bb58ca73f96b3a195` | `724ad9b6d9e8ca88c936efa59dd13874f8e042bf1da3f206047b098b62051f0a` |
 | minds-4.37.0 | `2aef456f86901b398c5e11faed10eeafa4f7784c4a73418d7616dde68dda44fe` | `7e0925968187f916880716b92d7f9b1558ca22f43988128235e0473b4175186c` | `18675a6c41f3c3d76c9306493fefdd4b6028fbb716cc85734838637c7ab55c34` | `7e2f8ee3b7eecc34413890fbe6368deb44249e8d671eb9ad20f980c4e78f6bac` | `b7de95ed4d414eff51ed15d26025ee997ed72f4380c45382e7e97393d12ef74b` |
 | hexa-2.4.2 | `e482600f78dab50f7f96f5bc0cd0241a9b6152a2a48323854cb1f412db566cbb` | `0e110524df630b298e0b0c2e9755b20437df74703712be3e922be731f4774164` | `0917111daca557209d209e4f33ae234c993d25ca659408f1ae23bb7d37848159` | `fc74affd103e3a952560a0bfe7a0f850d1d0ef2d360080bdf449a84e3bebeed2` | `54a036f0778ab7133df2350b70157498e49b596d31172cdb9a0a680a67bda916` |
-| zeus-13.1.3 | `88b88145447954bf6699fa5b47f70788b7a8f36ae89c6b566ea701800f825944` | `dcd435c2b10643f81f89339e44f516307bd31f1e09f83f4bd78e5d476749f5cc` | `92b0f6cc8b0c6f1c244ab772330d75fa3857a6d38284e0bd4a5f1028cd7ab4d2` | `593a755f91915e0a54bd5398e7e29c591da5e1157b07fa06574ba0471d8f549f` | `null` |
+| zeus-13.1.3 | `88b88145447954bf6699fa5b47f70788b7a8f36ae89c6b566ea701800f825944` | `dcd435c2b10643f81f89339e44f516307bd31f1e09f83f4bd78e5d476749f5cc` | `92b0f6cc8b0c6f1c244ab772330d75fa3857a6d38284e0bd4a5f1028cd7ab4d2` | `593a755f91915e0a54bd5398e7e29c591da5e1157b07fa06574ba0471d8f549f` | `e9230d4e4ea522c6382dd7c4a67fe5b2dd54ef38ffb215fb0b461df510c332b3` |
 | zingo-2.0.24 | `ab72bac51d83c3e3374982bee1f74eed9a4b10c0afc9e4d81771676f7530fbe4` | `223c8fbdce0be62203316bd5f6eda913738b7781ab76bdf661758b27143eb006` | `ec2ffa731a11d383389c55a186a0395bd6a1a1455c78b72764338e8ce89fdc0b` | `34fd5c5fea5b5e93b49ab81cba5c1273b623157dcd4116d0aa4c50760e5b8fcc` | `d92a1dde3acb7fd346fd6db1aa7602c666ba2568b933a5910f50d97a18805be7` |
 | cozy-1.1.39 | `6b1519db179e517adcbf3a50dfb240bdfde58876105192809998f1084fdb93e4` | `9daa195746f37b1b59bdbbbd4ce9fa4d1405823360df14529aa37b075b2065fb` | `764c1d9f022addcbaa76ae9a406c6891f57d7f8bde0b1cdc58661cbd641ed27f` | `87cb844931d48ac57144caacfc82c802eec2b94830140e9856c80fd1eed49755` | `06a3657405a591757da841210d5f07e5fa64f46676582b3a4ab2ede6671af767` |
 | enuts-0.3.0 | `93688fe42871c10f6fd7fb1e4cf4765cbf02bab02adcd7dd4d51e9ce32448bd5` | `a7bbe92e130d2f4489c55f42fa5a60346d1c658df6384427c89d5bd2ce7da0e8` | `27c2a68ac20910254829c45b74aa20ac42cb79af656cfc94283dcae8215462c1` | `079bb11efbed34619a7f2c021a84687ec536124ed87f9775c272456fc1b342a1` | `06b061eb67e99e31f091df83998160bf1bb6890546bf3b75b5e034ffe6e4fe5f` |
@@ -86,8 +87,22 @@ Note: `research/v6/bin/hedis-norm-hits` (647bfead from 359ec3f) was built earlie
 - pixelfed: `git lfs pull` after installing git-lfs; **plus** stub `Stories.tsx` (see GT diff).
 - Sources deleted after each build to save disk; commits from `git ls-remote` of the tag.
 
-### Groups (for later scoring; not yet queried)
-- covered = app RN minor has fingerprints at `HEDIS_MAX_OID=6ad0ea700000000000000000`
-- zeus = always its own third group (even though RN 0.85 has no fingerprints)
-- fallback = everything else
-Do **not** put zeus in covered just because HBC 98 dumps succeed.
+### Groups (assigned before scoring; query at pin)
+Pin `6ad0ea700000000000000000`. Covered RN minors with fingerprints: 0.72, 0.74, 0.75, 0.76, 0.78, 0.79, 0.80.
+
+| app | RN minor | group |
+|---|---|---|
+| alephium-1.0.2 | 0.72 | covered |
+| minds-4.37.0 | 0.71 | fallback |
+| hexa-2.4.2 | 0.71 | fallback |
+| zeus-13.1.3 | 0.85 | zeus |
+| zingo-2.0.24 | 0.81 | fallback |
+| cozy-1.1.39 | 0.77 | fallback |
+| enuts-0.3.0 | 0.72 | covered |
+| keeper-2.5.9 | 0.77 | fallback |
+| lxmusic-1.0.2 | 0.71 | fallback |
+| mangareader-0.7.7 | 0.72 | covered |
+| pixelfed-2.0.0 | 0.76 | covered |
+| pubky-ring-0.0.16 | 0.78 | covered |
+
+Rule: covered = RN minor in fingerprint set; zeus = `zeus-13.1.3` always; fallback = rest. Do **not** put zeus in covered because of HBC 98.

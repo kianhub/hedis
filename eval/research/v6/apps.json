@@ -13,7 +13,9 @@
   "js_sha256": "bf496edf40c7682948c848cacf74f097050a73483e4102f76a8812bf1b652634",
   "map_sha256": "18b756ad31860353f3694b32c3de76f565f90c98b1777b4490a9191817a0b117",
   "truth_sha256": "97978b57e063b6e2f8da305859112370a953a0c6f6c4bc1bb58ca73f96b3a195",
-  "triples_sha256": "724ad9b6d9e8ca88c936efa59dd13874f8e042bf1da3f206047b098b62051f0a"
+  "triples_sha256": "724ad9b6d9e8ca88c936efa59dd13874f8e042bf1da3f206047b098b62051f0a",
+  "group": "covered",
+  "rn_minor": "0.72"
  },
  {
   "app": "minds-4.37.0",
@@ -29,7 +31,9 @@
   "js_sha256": "7e0925968187f916880716b92d7f9b1558ca22f43988128235e0473b4175186c",
   "map_sha256": "18675a6c41f3c3d76c9306493fefdd4b6028fbb716cc85734838637c7ab55c34",
   "truth_sha256": "7e2f8ee3b7eecc34413890fbe6368deb44249e8d671eb9ad20f980c4e78f6bac",
-  "triples_sha256": "b7de95ed4d414eff51ed15d26025ee997ed72f4380c45382e7e97393d12ef74b"
+  "triples_sha256": "b7de95ed4d414eff51ed15d26025ee997ed72f4380c45382e7e97393d12ef74b",
+  "group": "fallback",
+  "rn_minor": "0.71"
  },
  {
   "app": "hexa-2.4.2",
@@ -45,7 +49,9 @@
   "js_sha256": "0e110524df630b298e0b0c2e9755b20437df74703712be3e922be731f4774164",
   "map_sha256": "0917111daca557209d209e4f33ae234c993d25ca659408f1ae23bb7d37848159",
   "truth_sha256": "fc74affd103e3a952560a0bfe7a0f850d1d0ef2d360080bdf449a84e3bebeed2",
-  "triples_sha256": "54a036f0778ab7133df2350b70157498e49b596d31172cdb9a0a680a67bda916"
+  "triples_sha256": "54a036f0778ab7133df2350b70157498e49b596d31172cdb9a0a680a67bda916",
+  "group": "fallback",
+  "rn_minor": "0.71"
  },
  {
   "app": "zeus-13.1.3",
@@ -61,7 +67,10 @@
   "js_sha256": "dcd435c2b10643f81f89339e44f516307bd31f1e09f83f4bd78e5d476749f5cc",
   "map_sha256": "92b0f6cc8b0c6f1c244ab772330d75fa3857a6d38284e0bd4a5f1028cd7ab4d2",
   "truth_sha256": "593a755f91915e0a54bd5398e7e29c591da5e1157b07fa06574ba0471d8f549f",
-  "triples_sha256": null
+  "triples_sha256": "e9230d4e4ea522c6382dd7c4a67fe5b2dd54ef38ffb215fb0b461df510c332b3",
+  "triples_dumper": "bin/hedis-m37 647bfead @ 359ec3f (HBC 98)",
+  "group": "zeus",
+  "rn_minor": "0.85"
  },
  {
   "app": "zingo-2.0.24",
@@ -77,7 +86,9 @@
   "js_sha256": "223c8fbdce0be62203316bd5f6eda913738b7781ab76bdf661758b27143eb006",
   "map_sha256": "ec2ffa731a11d383389c55a186a0395bd6a1a1455c78b72764338e8ce89fdc0b",
   "truth_sha256": "34fd5c5fea5b5e93b49ab81cba5c1273b623157dcd4116d0aa4c50760e5b8fcc",
-  "triples_sha256": "d92a1dde3acb7fd346fd6db1aa7602c666ba2568b933a5910f50d97a18805be7"
+  "triples_sha256": "d92a1dde3acb7fd346fd6db1aa7602c666ba2568b933a5910f50d97a18805be7",
+  "group": "fallback",
+  "rn_minor": "0.81"
  },
  {
   "app": "cozy-1.1.39",
@@ -93,7 +104,9 @@
   "js_sha256": "9daa195746f37b1b59bdbbbd4ce9fa4d1405823360df14529aa37b075b2065fb",
   "map_sha256": "764c1d9f022addcbaa76ae9a406c6891f57d7f8bde0b1cdc58661cbd641ed27f",
   "truth_sha256": "87cb844931d48ac57144caacfc82c802eec2b94830140e9856c80fd1eed49755",
-  "triples_sha256": "06a3657405a591757da841210d5f07e5fa64f46676582b3a4ab2ede6671af767"
+  "triples_sha256": "06a3657405a591757da841210d5f07e5fa64f46676582b3a4ab2ede6671af767",
+  "group": "fallback",
+  "rn_minor": "0.77"
  },
  {
   "app": "enuts-0.3.0",
@@ -109,7 +122,9 @@
   "js_sha256": "a7bbe92e130d2f4489c55f42fa5a60346d1c658df6384427c89d5bd2ce7da0e8",
   "map_sha256": "27c2a68ac20910254829c45b74aa20ac42cb79af656cfc94283dcae8215462c1",
   "truth_sha256": "079bb11efbed34619a7f2c021a84687ec536124ed87f9775c272456fc1b342a1",
-  "triples_sha256": "06b061eb67e99e31f091df83998160bf1bb6890546bf3b75b5e034ffe6e4fe5f"
+  "triples_sha256": "06b061eb67e99e31f091df83998160bf1bb6890546bf3b75b5e034ffe6e4fe5f",
+  "group": "covered",
+  "rn_minor": "0.72"
  },
  {
   "app": "keeper-2.5.9",
@@ -125,7 +140,9 @@
   "js_sha256": "43ae6ec766f53e30d3b970d8ef5d442cfe5c865e56a99397e03a8d84b58ab707",
   "map_sha256": "5e1bbdc11b15c056c06bce59bb01fb2ffb4069bf339c4cf45f305b513ea7a0fe",
   "truth_sha256": "d254bd67221aab0be99455f647084f68cf0d280b39407639987d7c626358572a",
-  "triples_sha256": "3f746de57b1b29b77408e5aec3b585b3abbcfde536898509dd679e6214d14181"
+  "triples_sha256": "3f746de57b1b29b77408e5aec3b585b3abbcfde536898509dd679e6214d14181",
+  "group": "fallback",
+  "rn_minor": "0.77"
  },
  {
   "app": "lxmusic-1.0.2",
@@ -141,7 +158,9 @@
   "js_sha256": "6266c1a319ffa2f2004d24bf9404d9ae450160dbbabea484f37704463cf2fefb",
   "map_sha256": "fe0e1560d7b11f059499f68b42439e6a922f12dc8ce9fb7f8dd607f6db1578da",
   "truth_sha256": "31f1ab8260b3e367b00f6eb393dc8b2e89ecc9353d15376afb5e474236bd83cf",
-  "triples_sha256": "a309254085f2fe1204e04654eb78ca96335a85ce3376ffd4234f8e47ba5d6cb5"
+  "triples_sha256": "a309254085f2fe1204e04654eb78ca96335a85ce3376ffd4234f8e47ba5d6cb5",
+  "group": "fallback",
+  "rn_minor": "0.71"
  },
  {
   "app": "mangareader-0.7.7",
@@ -157,7 +176,9 @@
   "js_sha256": "745681ca6df5e187e372fa29a792719e3ab5506e7a7cc5aaf3303f1b39f95151",
   "map_sha256": "4bc8bb0a401b948e6f7b1e32a1230552686b2c8391df8462533d638e8529758c",
   "truth_sha256": "85c6884d5e7dc667736d0f22a055341e91caf50dcfceb23501be8507b6d9ae37",
-  "triples_sha256": "0974da6541f5dcfb322629ca190f7a63b768c112cd3e8dcf6f16939a057db8d6"
+  "triples_sha256": "0974da6541f5dcfb322629ca190f7a63b768c112cd3e8dcf6f16939a057db8d6",
+  "group": "covered",
+  "rn_minor": "0.72"
  },
  {
   "app": "pixelfed-2.0.0",
@@ -173,7 +194,9 @@
   "js_sha256": "4ecbcc2efd9c08d8a8cef2ca070c1203285188abfd6abab37d88c3849cc9f20b",
   "map_sha256": "26847477caf0597bbaaed456dd06146d70d154685586b8c2477aa2f1f425e5fd",
   "truth_sha256": "792ea79bd02a4abce38e2085f977d3cf798c50242eb3d726d50b262f30f89449",
-  "triples_sha256": "f217d3ebcfba3fef7cba9b2eeaa7cd8f09c33a193e2e2830f9d9c3bd64fd341b"
+  "triples_sha256": "f217d3ebcfba3fef7cba9b2eeaa7cd8f09c33a193e2e2830f9d9c3bd64fd341b",
+  "group": "covered",
+  "rn_minor": "0.76"
  },
  {
   "app": "pubky-ring-0.0.16",
@@ -189,6 +212,8 @@
   "js_sha256": "bbdf54e89c8561adb279e4c7d648ff1dcb60eee2e7c40bc639d9cf9fe677ca3b",
   "map_sha256": "13fd5aafc9b1bdbb263f85afcd1ac88677dac5d0548dceef5212ff72b358029d",
   "truth_sha256": "de82e495e8824d1fe8e1fa2493e6040a11e2703c9f25deab13648ba5f673355a",
-  "triples_sha256": "a1c9f7b2ec137b2e9e10af1928661961ea9a971a69e08d55d7e27811c308c1d0"
+  "triples_sha256": "a1c9f7b2ec137b2e9e10af1928661961ea9a971a69e08d55d7e27811c308c1d0",
+  "group": "covered",
+  "rn_minor": "0.78"
  }
 ]
