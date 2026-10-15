@@ -47,5 +47,5 @@
   "merged_branches": [
     "feat/m38-version-fill"
   ],
-  "freeze_commit": null
+  "freeze_commit": "c463fd267c5f61ecbb8b7ea4268e90d2f5d70996"
 }
