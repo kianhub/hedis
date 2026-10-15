@@ -3,14 +3,18 @@
 ## Status
 Freeze intent recorded 2026-10-15 (CT) before any v7 build finished. No matcher run, no scoring.
 
-## Scoring config (pre-registered; cutoff TBD)
-- Matcher: M38 (binary + commit to be recorded once Optimizer posts the M38 freeze).
-- DB pin: `HEDIS_MAX_OID` = **cutoff TBD — will be pinned and recorded here before any v7 scoring**.
-- PRIMARY scorer: `oneclass.py --subsha` (M34/M37 release-identity tables).
-- SECONDARY: `m35_eval.py` for vulnerability-level metrics only.
-- Baseline: thesis method t35 with the same pin, reported alongside (apps where t35 crashes reported separately as in v6).
-- Groups (same rule as v6): **covered** = app RN minor has fingerprints in `hedis_rel` at the scoring pin; **fallback** = the rest. No zeus-style special group unless an HBC 98 app lands in the set (then it is its own group).
+## Scoring config (pre-registered; M38 frozen 2026-10-15)
+- Matcher: `bin/hedis-m38` sha256 `cc3f2b3e39fc12de16e088dd578b6e5506c8528fe8441ca8b08c729ea269877c` @ `7db3c19` (v2 merge c463fd2 / 8e8176e).
+- DB pin: `HEDIS_MAX_OID=6ad13ed00000000000000000`.
+- Env: `HEDIS_RN_FALLBACK=nearest`.
+- Flags: M37 frozen flags plus `--unsupported-cov 0.40`, i.e. `packages -d --norm nsnc --thresholds data/thresholds_m4f_dlr.json --lowuniq 2 --lowdf 2 --dep 0.6 --deps data/deps.json --rootver --floor 0.2 --vset-margin 0.003 --vset-samekeys --unsupported-cov 0.40`.
+- PRIMARY scorer: `oneclass.py --subsha` (release-identity tables). SECONDARY: `m35_eval.py` (vulnerability-level only).
+- Baseline: thesis method t35, same pin + `HEDIS_RN_FALLBACK=nearest`; apps where t35 crashes reported separately (fair subset) as in v6.
+- Groups: **covered** = app RN minor has fingerprints in `hedis_rel` at the pin above; **fallback** = rest; HBC 98 apps form their own group. Group sizes are written here before scoring.
 - Run once; no retuning.
+
+### Selection bias for M38 (added 2026-10-15 16:36 CT, before any scoring)
+v7 is meant to measure M38, whose fingerprint fill landed on RN minors 0.72, 0.75, 0.78, 0.80. Candidates appended after the initial queue are restricted to apps on those minors (or whose nearest fallback lands on them), each with a fixed tag, attempted in sha256(repo@tag) order after the initial queue. Already-built apps (yoroi 0.71, readany 0.81) stay.
 
 ## Exclusions (burned / never held-out)
 All apps in split.v3 (real + real_dev), v4 real_test, v5 real_test, v6 real_test, and their app families; Notesnook and Uniswap forever.
