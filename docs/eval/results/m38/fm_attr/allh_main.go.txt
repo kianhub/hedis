@@ -1,0 +1,6 @@
+package main
+import ("crypto/sha256";"encoding/hex";"fmt";"os";"hermes-decompiler/pkg/hbc";"hermes-decompiler/pkg/normhash")
+func sh(s string) string { x := sha256.Sum256([]byte(s)); return hex.EncodeToString(x[:]) }
+func main(){ f,_:=os.Open(os.Args[1]); rd:=hbc.NewHBCReader(); if err:=rd.ReadWholeFile(f);err!=nil{panic(err)}
+ fos,err:=hbc.CreateFunctionObjects(rd); if err!=nil{panic(err)}
+ o,_:=os.Create(os.Args[2]); defer o.Close(); for i,fo:=range fos{ s,c1,c2:=fo.ToIR(); ns,nc:=normhash.Hashes(s,c1,c2); fmt.Fprintf(o,"%d\t%s\t%s\t%s\t%s\t%s\t%d\n",i,sh(s),sh(c1),sh(c2),ns,nc,fo.Metadata.ParamCount)}}
