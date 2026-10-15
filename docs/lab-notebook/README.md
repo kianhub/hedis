@@ -14,6 +14,7 @@ We treat each substantial experiment as a dated log entry under [`log/`](./log/)
 | [protocol-template.md](./protocol-template.md) | Blank experiment protocol |
 | [dataset-registry.md](./dataset-registry.md) | Datasets used in the thesis and in this repository |
 | [baseline-thesis.md](./baseline-thesis.md) | Thesis Tables 5.1–5.6, matching procedure, reproduction notes |
+| [comparison-thesis-baseline.md](./comparison-thesis-baseline.md) | t35 vs M37/M38 on burned held-out freezes (v5, v6, v7) |
 | [related-work.md](./related-work.md) | Prior art and newer verified references |
 | [paper-outline.md](./paper-outline.md) | Outline for an extended paper beyond the thesis |
 | [log/](./log/) | Chronological experiment and decision log |
