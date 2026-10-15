@@ -149,3 +149,11 @@ Build caveat (parity with v6 Pixelfed StoryCarousel stub): **safe-1.54.0 was bui
 ## Fill-group generalization limit (pre-registered before scoring)
 Fill has **4** apps: **3× RN 0.72** (jitsi-9.1.0, xaman-2.8.0, daimo-audit-1) and **1× RN 0.80** (gsy-4.0.2). **No** app on RN 0.75 or 0.78 (burned-only public hits). The M37 vs M38 **fill effect must be reported per app** (and may be summarized for the 0.72 subset and the single 0.80 app separately). It **must not be generalized** to RN 0.75 or 0.78.
 
+
+## Freeze (pre-score) 2026-10-15 17:18 CT
+- Within-fill diversity note (not a waiver; targets met): no unburned public apps found on RN 0.75 or 0.78; fill = 3×0.72 + 1×0.80. Fill effect reported per app only.
+- split: `data/split.v7.json` sha256 `2d6cbe8c553a2a3f19911e8831bb0f5b405eb302f74e083b335eb202a3c3c38b` (copy: split.v7.json here). Per-app sha256 of .hbc, .js, .js.map, .gt.json, .rnversion, triples (excluding .INVALID_*).
+- Covered RN minors (hedis_rel.baselines, _id < pin): 6ad0ea70… = 6ad13ed0… = 0.72, 0.74, 0.75, 0.76, 0.78, 0.79, 0.80.
+- Mixed dumpers: HBC 98 apps (blink, breathly) dumped with hedis-m37 647bfead; others with hedis-norm-hits a29d0be7. Cross-checks: v6 lxmusic-1.0.2 byte-identical (sha a3092540…); v7 rerun jitsi-9.1.0 with hedis-m37 → byte-identical to frozen triples (sha 4689b74e9aa1…).
+- bbplayer-2.5.2: no triples (dumper failure); scored as no-output under the unsupported/abstention table; package.json RN never fed to matcher. The runs/apps_rel copy of the patched triples was also renamed .INVALID_patched_rnversion so no matcher can read it.
+- Binaries: hedis-m37 647bfead…, hedis-m38 cc3f2b3e…, hedis-norm-hits a29d0be7…, hedis-vset 2c863251….
