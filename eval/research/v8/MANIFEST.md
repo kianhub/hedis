@@ -77,8 +77,32 @@ Selection note: GaloyMoney/galoy-mobile@3.0.41 is RN 0.85 but **excluded** (same
 
 
 ## Dropped candidates (auditable)
-*(every non-kept attempt logged here)*
+| app | reason |
+|---|---|
+| rnrestart-0.0.29 | rc=3; Example CLI `error: unknown command 'bundle'` after npm ci |
+| paper-5.13.2 | rc=3 twice (initial + retry1); yarn berry workspace missing usable expo/CLI path for bundle |
+| streamchat-6.0.0 | rc=3; ExpoMessaging build failed (see logs/oss_streamchat-6.0.0.log) |
+| rnfirebase-21.6.1 | install in progress when targets met; killed; not held-out |
+| streamchat-5.41.0 | skipped — targets already met |
+| gorhom-5.0.1 | skipped — targets already met (gorhom-5.1.4 retry1 already filled control) |
+
 
 ## Build caveats
 *(env-only workarounds logged here)*
 
+
+## Append batch 1 (2026-10-15 ~18:38 CT; after Disk Saver pause; sha256 order)
+Controls only (rn085 target already met at 7). stream-chat ExpoMessaging + rnfirebase tests + gorhom-5.0.1 (0.74) backup; paper/gorhom-5.1.4 retries with env-only install fixes.
+
+## Group tally vs locked targets (10 frozen hbc)
+- **rn085** (HBC 98): marlin-1.3.0, imagetopdf-1.1, dothething-1.2.1, minmobile-1.0.62, wixrnn-8.8.7, readtrace-1.0.6, ysclaude-1.0.9 = **7 / ≥5 ✓**
+- **control**: appcues-1.0.12 (0.74.5), solana-3.0.0 (0.76.9), gorhom-5.1.4 (0.76.0 detected; package.json 0.76.7) = **3 / ≥3 ✓**
+- Dumpers: hedis-m37 for HBC 98; hedis-norm-hits otherwise. No empty-rnversion dumper failures in the kept set.
+
+## Freeze (pre-score) 2026-10-15 ~18:42 CT
+- split: `eval/research/v8/split.v8.json` sha256 `b81c8e1e909fc676081dd9f85bfec79b970ccb5eacc8a1e1819d97858b443946` (also `research/v8/split.v8.json` under hedis-eval; per-app sha256 of .hbc/.js/.js.map/.gt.json/.rnversion/triples).
+- GROUPS.md + apps.json written before any matcher run.
+- **DO NOT RUN MATCHERS OR SCORE.** Wait for Optimizer’s 0.85 cutoff announcement.
+- 0.85 DEV only (not in this held-out): blink-beta-3.0.31, breathly-ios-2.2-18, zeus-13.1.3.
+- Disk Saver: after ysclaude BUILD_OK, apps/oss cleared + `APPS_OSS_CLEAR.ready` written; 90s pause before retry/append.
+- Artifacts on disk: `hedis-eval/research/v8/frozen/` and `triples/` (not necessarily in git).
