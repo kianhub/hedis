@@ -1,0 +1,14 @@
+memmy-1.1|Memmy-App/memmy|1.1|.|||
+blixt-0.6.9|hsjoberg/blixt-wallet|v0.6.9-420|.|||
+cherry-0.2.1|CherryHQ/cherry-studio-app|v0.2.1|.|||
+jitsi-9.1.0|jitsi/jitsi-meet|android-sdk-9.1.0|.|index.native.js||1
+jellyfin-1.8.0.5|jellyfin/jellyfin-expo|v1.8.0.5|.|||
+olas-0.1.9|pablof7z/olas|0.1.9|apps/mobile|||
+bbplayer-2.4.4|bbplayer-app/BBPlayer|v2.4.4|apps/mobile|||
+backpack-0.5.2|coral-xyz/backpack|v0.5.2|packages/app-mobile|||
+bcwallet-1.0.12|bcgov/bc-wallet-mobile|v1.0.12|app|||
+yoroi-4.12.0|Emurgo/yoroi|v4.12.0|apps/wallet-mobile|||1
+ogam-0.0.49|off-grid-ai/OGAM|v0.0.49|.|||
+berty-2.471.14|berty/berty|v2.471.14|js|||
+readany-1.3.4|codedogQBY/ReadAny|v1.3.4|packages/app-expo|||
+station-2.0.0|terra-money/station-mobile|v2.0.0|.|||
