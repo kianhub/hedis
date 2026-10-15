@@ -1,0 +1,715 @@
+{
+ "bundled": {
+  "@babel/runtime": [
+   "7.26.9"
+  ],
+  "@expo/metro-runtime": [
+   "4.0.1"
+  ],
+  "@expo/react-native-action-sheet": [
+   "4.1.1"
+  ],
+  "@expo/vector-icons": [
+   "14.0.4"
+  ],
+  "@floating-ui/core": [
+   "1.6.9"
+  ],
+  "@floating-ui/react-native": [
+   "0.10.7"
+  ],
+  "@gorhom/bottom-sheet": [
+   "5.1.1"
+  ],
+  "@gorhom/portal": [
+   "1.0.14"
+  ],
+  "@ide/backoff": [
+   "1.0.0"
+  ],
+  "@radix-ui/react-compose-refs": [
+   "1.0.0"
+  ],
+  "@radix-ui/react-slot": [
+   "1.0.1"
+  ],
+  "@react-native-clipboard/clipboard": [
+   "1.16.2"
+  ],
+  "@react-native-community/blur": [
+   "4.4.1"
+  ],
+  "@react-native-community/netinfo": [
+   "11.4.1"
+  ],
+  "@react-native/assets-registry": [
+   "0.76.9"
+  ],
+  "@react-native/js-polyfills": [
+   "0.76.9"
+  ],
+  "@react-native/normalize-color": [
+   "2.1.0"
+  ],
+  "@react-native/normalize-colors": [
+   "0.76.9"
+  ],
+  "@react-native/virtualized-lists": [
+   "0.76.9"
+  ],
+  "@react-navigation/bottom-tabs": [
+   "7.2.1"
+  ],
+  "@react-navigation/core": [
+   "7.4.0"
+  ],
+  "@react-navigation/elements": [
+   "2.2.6"
+  ],
+  "@react-navigation/material-top-tabs": [
+   "7.1.1"
+  ],
+  "@react-navigation/native": [
+   "7.0.15"
+  ],
+  "@react-navigation/native-stack": [
+   "7.2.1"
+  ],
+  "@react-navigation/routers": [
+   "7.2.0"
+  ],
+  "@shopify/flash-list": [
+   "2.0.3"
+  ],
+  "@tamagui/accordion": [
+   "1.125.22"
+  ],
+  "@tamagui/adapt": [
+   "1.125.22"
+  ],
+  "@tamagui/alert-dialog": [
+   "1.125.22"
+  ],
+  "@tamagui/animate": [
+   "1.125.22"
+  ],
+  "@tamagui/animate-presence": [
+   "1.125.22"
+  ],
+  "@tamagui/animations-react-native": [
+   "1.125.22"
+  ],
+  "@tamagui/aria-hidden": [
+   "1.125.22"
+  ],
+  "@tamagui/avatar": [
+   "1.125.22"
+  ],
+  "@tamagui/button": [
+   "1.125.22"
+  ],
+  "@tamagui/card": [
+   "1.125.22"
+  ],
+  "@tamagui/checkbox": [
+   "1.125.22"
+  ],
+  "@tamagui/checkbox-headless": [
+   "1.125.22"
+  ],
+  "@tamagui/collapsible": [
+   "1.125.22"
+  ],
+  "@tamagui/collection": [
+   "1.125.22"
+  ],
+  "@tamagui/colors": [
+   "1.125.22"
+  ],
+  "@tamagui/compose-refs": [
+   "1.125.22"
+  ],
+  "@tamagui/config": [
+   "1.125.22"
+  ],
+  "@tamagui/constants": [
+   "1.125.22"
+  ],
+  "@tamagui/core": [
+   "1.125.22"
+  ],
+  "@tamagui/create-context": [
+   "1.125.22"
+  ],
+  "@tamagui/create-theme": [
+   "1.125.22"
+  ],
+  "@tamagui/dialog": [
+   "1.125.22"
+  ],
+  "@tamagui/dismissable": [
+   "1.125.22"
+  ],
+  "@tamagui/elements": [
+   "1.125.22"
+  ],
+  "@tamagui/floating": [
+   "1.125.22"
+  ],
+  "@tamagui/focus-scope": [
+   "1.125.22"
+  ],
+  "@tamagui/focusable": [
+   "1.125.22"
+  ],
+  "@tamagui/font-inter": [
+   "1.125.22"
+  ],
+  "@tamagui/font-silkscreen": [
+   "1.125.22"
+  ],
+  "@tamagui/font-size": [
+   "1.125.22"
+  ],
+  "@tamagui/form": [
+   "1.125.22"
+  ],
+  "@tamagui/get-button-sized": [
+   "1.125.22"
+  ],
+  "@tamagui/get-font-sized": [
+   "1.125.22"
+  ],
+  "@tamagui/get-token": [
+   "1.125.22"
+  ],
+  "@tamagui/group": [
+   "1.125.22"
+  ],
+  "@tamagui/helpers": [
+   "1.125.22"
+  ],
+  "@tamagui/helpers-tamagui": [
+   "1.125.22"
+  ],
+  "@tamagui/image": [
+   "1.125.22"
+  ],
+  "@tamagui/label": [
+   "1.125.22"
+  ],
+  "@tamagui/list-item": [
+   "1.125.22"
+  ],
+  "@tamagui/normalize-css-color": [
+   "1.125.22"
+  ],
+  "@tamagui/polyfill-dev": [
+   "1.125.22"
+  ],
+  "@tamagui/popover": [
+   "1.125.22"
+  ],
+  "@tamagui/popper": [
+   "1.125.22"
+  ],
+  "@tamagui/portal": [
+   "1.125.22"
+  ],
+  "@tamagui/progress": [
+   "1.125.22"
+  ],
+  "@tamagui/radio-group": [
+   "1.125.22"
+  ],
+  "@tamagui/radio-headless": [
+   "1.125.22"
+  ],
+  "@tamagui/react-native-media-driver": [
+   "1.125.22"
+  ],
+  "@tamagui/react-native-use-responder-events": [
+   "1.125.22"
+  ],
+  "@tamagui/remove-scroll": [
+   "1.125.22"
+  ],
+  "@tamagui/roving-focus": [
+   "1.125.22"
+  ],
+  "@tamagui/scroll-view": [
+   "1.125.22"
+  ],
+  "@tamagui/select": [
+   "1.125.22"
+  ],
+  "@tamagui/separator": [
+   "1.125.22"
+  ],
+  "@tamagui/shapes": [
+   "1.125.22"
+  ],
+  "@tamagui/sheet": [
+   "1.125.22"
+  ],
+  "@tamagui/shorthands": [
+   "1.125.22"
+  ],
+  "@tamagui/simple-hash": [
+   "1.125.22"
+  ],
+  "@tamagui/slider": [
+   "1.125.22"
+  ],
+  "@tamagui/stacks": [
+   "1.125.22"
+  ],
+  "@tamagui/start-transition": [
+   "1.125.22"
+  ],
+  "@tamagui/switch": [
+   "1.125.22"
+  ],
+  "@tamagui/switch-headless": [
+   "1.125.22"
+  ],
+  "@tamagui/tabs": [
+   "1.125.22"
+  ],
+  "@tamagui/text": [
+   "1.125.22"
+  ],
+  "@tamagui/theme": [
+   "1.125.22"
+  ],
+  "@tamagui/theme-builder": [
+   "1.125.22"
+  ],
+  "@tamagui/themes": [
+   "1.125.22"
+  ],
+  "@tamagui/timer": [
+   "1.125.22"
+  ],
+  "@tamagui/toast": [
+   "1.125.22"
+  ],
+  "@tamagui/toggle-group": [
+   "1.125.22"
+  ],
+  "@tamagui/tooltip": [
+   "1.125.22"
+  ],
+  "@tamagui/use-constant": [
+   "1.125.22"
+  ],
+  "@tamagui/use-controllable-state": [
+   "1.125.22"
+  ],
+  "@tamagui/use-debounce": [
+   "1.125.22"
+  ],
+  "@tamagui/use-did-finish-ssr": [
+   "1.125.22"
+  ],
+  "@tamagui/use-direction": [
+   "1.125.22"
+  ],
+  "@tamagui/use-event": [
+   "1.125.22"
+  ],
+  "@tamagui/use-force-update": [
+   "1.125.22"
+  ],
+  "@tamagui/use-presence": [
+   "1.125.22"
+  ],
+  "@tamagui/use-previous": [
+   "1.125.22"
+  ],
+  "@tamagui/use-window-dimensions": [
+   "1.125.22"
+  ],
+  "@tamagui/visually-hidden": [
+   "1.125.22"
+  ],
+  "@tamagui/web": [
+   "1.125.22"
+  ],
+  "@tamagui/z-index-stack": [
+   "1.125.22"
+  ],
+  "@tanstack/query-core": [
+   "5.67.1"
+  ],
+  "@tanstack/react-query": [
+   "5.67.1"
+  ],
+  "abort-controller": [
+   "3.0.0"
+  ],
+  "ansi-regex": [
+   "5.0.1"
+  ],
+  "assert": [
+   "2.1.0"
+  ],
+  "available-typed-arrays": [
+   "1.0.7"
+  ],
+  "base64-js": [
+   "1.5.1"
+  ],
+  "buffer": [
+   "5.7.1",
+   "6.0.3"
+  ],
+  "burnt": [
+   "0.12.2"
+  ],
+  "call-bind": [
+   "1.0.8"
+  ],
+  "call-bind-apply-helpers": [
+   "1.0.2"
+  ],
+  "call-bound": [
+   "1.0.4"
+  ],
+  "color": [
+   "4.2.3"
+  ],
+  "color-convert": [
+   "2.0.1"
+  ],
+  "color-name": [
+   "1.1.4"
+  ],
+  "color-string": [
+   "1.9.1"
+  ],
+  "color2k": [
+   "2.0.3"
+  ],
+  "dayjs": [
+   "1.11.13"
+  ],
+  "decode-uri-component": [
+   "0.2.2"
+  ],
+  "define-data-property": [
+   "1.1.4"
+  ],
+  "define-properties": [
+   "1.2.1"
+  ],
+  "dunder-proto": [
+   "1.0.1"
+  ],
+  "es-define-property": [
+   "1.0.1"
+  ],
+  "es-errors": [
+   "1.3.0"
+  ],
+  "es-object-atoms": [
+   "1.1.1"
+  ],
+  "escape-string-regexp": [
+   "4.0.0"
+  ],
+  "event-target-shim": [
+   "5.0.1"
+  ],
+  "expo": [
+   "52.0.47"
+  ],
+  "expo-application": [
+   "6.0.2"
+  ],
+  "expo-asset": [
+   "11.0.5"
+  ],
+  "expo-constants": [
+   "17.0.8"
+  ],
+  "expo-device": [
+   "7.0.3"
+  ],
+  "expo-file-system": [
+   "18.0.12"
+  ],
+  "expo-font": [
+   "13.0.4"
+  ],
+  "expo-haptics": [
+   "14.0.1"
+  ],
+  "expo-image": [
+   "2.0.7"
+  ],
+  "expo-image-manipulator": [
+   "13.0.6"
+  ],
+  "expo-image-picker": [
+   "16.0.6"
+  ],
+  "expo-linking": [
+   "7.0.5"
+  ],
+  "expo-modules-core": [
+   "2.2.3"
+  ],
+  "expo-notifications": [
+   "0.29.14"
+  ],
+  "expo-router": [
+   "4.0.21"
+  ],
+  "expo-share-intent": [
+   "3.2.2"
+  ],
+  "expo-splash-screen": [
+   "0.29.24"
+  ],
+  "expo-status-bar": [
+   "2.0.1"
+  ],
+  "expo-web-browser": [
+   "14.0.2"
+  ],
+  "fast-deep-equal": [
+   "3.1.3"
+  ],
+  "filter-obj": [
+   "1.1.0"
+  ],
+  "for-each": [
+   "0.3.5"
+  ],
+  "function-bind": [
+   "1.1.2"
+  ],
+  "get-intrinsic": [
+   "1.3.0"
+  ],
+  "get-proto": [
+   "1.0.1"
+  ],
+  "gopd": [
+   "1.2.0"
+  ],
+  "has-property-descriptors": [
+   "1.0.2"
+  ],
+  "has-symbols": [
+   "1.1.0"
+  ],
+  "has-tostringtag": [
+   "1.0.2"
+  ],
+  "hasown": [
+   "2.0.2"
+  ],
+  "hoist-non-react-statics": [
+   "3.3.2"
+  ],
+  "ieee754": [
+   "1.2.1"
+  ],
+  "inherits": [
+   "2.0.4"
+  ],
+  "invariant": [
+   "2.2.4"
+  ],
+  "is-arguments": [
+   "1.2.0"
+  ],
+  "is-arrayish": [
+   "0.3.2"
+  ],
+  "is-callable": [
+   "1.2.7"
+  ],
+  "is-generator-function": [
+   "1.1.0"
+  ],
+  "is-nan": [
+   "1.3.2"
+  ],
+  "is-regex": [
+   "1.2.1"
+  ],
+  "is-typed-array": [
+   "1.1.15"
+  ],
+  "lodash.isequal": [
+   "4.5.0"
+  ],
+  "math-intrinsics": [
+   "1.1.0"
+  ],
+  "memoize-one": [
+   "5.2.1"
+  ],
+  "metro-runtime": [
+   "0.81.3"
+  ],
+  "mime": [
+   "2.6.0"
+  ],
+  "nanoid": [
+   "3.3.8"
+  ],
+  "nullthrows": [
+   "1.1.1"
+  ],
+  "object-is": [
+   "1.1.6"
+  ],
+  "object-keys": [
+   "1.1.1"
+  ],
+  "object.assign": [
+   "4.1.7"
+  ],
+  "possible-typed-array-names": [
+   "1.1.0"
+  ],
+  "promise": [
+   "8.3.0"
+  ],
+  "prop-types": [
+   "15.8.1"
+  ],
+  "punycode": [
+   "2.3.1"
+  ],
+  "query-string": [
+   "7.1.3"
+  ],
+  "react": [
+   "18.3.1"
+  ],
+  "react-freeze": [
+   "1.0.4"
+  ],
+  "react-is": [
+   "16.13.1",
+   "18.3.1"
+  ],
+  "react-native": [
+   "0.76.9"
+  ],
+  "react-native-blurhash": [
+   "2.1.1"
+  ],
+  "react-native-gesture-handler": [
+   "2.20.2"
+  ],
+  "react-native-gifted-chat": [
+   "2.8.0"
+  ],
+  "react-native-is-edge-to-edge": [
+   "1.1.6"
+  ],
+  "react-native-keyboard-controller": [
+   "1.16.6"
+  ],
+  "react-native-lightbox-v2": [
+   "0.9.2"
+  ],
+  "react-native-mmkv": [
+   "3.3.0"
+  ],
+  "react-native-pager-view": [
+   "6.5.1"
+  ],
+  "react-native-parsed-text": [
+   "0.0.22"
+  ],
+  "react-native-pressable-opacity": [
+   "1.0.10"
+  ],
+  "react-native-reanimated": [
+   "3.16.1"
+  ],
+  "react-native-reanimated-carousel": [
+   "4.0.0-alpha.12"
+  ],
+  "react-native-safe-area-context": [
+   "4.12.0"
+  ],
+  "react-native-screens": [
+   "4.4.0"
+  ],
+  "react-native-svg": [
+   "15.8.0"
+  ],
+  "react-native-tab-view": [
+   "4.0.5"
+  ],
+  "react-native-video": [
+   "6.10.2"
+  ],
+  "regenerator-runtime": [
+   "0.13.11"
+  ],
+  "safe-regex-test": [
+   "1.1.0"
+  ],
+  "scheduler": [
+   "0.24.0-canary-efb381bbf-20230505"
+  ],
+  "set-function-length": [
+   "1.2.2"
+  ],
+  "simple-swizzle": [
+   "0.2.2"
+  ],
+  "split-on-first": [
+   "1.1.0"
+  ],
+  "stacktrace-parser": [
+   "0.1.11"
+  ],
+  "strict-uri-encode": [
+   "2.0.0"
+  ],
+  "tamagui": [
+   "1.125.22"
+  ],
+  "tslib": [
+   "2.8.1"
+  ],
+  "use-latest-callback": [
+   "0.2.3"
+  ],
+  "use-sync-external-store": [
+   "1.4.0"
+  ],
+  "util": [
+   "0.12.5"
+  ],
+  "warn-once": [
+   "0.1.1"
+  ],
+  "web-streams-polyfill": [
+   "3.3.3"
+  ],
+  "webidl-conversions": [
+   "5.0.0"
+  ],
+  "whatwg-fetch": [
+   "3.6.20"
+  ],
+  "whatwg-url-without-unicode": [
+   "8.0.0-3"
+  ],
+  "which-typed-array": [
+   "1.1.18"
+  ]
+ },
+ "bundled_modules": 2411
+}

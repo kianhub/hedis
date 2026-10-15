@@ -1,0 +1,13 @@
+app                    sha        pkgs     mods     detail
+alephium-1.0.2         IDENTICAL  257->257  3839->3839  
+minds-4.37.0           IDENTICAL  376->376  3759->3759  
+hexa-2.4.2             IDENTICAL  285->285  2517->2517  
+zeus-13.1.3            IDENTICAL  288->288  3006->3006  
+zingo-2.0.24           IDENTICAL  114->114  2947->2947  
+cozy-1.1.39            IDENTICAL  228->228  3098->3098  
+enuts-0.3.0            IDENTICAL  139->139  1679->1679  
+keeper-2.5.9           IDENTICAL  335->335  3745->3745  
+lxmusic-1.0.2          IDENTICAL   89-> 89  901->901  
+mangareader-0.7.7      IDENTICAL  146->146  1935->1935  
+pixelfed-2.0.0         DIFFERENT   62->236  873->2411  only_orig=2 only_rebuild=176 ver_diff=2 -orig_ex:[('buffer', ('5.7.1',)), ('react-is', ('18.3.1',))] +reb_ex:[('@expo/react-native-action-sheet', ('4.1.1',)), ('@expo/vector-icons', ('14.0.4',)), ('@floating-ui/core', ('1.6.9',))] verdiff_ex:[('buffer', ('5.7.1',), ('5.7.1', '6.0.3')), ('react-is', ('18.3.1',), ('16.13.1', '18.3.1'))]
+pubky-ring-0.0.16      IDENTICAL   94-> 94  3155->3155  
