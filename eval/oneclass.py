@@ -9,8 +9,9 @@ UNI = set(json.load(open(f"{E_}/data/universe_targets.json"))); SPL = next((a.sp
 sha = {}  # release identity = root bundle SHA; --subsha (primary since M24) also the subpath bundle SHA
 # M34: fp-rel34/fp-sub34 = ERESOLVE-failed jobs rerun (--force + peer pins) and added real_dev versions (attempt2 rows hold the SHAs of jobs skipped later)
 # M37: fp-rel37/fp-sub37 RN 0.72/0.75/0.78/0.80 fingerprint stats (bundle SHAs for one-class --subsha)
-REL = ("fp-rel-stats.jsonl", "fp-rel34-stats.attempt2.jsonl", "fp-rel34-stats.jsonl", "fp-rel079b-stats.jsonl", "fp-rel37-rn072-stats.jsonl", "fp-rel37-rn075-stats.jsonl", "fp-rel37-rn078-stats.jsonl", "fp-rel37-rn080-stats.jsonl")
-SUB = ("fp-sub-stats.jsonl", "fp-sub3-stats.jsonl", "fp-sub34-stats.attempt2.jsonl", "fp-sub34-stats.jsonl", "fp-sub079b-stats.jsonl", "fp-sub37-rn072-stats.jsonl", "fp-sub37-rn075-stats.jsonl", "fp-sub37-rn078-stats.jsonl", "fp-sub37-rn080-stats.jsonl")
+# M38: fp-rel38/fp-sub38 = 690 pkg@ver missing-version fill x RN 0.72/0.75/0.78/0.80
+REL = ("fp-rel-stats.jsonl", "fp-rel34-stats.attempt2.jsonl", "fp-rel34-stats.jsonl", "fp-rel079b-stats.jsonl", "fp-rel37-rn072-stats.jsonl", "fp-rel37-rn075-stats.jsonl", "fp-rel37-rn078-stats.jsonl", "fp-rel37-rn080-stats.jsonl", "fp-rel38-rn072-stats.jsonl", "fp-rel38-rn075-stats.jsonl", "fp-rel38-rn078-stats.jsonl", "fp-rel38-rn080-stats.jsonl")
+SUB = ("fp-sub-stats.jsonl", "fp-sub3-stats.jsonl", "fp-sub34-stats.attempt2.jsonl", "fp-sub34-stats.jsonl", "fp-sub079b-stats.jsonl", "fp-sub37-rn072-stats.jsonl", "fp-sub37-rn075-stats.jsonl", "fp-sub37-rn078-stats.jsonl", "fp-sub37-rn080-stats.jsonl", "fp-sub38-rn072-stats.jsonl", "fp-sub38-rn075-stats.jsonl", "fp-sub38-rn078-stats.jsonl", "fp-sub38-rn080-stats.jsonl")
 for f in REL + (SUB if "--subsha" in sys.argv else ()):
     try:
         for l in open(f"{E_}/logs/{f}"):
