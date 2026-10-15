@@ -53,3 +53,52 @@ Full JSON is in result/m35_*.json.
 - safe-1.54.0 was built with an entry shim (see MANIFEST). Mixed dumpers: hedis-m37 for HBC 98 apps; the cross-check on jitsi was byte-identical.
 - t35 crashed on yoroi (RN 0.71: "$in needs an array") and on all HBC 98 apps.
 - M37 and M38 differ in pin, binary and flag at once. The 0.72 fill gain cannot be attributed to the pin alone vs the binary from this run.
+
+## Lab Notebook addendum (exact decimals, vuln table, fallback audit)
+Committed after the one-shot score at `b416975` (no re-score). All figures recomputed from the frozen predictions via `m35_eval.py` / `oneclass --subsha` equivalence.
+
+### Primary exact F1 — full P / R / F1 and tp/fp/fn (10 apps; RN 0.85 excluded)
+
+| method | P | R | F1 | tp | fp | fn |
+|---|---|---|---|---|---|---|
+| M37 | 0.455 | 0.489 | **0.471** | 45 | 54 | 47 |
+| M38 | 0.566 | 0.609 | **0.586** | 56 | 43 | 36 |
+| t35a (M37 pin) | 0.118 | 0.326 | **0.173** | 30 | 225 | 62 |
+| t35b (M38 pin) | 0.119 | 0.337 | **0.176** | 31 | 229 | 61 |
+
+Subset exact (same scorer; tp/fp/fn):
+
+| subset | M37 P/R/F1 (tp/fp/fn) | M38 P/R/F1 (tp/fp/fn) | t35a P/R/F1 (tp/fp/fn) | t35b P/R/F1 (tp/fp/fn) |
+|---|---|---|---|---|
+| fill (4) | .321/.375/**.346** (9/19/15) | .519/.583/**.549** (14/13/10) | .061/.292/**.101** (7/108/17) | .078/.375/**.129** (9/107/15) |
+| control (3) | .684/.722/**.703** (26/12/10) | .684/.722/**.703** (26/12/10) | .202/.472/**.283** (17/67/19) | .186/.444/**.262** (16/70/20) |
+| fallback (3) | .303/.312/**.308** (10/23/22) | .471/.500/**.485** (16/18/16) | .107/.188/**.136** (6/50/26) | .103/.188/**.133** (6/52/26) |
+| t35-fair (9; no yoroi) | .512/.557/**.533** (44/42/35) | .576/.620/**.598** (49/36/30) | .118/.380/**.180** (30/225/49) | .119/.392/**.183** (31/229/48) |
+
+### Vulnerability F1 and app vulnerable-or-clean (exact-10; aligns with v5/v6 tables)
+
+Truth: **3** of 10 exact apps have ≥1 vulnerable universe dependency (`apps_vulnerable_truth=3`).
+
+| method | adv F1 (set) | adv_strict F1 | app_acc (set) | app_acc_strict | apps_vulnerable_truth |
+|---|---|---|---|---|---|
+| M37 | 0.885 (54/9/5) | **0.915** (54/5/5) | 7/10 | 9/10 | 3 |
+| M38 | 0.967 (59/4/0) | **0.992** (59/1/0) | 8/10 | 9/10 | 3 |
+| t35a | 0.155 (32/323/27) | 0.175 (32/274/27) | 2/10 | 2/10 | 3 |
+| t35b | 0.160 (34/332/25) | 0.171 (33/293/26) | 2/10 | 2/10 | 3 |
+
+(tp/fp/fn under adv / adv_strict.)
+
+### Why fallback rose 0.308 → 0.485 (per app)
+
+`HEDIS_RN_FALLBACK=nearest` (from `runs/M37v7/rn_fallback.log` and `runs/M38v7/rn_fallback.log`, identical mapping):
+
+| app | detected RN | nearest covered | M37 exact F1 (tp/fp/fn) | M38 exact F1 (tp/fp/fn) | Δ |
+|---|---|---|---|---|---|
+| yoroi-4.12.0 | 0.71.6 | **0.72** | 0.077 (1/12/12) | **0.519** (7/7/6) | +0.442 |
+| readany-1.3.4 | 0.81.5 | **0.80** | 0.167 (2/10/10) | 0.167 (2/10/10) | 0 |
+| ogam-0.0.49 | 0.83.1 | **0.80** | 0.933 (7/1/0) | 0.933 (7/1/0) | 0 |
+
+**Confirmed:** the entire fallback-group gain is **yoroi** picking up the M38 fill on **RN 0.72**. The two apps that fall back to **0.80** (readany, ogam) are unchanged — consistent with gsy (native 0.80 fill app) also flat at 0.875. Notebook's guess that fallback apps pick up filled 0.72/0.80 versions holds for **0.72 only** on this set; **0.80 fallback did not move**.
+
+### Optimizer note on the M38 confound (recorded, not a second v7 score)
+On real_dev/synth, Optimizer reports M38 (new binary + new cutoff + `--unsupported-cov`) matched M37 prediction-for-prediction. None of the 10 non-0.85 v7 apps were flagged unsupported. That attributes the 0.471→0.586 exact-F1 gain on those 10 apps to the **DB cutoff / fill**, pending an optional cheap check (M38 binary @ M37 cutoff on **dev only**) if Notebook wants it in the record. v7 stays burned / unscored again.

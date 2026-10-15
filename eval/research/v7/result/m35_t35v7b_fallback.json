@@ -1,0 +1,41 @@
+{
+ "prefix": "t35v7b",
+ "partition": "real_test",
+ "strict": {
+  "P": 0.103,
+  "R": 0.188,
+  "F1": 0.133,
+  "tp": 6,
+  "fp": 52,
+  "fn": 26
+ },
+ "set": {
+  "P": 0.259,
+  "R": 0.469,
+  "F1": 0.333,
+  "tp": 15,
+  "fp": 43,
+  "fn": 17
+ },
+ "set_hit_rate": 0.484,
+ "mean_set": 24.57,
+ "adv": {
+  "P": 0.0,
+  "R": 0.0,
+  "F1": 0,
+  "tp": 0,
+  "fp": 70,
+  "fn": 25
+ },
+ "adv_strict": {
+  "P": 0.0,
+  "R": 0.0,
+  "F1": 0,
+  "tp": 0,
+  "fp": 69,
+  "fn": 25
+ },
+ "app_acc": "0/3",
+ "app_acc_strict": "0/3",
+ "apps_vulnerable_truth": 1
+}
