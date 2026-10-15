@@ -27,9 +27,17 @@ func GetHashesFromDatabaseFast(rnVersion string) ([]*HashGroup, error) {
 	}
 	defer cl.Disconnect(ctx)
 	db := cl.Database(dbName)
-	hq := bson.M{"react_native_version": rnVersion}
+	var maxOID primitive.ObjectID
 	if o, err := primitive.ObjectIDFromHex(os.Getenv("HEDIS_MAX_OID")); err == nil { // M35: DB pin, see loadNormKeys
-		hq["_id"] = bson.M{"$lte": o}
+		maxOID = o
+	}
+	rns := resolveRNs(ctx, db, rnVersion, maxOID) // M37 RN fallback
+	if len(rns) == 0 {
+		return nil, nil
+	}
+	hq := bson.M{"react_native_version": bson.M{"$in": rns}}
+	if !maxOID.IsZero() {
+		hq["_id"] = bson.M{"$lte": maxOID}
 	}
 	cur, err := db.Collection("hashes").Find(ctx, hq,
 		options.Find().SetProjection(bson.M{"_id": 0, "package_id": 1, "react_native_version": 1, "structural.hash": 1, "ar1.hash": 1, "ar2.hash": 1}).
@@ -52,6 +60,9 @@ func GetHashesFromDatabaseFast(rnVersion string) ([]*HashGroup, error) {
 			order = append(order, h.PackageID)
 		}
 		g.Hashes = append(g.Hashes, h)
+	}
+	if len(order) == 0 {
+		return nil, nil
 	}
 	pc, err := db.Collection("packages").Find(ctx, bson.M{"_id": bson.M{"$in": order}})
 	if err != nil {

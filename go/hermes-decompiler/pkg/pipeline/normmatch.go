@@ -504,16 +504,23 @@ func loadNormKeys(rn string, cfg NormMatchConfig, base map[nkey]struct{}) ([]*pv
 	}
 	// M35: HEDIS_MAX_OID (24-hex ObjectId) pins the DB to its state at that time: hash rows and packages
 	// inserted later are ignored (read-only reproducibility while another job adds versions).
-	hq := bson.M{"react_native_version": rn}
 	var maxOID primitive.ObjectID
 	if s := os.Getenv("HEDIS_MAX_OID"); s != "" {
 		if o, err := primitive.ObjectIDFromHex(s); err == nil {
 			maxOID = o
-			hq["_id"] = bson.M{"$lte": o}
 		}
 	}
+	// M37: RN fallback when the app's RN has no fingerprints (nearest or union, see rnfallback.go)
+	rns := resolveRNs(ctx, db, rn, maxOID)
+	if len(rns) == 0 {
+		return nil, nil
+	}
+	hq := bson.M{"react_native_version": bson.M{"$in": rns}}
+	if !maxOID.IsZero() {
+		hq["_id"] = bson.M{"$lte": maxOID}
+	}
 	cur, err := db.Collection("hashes").Find(ctx, hq,
-		options.Find().SetProjection(bson.M{"_id": 0, "package_id": 1, "ns": 1, "nc": 1, "sub": 1}).SetBatchSize(50000))
+		options.Find().SetProjection(bson.M{"_id": 0, "package_id": 1, "react_native_version": 1, "ns": 1, "nc": 1, "sub": 1}).SetBatchSize(50000))
 	if err != nil {
 		return nil, err
 	}
@@ -526,11 +533,12 @@ func loadNormKeys(rn string, cfg NormMatchConfig, base map[nkey]struct{}) ([]*pv
 			NS  string             `bson:"ns"`
 			NC  string             `bson:"nc"`
 			Sub bool               `bson:"sub"`
+			RN  string             `bson:"react_native_version"`
 		}
 		if err := cur.Decode(&d); err != nil {
 			return nil, err
 		}
-		if !done[d.P.Hex()+"|"+rn] {
+		if !done[d.P.Hex()+"|"+d.RN] {
 			continue
 		}
 		g := groups[d.P]
@@ -546,6 +554,9 @@ func loadNormKeys(rn string, cfg NormMatchConfig, base map[nkey]struct{}) ([]*pv
 				g.root[k] = struct{}{}
 			}
 		}
+	}
+	if len(ids) == 0 {
+		return nil, nil
 	}
 	pq := bson.M{"_id": bson.M{"$in": ids}}
 	if !maxOID.IsZero() {

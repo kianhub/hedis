@@ -383,7 +383,8 @@ func writeMatchResultsJSON(rs []*pipeline.MatchResults, hbcVersion, rnVersion st
 		Filtered int                `json:"app_fos_after_baseline"`
 		Timings  map[string]float64 `json:"timings"`
 		Results  []row              `json:"results"`
-	}{hbcVersion, rnVersion, nApp, nFiltered, timings, nil}
+		Fallback string             `json:"rn_fallback,omitempty"`
+	}{hbcVersion, rnVersion, nApp, nFiltered, timings, nil, pipeline.LastRNFallback}
 	for _, r := range rs {
 		out.Results = append(out.Results, row{r.PackageInfo.PackageName, r.PackageInfo.PackageVersion, r.CombinedMatches, r.TotalPackageHashes, r.TotalMatchPercentage / 100, r.VersionSet})
 	}
@@ -483,6 +484,7 @@ func init() {
 	packagesCmd.Flags().StringVarP(&compareToSpecificAppBundleFlag, "compare-to-app-bundle", "a", "", "Path to the app bundle HBC file to compare to")
 	packagesCmd.Flags().StringVarP(&outputFilePath, "output-file", "o", "", "Path to the output file to write fuzzy matches to")
 	packagesCmd.Flags().BoolVar(&legacyMatchFlag, "legacy-match", false, "Use the original O(n*m) matching loops (for benchmarking)")
+	packagesCmd.Flags().StringVar(&pipeline.RNFallback, "rn-fallback", "", "M37: when the app RN version has no fingerprints: nearest (default) or union of all covered RN versions (env HEDIS_RN_FALLBACK)")
 	packagesCmd.Flags().StringVar(&fromDumpFlag, "from-dump", "", "with -d --norm: read app NS/NC from a --dump-app file instead of an .hbc")
 	packagesCmd.Flags().StringVar(&normMatchFlag, "norm", "", "normalized-hash matcher: nsnc or ns (needs a --release DB)")
 	packagesCmd.Flags().BoolVar(&tieBreakFlag, "tiebreak", false, "with --norm: choose version by F1 of version keys vs app keys")
