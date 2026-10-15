@@ -1,0 +1,8 @@
+gsy-4.0.2|CarGuo/GSYGithubAPP|v4.0.2|.||||
+metamask-7.46.2|MetaMask/metamask-mobile|v7.46.2|.||||
+breathly-ios-2.2-18|mmazzarolo/breathly-app|ios-2.2-(18)|.||H=$(find node_modules/hermes-compiler ../node_modules/hermes-compiler ../../node_modules/hermes-compiler -path "*linux64-bin/hermesc" -print -quit 2>/dev/null); test -n "$H" && mkdir -p node_modules/react-native/sdks/hermesc/linux64-bin && ln -sf $(realpath $H) node_modules/react-native/sdks/hermesc/linux64-bin/hermesc; true||
+blink-beta-3.0.31|GaloyMoney/blink-mobile|beta-3.0.31|.||H=$(find node_modules/hermes-compiler ../node_modules/hermes-compiler ../../node_modules/hermes-compiler -path "*linux64-bin/hermesc" -print -quit 2>/dev/null); test -n "$H" && mkdir -p node_modules/react-native/sdks/hermesc/linux64-bin && ln -sf $(realpath $H) node_modules/react-native/sdks/hermesc/linux64-bin/hermesc; true||
+daimo-audit-1|daimo-eth/daimo|audit-1|apps/daimo-mobile||||
+bookcars-7.0|aelassas/bookcars|v7.0|mobile||||
+vega-3.1.1|vega-org/vega-app|v3.1.1|.||||
+jfaudio-2.4.4|leinelissen/jellyfin-audio-player|v2.4.4|.||||

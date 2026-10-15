@@ -1,0 +1,2 @@
+safe-1.54.0|safe-global/safe-wallet-monorepo|v1.54.0|apps/mobile|hedis_entry.js|echo "import 'expo-router/entry';" > hedis_entry.js||
+temple-1.54|madfish-solutions/templewallet-mobile|1.54(1476)|.||mkdir -p node_modules/.cache/null && echo 'module.exports={}' > node_modules/.cache/null/index.js && echo '{"name":"null","main":"index.js"}' > node_modules/.cache/null/package.json||

@@ -1,0 +1,8 @@
+0c9348e504ac4a83 gsy-4.0.2|CarGuo/GSYGithubAPP|v4.0.2|.||||
+16fa113c8650d62a metamask-7.46.2|MetaMask/metamask-mobile|v7.46.2|.||||
+573465a1d40c5ca3 breathly-ios-2.2-18|mmazzarolo/breathly-app|ios-2.2-(18)|.||H=$(find node_modules/hermes-compiler ../node_modules/hermes-compiler ../../node_modules/hermes-compiler -path "*linux64-bin/hermesc" -print -quit 2>/dev/null); test -n "$H" && mkdir -p node_modules/react-native/sdks/hermesc/linux64-bin && ln -sf $(realpath $H) node_modules/react-native/sdks/hermesc/linux64-bin/hermesc; true||
+691231e1fa8f9d24 blink-beta-3.0.31|GaloyMoney/blink-mobile|beta-3.0.31|.||H=$(find node_modules/hermes-compiler ../node_modules/hermes-compiler ../../node_modules/hermes-compiler -path "*linux64-bin/hermesc" -print -quit 2>/dev/null); test -n "$H" && mkdir -p node_modules/react-native/sdks/hermesc/linux64-bin && ln -sf $(realpath $H) node_modules/react-native/sdks/hermesc/linux64-bin/hermesc; true||
+77d57e0ba669a20c daimo-audit-1|daimo-eth/daimo|audit-1|apps/daimo-mobile||||
+c082e9da1bc5b562 bookcars-7.0|aelassas/bookcars|v7.0|mobile||||
+c480b810cbb46764 vega-3.1.1|vega-org/vega-app|v3.1.1|.||||
+c81d05e441402407 jfaudio-2.4.4|leinelissen/jellyfin-audio-player|v2.4.4|.||||

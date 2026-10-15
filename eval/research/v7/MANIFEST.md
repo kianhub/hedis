@@ -96,9 +96,26 @@ Fallback apps may be kept for coverage but do not count toward the three minima 
 | backpack-0.5.2 | build failed (rc=3; RNBUNDLE workaround insufficient) |
 | bcwallet-1.0.12 | build failed (rc=2; Node 18 workaround insufficient) |
 | station-2.0.0 | build failed (rc=3 then rc=4; openssl-legacy insufficient) |
-| safe-1.54.0 | build failed (rc=3; entry ./App missing, main=expo-router/entry) |
-| temple-1.54 | build failed (rc=3; @airgap/beacon-dapp linked to absent node_modules/.cache/null) |
+| temple-1.54 | build failed (rc=3; @airgap/beacon-dapp linked to absent node_modules/.cache/null); retry2 with empty stub at node_modules/.cache/null still unresolved by metro → dropped |
 
 ## bbplayer-2.5.2 dumper failure (pre-registered measurement)
 Build OK (HBC 98). Detected rnversion empty at dump time → **dumper failure** (do not feed package.json RN to the matcher or dump `--rn-version`). `package.json` reports `react-native@0.85.3` and may label the app into **unsupported_hbc98** in this MANIFEST / GROUPS only. Quarantined any triples produced after a package.json rnversion patch (`triples/bbplayer-2.5.2.triples.INVALID_patched_rnversion`). Matcher must detect unsupported bytecode without that label.
 
+
+## Retry 2 (env-only workarounds, one retry each)
+- safe-1.54.0: entry shim `hedis_entry.js` = `import 'expo-router/entry'` (package.json main) → **BUILD_OK** (HBC 96, RN 0.76, control). Removed from drop table.
+- temple-1.54: empty stub module at `node_modules/.cache/null` → still exit 3 → dropped (see table).
+
+## Append batch 2 (sourced 2026-10-15; fixed tags; queue in sha256(repo@tag) order; burned apps excluded: bluesky, mattermost, rainbow, expensify, standardnotes, zeus, eigen, rocketchat …)
+| sha256(repo@tag)[:16] | app | repo | tag | package.json RN | intended group |
+|---|---|---|---|---|---|
+| 0c9348e504ac4a83 | gsy-4.0.2 | CarGuo/GSYGithubAPP | v4.0.2 | 0.80.2 | fill |
+| 16fa113c8650d62a | metamask-7.46.2 | MetaMask/metamask-mobile | v7.46.2 | 0.72.15 | fill |
+| 573465a1d40c5ca3 | breathly-ios-2.2-18 | mmazzarolo/breathly-app | ios-2.2-(18) | 0.85.3 | unsupported_hbc98 |
+| 691231e1fa8f9d24 | blink-beta-3.0.31 | GaloyMoney/blink-mobile | beta-3.0.31 | 0.85.3 | unsupported_hbc98 |
+| 77d57e0ba669a20c | daimo-audit-1 | daimo-eth/daimo (apps/daimo-mobile) | audit-1 | 0.72.4 | fill |
+| c082e9da1bc5b562 | bookcars-7.0 | aelassas/bookcars (mobile) | v7.0 | 0.76.9 | control |
+| c480b810cbb46764 | vega-3.1.1 | vega-org/vega-app | v3.1.1 | 0.74.1 | control |
+| c81d05e441402407 | jfaudio-2.4.4 | leinelissen/jellyfin-audio-player | v2.4.4 | 0.74.3 | control |
+
+Sourcing note: no non-burned public app found on RN 0.75 or 0.78 (searched GitHub code search + tag scans of ~30 repos; 0.75/0.78 hits were Expensify/standardnotes, both burned). Package.json RN is the intended-group label only; group assignment for scoring uses the build-detected rnversion.
