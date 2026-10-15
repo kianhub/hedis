@@ -1,0 +1,1 @@
+gsy-4.0.2|CarGuo/GSYGithubAPP|v4.0.2|.||echo 'export const CLIENT_ID = "xxxx";' > app/config/ignoreConfig.js; echo 'export const CLIENT_SECRET = "xxxx";' >> app/config/ignoreConfig.js||

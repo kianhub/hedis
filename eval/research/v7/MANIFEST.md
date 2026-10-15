@@ -72,6 +72,8 @@ RN 0.85 group scoring rule (pre-registered): an `unsupported_bytecode` / unsuppo
 | 44518b81b983 | safe-1.54.0 | safe-global/safe-wallet-monorepo | v1.54.0 | 0.76.3 | control |
 | 4efaf8ed6c54 | xaman-2.8.0 | XRPL-Labs/xaman-app | v2.8.0 | 0.72.7 | fill |
 | 725bdcba4f09 | temple-1.54 | madfish-solutions/templewallet-mobile | 1.54(1476) | 0.72.17 | fill |
+| metamask-7.46.2 | install failed (rc=2; dead git dep codeload aprock/react-native-tcp 404) |
+| bookcars-7.0 | build failed (rc=3; app deps live in mobile/ but repo root package.json only installs 4 pkgs → RN CLI missing); retry3 entry shim insufficient → dropped |
 | a933e29f9d42 | bbplayer-2.5.2 | bbplayer-app/BBPlayer | v2.5.2 | 0.85.3 | unsupported_hbc98 |
 
 One tag per app: if bbplayer-2.5.2 (0.85) builds, the earlier bbplayer-2.4.4 (0.83) attempt is dropped from the set; the 0.85 group is prioritized per the Optimizer addendum.
@@ -119,3 +121,22 @@ Build OK (HBC 98). Detected rnversion empty at dump time → **dumper failure** 
 | c81d05e441402407 | jfaudio-2.4.4 | leinelissen/jellyfin-audio-player | v2.4.4 | 0.74.3 | control |
 
 Sourcing note: no non-burned public app found on RN 0.75 or 0.78 (searched GitHub code search + tag scans of ~30 repos; 0.75/0.78 hits were Expensify/standardnotes, both burned). Package.json RN is the intended-group label only; group assignment for scoring uses the build-detected rnversion.
+
+## Batch 2 / retry 3–4 outcome (2026-10-15)
+Retries (one per app, env-only): gsy ignoreConfig.js = README placeholder (`CLIENT_ID/SECRET = "xxxx"`, no secrets; retry4 only fixed a quoting bug in the retry3 PRE, same workaround); breathly/bookcars entry shim `import 'expo/AppEntry'`; vega `npm rebuild sharp`; daimo `turbo run build --filter=@daimo/mobile^...`.
+
+| app | HBC | rnversion (detected) | dumper | group |
+|---|---|---|---|---|
+| blink-beta-3.0.31 | 98 | 0.85.3 | hedis-m37 | unsupported_hbc98 |
+| breathly-ios-2.2-18 | 98 | 0.85.3 | hedis-m37 | unsupported_hbc98 |
+| jfaudio-2.4.4 | 96 | 0.74 | hedis-norm-hits | control |
+| vega-3.1.1 | 96 | 0.74 | hedis-norm-hits | control |
+| daimo-audit-1 | 94 | 0.72 | hedis-norm-hits | fill |
+| gsy-4.0.2 | 96 | 0.80 | hedis-norm-hits | fill |
+
+## Group tally vs locked targets (13 frozen hbc)
+- fill: jitsi-9.1.0 (0.72), xaman-2.8.0 (0.72), daimo-audit-1 (0.72), gsy-4.0.2 (0.80) = **4 / ≥4 ✓**
+- control: safe-1.54.0 (0.76), jfaudio-2.4.4 (0.74), vega-3.1.1 (0.74) = **3 / ≥3 ✓**
+- unsupported_hbc98: blink-beta-3.0.31, breathly-ios-2.2-18 (clean dumps) + bbplayer-2.5.2 (dumper failure, empty rnversion) = **3 / ≥2 ✓**
+- fallback: yoroi-4.12.0 (0.71), readany-1.3.4 (0.81), ogam-0.0.49 (0.83)
+- Not represented: RN 0.75, 0.78 (no non-burned public app found). Dumpers are mixed: hedis-m37 for HBC 98, hedis-norm-hits otherwise (as v6 zeus).
