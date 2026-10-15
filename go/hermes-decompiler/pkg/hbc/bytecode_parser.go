@@ -11,6 +11,7 @@ import (
 	"hermes-decompiler/pkg/hbc/types/opcodes/bcv90"
 	"hermes-decompiler/pkg/hbc/types/opcodes/bcv94"
 	"hermes-decompiler/pkg/hbc/types/opcodes/bcv96"
+	"hermes-decompiler/pkg/hbc/types/opcodes/bcv98"
 	"io"
 	"log"
 	"strings"
@@ -239,7 +240,7 @@ type ParserModule struct {
 // (e.g., bcv 92 uses the bcv90 parser). The supported parser versions are 84,
 // 85, 89, 90, 94, and 96. Returns nil if bcv is below all available parsers
 // (bcv < 84). Logs a warning for ancient formats (bcv < 72) and future formats
-// (bcv > 96, i.e., above LatestBytecodeVersion).
+// (bcv > 98, i.e., above LatestBytecodeVersion).
 func GetParser(bcv int) *ParserModule {
 	parserModuleTable := map[int]*ParserModule{
 		// For each bcv there should be a definition generated in `hbc/types/opcodes` from
@@ -250,11 +251,12 @@ func GetParser(bcv int) *ParserModule {
 		90: {bcv90.OpcodeToInstruction, bcv90.NameToInstruction, bcv90.BuiltinFunctionNames},
 		94: {bcv94.OpcodeToInstruction, bcv94.NameToInstruction, bcv94.BuiltinFunctionNames},
 		96: {bcv96.OpcodeToInstruction, bcv96.NameToInstruction, bcv96.BuiltinFunctionNames},
+		98: {bcv98.OpcodeToInstruction, bcv98.NameToInstruction, bcv98.BuiltinFunctionNames},
 	}
 
 	if bcv < 72 {
 		log.Printf("Warning: This file uses an ancient Hermes bytecode format, which is not supported [%d].", bcv)
-	} else if bcv > 96 {
+	} else if bcv > 98 {
 		log.Printf("Warning: This file uses a future Hermes bytecode format, which is not yet supported [%d].", bcv)
 	}
 

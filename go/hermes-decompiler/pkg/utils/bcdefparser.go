@@ -173,6 +173,10 @@ func readInputFile(fileName string) string {
 }
 
 func backportFunctionIDs(inputSource string) string {
+	// bcv98+: CallDirect is gone and the .def already annotates its function-ID operands.
+	if !strings.Contains(inputSource, "(CallDirect,") && strings.Contains(inputSource, "\nOPERAND_FUNCTION_ID(") {
+		return inputSource
+	}
 	if !strings.Contains(inputSource, "OPERAND_FUNCTION_ID(CallDirect, 3)") {
 		inputSource += `
 OPERAND_FUNCTION_ID(CallDirect, 3)
@@ -243,6 +247,10 @@ func processLine(line string, sb *strings.Builder, opcodeCount int) int {
 		sb.WriteString(fmt.Sprintf("\t%s := types.NewInstruction(\"%s\",%d,[]types.OperandType{%s})\n", args[0], args[0], opcodeCount, argsList))
 		sb.WriteString(fmt.Sprintf("\tinstructions = append(instructions, %s)\n", args[0]))
 		opcodeCount++
+
+	case directive == "DEFINE_JUMP_LONG_VARIANT":
+		// HBC 98+: pairs an explicit short/long jump already defined via DEFINE_OPCODE; no new opcode.
+		return opcodeCount
 
 	case strings.HasPrefix(directive, "DEFINE_JUMP"):
 		var jumpArgs []string
