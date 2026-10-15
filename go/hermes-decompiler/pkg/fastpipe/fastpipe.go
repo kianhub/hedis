@@ -129,6 +129,20 @@ func New(cfg Config) (*Runner, error) {
 			r.done[x.K] = true
 		}
 	}
+	// HEDIS_FP_REDO: file of fp_done keys (one per line) whose markers are stale (rows lost, e.g. after a
+	// DB salvage); those jobs are redone and their markers rewritten. No rows are deleted.
+	if f := os.Getenv("HEDIS_FP_REDO"); f != "" {
+		if b, err := os.ReadFile(f); err == nil {
+			n := 0
+			for _, k := range strings.Split(string(b), "\n") {
+				if k = strings.TrimSpace(k); k != "" && r.done[k] {
+					delete(r.done, k)
+					n++
+				}
+			}
+			fmt.Fprintf(os.Stderr, "HEDIS_FP_REDO: %d stale fp_done markers ignored\n", n)
+		}
+	}
 	return r, nil
 }
 
