@@ -144,6 +144,8 @@ Retries (one per app, env-only): gsy ignoreConfig.js = README placeholder (`CLIE
 ## safe-1.54.0 selection audit (Lab Notebook, before freeze commit)
 Same app, **same tag** `v1.54.0` (safe-global/safe-wallet-monorepo). First attempt failed (rc=3: entry `./App` missing; `package.json` main is `expo-router/entry`) and was listed among drops. **Reversed drop** after an env-only entry shim (`hedis_entry.js` → `import 'expo-router/entry'`), then BUILD_OK → control (RN 0.76). Not a different tag. Keep this row in the audit trail; do not treat it as a silent re-admission of a new candidate.
 
+Build caveat (parity with v6 Pixelfed StoryCarousel stub): **safe-1.54.0 was built with an entry shim** (`hedis_entry.js` → `import 'expo-router/entry'`). Ground truth from this build must be read with that shim in mind (entry wiring only; app logic unchanged).
+
 ## Fill-group generalization limit (pre-registered before scoring)
 Fill has **4** apps: **3× RN 0.72** (jitsi-9.1.0, xaman-2.8.0, daimo-audit-1) and **1× RN 0.80** (gsy-4.0.2). **No** app on RN 0.75 or 0.78 (burned-only public hits). The M37 vs M38 **fill effect must be reported per app** (and may be summarized for the 0.72 subset and the single 0.80 app separately). It **must not be generalized** to RN 0.75 or 0.78.
 
