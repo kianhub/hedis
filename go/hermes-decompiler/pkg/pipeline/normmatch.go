@@ -225,12 +225,19 @@ func NormMatchPairs(pairs [][2]string, rn string, cfg NormMatchConfig, base map[
 	// pick: IDF-weighted fraction of a version's low-df keys found in the app; ties -> more hits -> newer
 	pick := func(vs []*pvKeys, keysOf func(*pvKeys) map[nkey]struct{}, df map[nkey]map[string]struct{}) (*pvKeys, float64, int) {
 		idf := func(k nkey) float64 { return math.Log(1 + N/float64(len(df[k]))) }
+		plain := os.Getenv("HEDIS_ABL_PLAIN") != "" // ablation: no rarity weighting, no unique-key filter
+		if plain {
+			idf = func(nkey) float64 { return 1 }
+		}
 		var best *pvKeys
 		bestSc, bestM := -1.0, 0
 		for _, p := range vs {
 			var wAll, wHit float64
 			m, tot := 0, 0
 			maxdf := 1
+			if plain {
+				maxdf = 1 << 30
+			}
 			if cfg.LowUniq > 0 {
 				u := 0
 				for k := range keysOf(p) {
@@ -599,6 +606,9 @@ func loadNormKeys(rn string, cfg NormMatchConfig, base map[nkey]struct{}) ([]*pv
 	hq := bson.M{"react_native_version": bson.M{"$in": rns}}
 	if !maxOID.IsZero() {
 		hq["_id"] = bson.M{"$lte": maxOID}
+	}
+	if os.Getenv("HEDIS_NO_SUB") != "" { // ablation: root-entry rows only
+		hq["sub"] = bson.M{"$ne": true}
 	}
 	cur, err := db.Collection("hashes").Find(ctx, hq,
 		options.Find().SetProjection(bson.M{"_id": 0, "package_id": 1, "react_native_version": 1, "ns": 1, "nc": 1, "sub": 1}).SetBatchSize(50000))

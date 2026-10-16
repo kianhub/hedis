@@ -168,6 +168,43 @@ var (
 				utils.S.Printf("Total: %d/%d package hashes matched (%f%%)\n", matchResults.TotalAmountOfMatches, matchResults.TotalAppHashes, matchResults.TotalMatchPercentage)
 			}
 
+			if analyzeWithDatabaseFlag && fromDumpFlag != "" && normMatchFlag == "" {
+				// ablation: thesis exact-3-hash matcher on a --dump-app file (columns S C1 C2 NS NC; rows are already
+				// RN-baseline filtered at dump time). Same DB loader (HEDIS_MAX_OID pin, RN fallback) as the -a path.
+				tStart := time.Now()
+				b, err := os.ReadFile(fromDumpFlag)
+				if err != nil {
+					utils.F.Println(err)
+					return
+				}
+				lines := strings.Split(string(b), "\n")
+				hdr := strings.Fields(lines[0])
+				rn, hbcV := hdr[2], hdr[4]
+				var app []*models.FunctionObjectHashModel
+				for _, l := range lines[1:] {
+					f := strings.Split(strings.TrimRight(l, "\r"), " ")
+					if len(f) >= 3 && !strings.HasPrefix(l, "#") {
+						app = append(app, &models.FunctionObjectHashModel{Structural: models.FunctionObjectDataModel{Hash: f[0]},
+							ContentAR1: models.FunctionObjectDataModel{Hash: f[1]}, ContentAR2: models.FunctionObjectDataModel{Hash: f[2]}})
+					}
+				}
+				groups, err := pipeline.GetHashesFromDatabaseFast(rn)
+				if err != nil {
+					utils.F.Printf("failed to get hashes from database: %v\n", err)
+					return
+				}
+				appSet := pipeline.AppHashSet(app)
+				mr := make([]*pipeline.MatchResults, len(groups))
+				for i, g := range groups {
+					mr[i] = pipeline.CompareAppWithPackageFast(appSet, len(app), g.Hashes)
+					mr[i].PackageInfo = g.Result
+				}
+				if err := writeMatchResultsJSON(mr, hbcV, rn, len(app), len(app), map[string]float64{"total_s": time.Since(tStart).Seconds()}); err != nil {
+					utils.F.Println(err)
+				}
+				return
+			}
+
 			if analyzeWithDatabaseFlag && fromDumpFlag != "" && normMatchFlag != "" {
 				// match a --dump-app file (header "# rn X hbc Y", columns S C1 C2 NS NC) when the .hbc is unavailable
 				tStart := time.Now()

@@ -39,6 +39,9 @@ func GetHashesFromDatabaseFast(rnVersion string) ([]*HashGroup, error) {
 	if !maxOID.IsZero() {
 		hq["_id"] = bson.M{"$lte": maxOID}
 	}
+	if os.Getenv("HEDIS_NO_SUB") != "" { // ablation: root-entry rows only
+		hq["sub"] = bson.M{"$ne": true}
+	}
 	cur, err := db.Collection("hashes").Find(ctx, hq,
 		options.Find().SetProjection(bson.M{"_id": 0, "package_id": 1, "react_native_version": 1, "structural.hash": 1, "ar1.hash": 1, "ar2.hash": 1}).
 			SetHint("cover_rn_pkg_3hash").SetBatchSize(50000))
