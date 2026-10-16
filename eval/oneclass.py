@@ -10,8 +10,9 @@ sha = {}  # release identity = root bundle SHA; --subsha (primary since M24) als
 # M34: fp-rel34/fp-sub34 = ERESOLVE-failed jobs rerun (--force + peer pins) and added real_dev versions (attempt2 rows hold the SHAs of jobs skipped later)
 # M37: fp-rel37/fp-sub37 RN 0.72/0.75/0.78/0.80 fingerprint stats (bundle SHAs for one-class --subsha)
 # M38: fp-rel38/fp-sub38 = 690 pkg@ver missing-version fill x RN 0.72/0.75/0.78/0.80
-REL = ("fp-rel-stats.jsonl", "fp-rel34-stats.attempt2.jsonl", "fp-rel34-stats.jsonl", "fp-rel079b-stats.jsonl", "fp-rel37-rn072-stats.jsonl", "fp-rel37-rn075-stats.jsonl", "fp-rel37-rn078-stats.jsonl", "fp-rel37-rn080-stats.jsonl", "fp-rel38-rn072-stats.jsonl", "fp-rel38-rn075-stats.jsonl", "fp-rel38-rn078-stats.jsonl", "fp-rel38-rn080-stats.jsonl")
-SUB = ("fp-sub-stats.jsonl", "fp-sub3-stats.jsonl", "fp-sub34-stats.attempt2.jsonl", "fp-sub34-stats.jsonl", "fp-sub079b-stats.jsonl", "fp-sub37-rn072-stats.jsonl", "fp-sub37-rn075-stats.jsonl", "fp-sub37-rn078-stats.jsonl", "fp-sub37-rn080-stats.jsonl", "fp-sub38-rn072-stats.jsonl", "fp-sub38-rn075-stats.jsonl", "fp-sub38-rn078-stats.jsonl", "fp-sub38-rn080-stats.jsonl")
+# M39: fp-rel39/fp-sub39 = RN 0.85 (HBC98) for all 2210 universe pkg@ver; --apps=a,b scores named apps (RN from triples header)
+REL = ("fp-rel-stats.jsonl", "fp-rel34-stats.attempt2.jsonl", "fp-rel34-stats.jsonl", "fp-rel079b-stats.jsonl", "fp-rel37-rn072-stats.jsonl", "fp-rel37-rn075-stats.jsonl", "fp-rel37-rn078-stats.jsonl", "fp-rel37-rn080-stats.jsonl", "fp-rel38-rn072-stats.jsonl", "fp-rel38-rn075-stats.jsonl", "fp-rel38-rn078-stats.jsonl", "fp-rel38-rn080-stats.jsonl", "fp-rel39-rn085-stats.jsonl")
+SUB = ("fp-sub-stats.jsonl", "fp-sub3-stats.jsonl", "fp-sub34-stats.attempt2.jsonl", "fp-sub34-stats.jsonl", "fp-sub079b-stats.jsonl", "fp-sub37-rn072-stats.jsonl", "fp-sub37-rn075-stats.jsonl", "fp-sub37-rn078-stats.jsonl", "fp-sub37-rn080-stats.jsonl", "fp-sub38-rn072-stats.jsonl", "fp-sub38-rn075-stats.jsonl", "fp-sub38-rn078-stats.jsonl", "fp-sub38-rn080-stats.jsonl", "fp-sub39-rn085-stats.jsonl")
 for f in REL + (SUB if "--subsha" in sys.argv else ()):
     try:
         for l in open(f"{E_}/logs/{f}"):
@@ -24,8 +25,10 @@ for f in REL + (SUB if "--subsha" in sys.argv else ()):
     except FileNotFoundError: pass
 indb = {(n, v) for n, v, r in sha}
 tp = fp = fn = 0; cat = collections.Counter(); ex = collections.defaultdict(list)
-for a in [x for x in split[part] if x.startswith("synth") or part.startswith("real")]:
-    rn = ("rn074" if split[part][a]["rn"].startswith("0.74") else "rn076") if part.startswith("real") else ("rn074" if "rn074" in a else "rn076")
+APPS = next((a.split("=",1)[1].split(",") for a in sys.argv if a.startswith("--apps=")), None)
+for a in APPS or [x for x in split[part] if x.startswith("synth") or part.startswith("real")]:
+    if APPS: rn = "rn0" + open(f"{E_}/runs/apps_rel/{a}.triples").readline().split()[2].split(".")[1]
+    else: rn = ("rn074" if split[part][a]["rn"].startswith("0.74") else "rn076") if part.startswith("real") else ("rn074" if "rn074" in a else "rn076")
     T = {n: vs for n, vs in json.load(open(f"{E_}/data/groundtruth/{a}.json"))["bundled"].items() if n in UNI}
     Pr = {x["package"]: x["version"] for x in json.load(open(f"{E_}/data/predictions/{P}_{a}.json"))["predictions"] if x["package"] in UNI}
     same = lambda n, v, w: v == w or (sha.get((n, v, rn)) and sha.get((n, v, rn)) == sha.get((n, w, rn)))
