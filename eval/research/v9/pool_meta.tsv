@@ -1,0 +1,38 @@
+sha16	app	repo	tag	subdir	group	pj_rn	main
+02ebc169484872f4	fiesta-0.7.0	mateoguzmana/react-native-fiesta	v0.7.0	example	control	0.74.1	index
+08737382119f35f3	piano-analytic-0.7.5	pmu-tech/react-native-piano-analytics	0.7.5	example	control	0.74.6	
+0c4d5eee69c66862	dynamically-se-3.3.2	sosog/react-native-dynamically-selected-picker	v3.3.2	example	rn085	0.85.0	
+15cd3edcfe4bb358	swc-0.1.5	oblador/react-native-swc	v0.1.5	examples/vanilla	rn085	0.85.1	
+16ae9c6387ef498d	system-navigat-3.0.1	kadiraydinli/react-native-system-navigation-bar	v3.0.1	example	rn085	0.85.0	
+22c0dda7f1f56e19	daemon-4.7.11	nullxnothing/daemon	v4.7.11	mobile	rn085	0.85.2	expo-router/entry
+2597899462cdf927	quick-base64-3.0.1	craftzdog/react-native-quick-base64	v3.0.1	example	rn085	0.85.0	
+2bd1d016102984a6	fast-opencv-1.0.1	lukaszkurantdev/react-native-fast-opencv	v1.0.1	example	rn085	0.85.0	
+38076b88b9c27b9c	kaku-0.3.1	joevtap/kaku	v0.3.1	.	control	0.76.9	expo-router/entry
+41c933d36506e929	browser-1.1.2	swan-io/react-native-browser	v1.1.2	example	rn085	0.85.2	
+43cbae226082f2ba	vocablypro-1.1099.0	vocably/vocably.pro	v1.1099.0	mobile-app	rn085	0.85.3	
+4909c47e99f22ad3	aemobileapp-1.0.3	koiNoCirculation/AEMobileApp	1.0.3	.	control	0.74.3	
+509d0b98ff171615	waifu-walls-0.1.1	ronitkrshah/waifu-walls	v0.1.1	.	control	0.76.7	index.ts
+5ac7919c70181328	trading-charts-1.1.0	kirill3333/react-native-trading-charts	v1.1.0	example	rn085	0.85.0	
+628e6101aaaea6d6	jigsaw-56.0.4	draftbit/react-native-jigsaw	v56.0.4	example	rn085	0.85.3	
+66fabdcc88140d56	engrave-SDDFinalRelease	shashwot2/Engrave	SDDFinalRelease	.	control	0.76.5	expo-router/entry
+67130ff95d85bb0a	secure-webview-0.1.0	adnxy/react-native-secure-webview	v0.1.0	example	rn085	0.85.0	
+724fb82424720b82	novel-master-1.5.41	bloodycrownD/novel-master	v1.5.41	apps/mobile	rn085	0.85.3	
+7798fd8fc186ca5a	laoqgchatrnapp-1.2.0	LaoQiongGui/LaoQGChatRNApp	LaoQGChat_1.2.0	.	control	0.74.3	
+8589dbc8b6920459	store-review-0.5.0	oblador/react-native-store-review	v0.5.0	Example	rn085	0.85.1	
+863a6f764a2527ea	hackerbuzz-1.4.0	ajshrmaofficial/HackerBuzz	v1.4.0	.	control	0.76.5	expo-router/entry
+95d2b3653b9a99a2	rn-animated-wa-0.1.6	DannyGlade/rn-animated-wave	v0.1.6	example	control	0.74.5	expo/AppEntry.js
+997e1ee26f466f85	mobdirstat-1.0.0	O-ElAli/MobDirStat	v1.0.0	.	control	0.76.5	
+9fe83b94cc4cb845	musonic-2.0.0	DoodzProg/Musonic	mobile-v2.0.0	apps/mobile	rn085	0.85.2	
+af307f1ee49bec04	adyen-react-na-2.13.0	Adyen/adyen-react-native	2.13.0	example	rn085	0.85.0	
+b12c6d385748b033	alist-expo-1.23	gendago/alist-expo	1.23	.	control	0.74.1	expo-router/entry
+b25e743bac052cd1	blendy-1.0.0	AbhishekGanvir/Blendy	v.1.0.0	.	control	0.76.7	expo-router/entry
+ba8536b23e8f9112	rn-video-slide-0.7.0	armata99/rn-video-slider	v0.7.0	testapp	rn085	0.85.3	
+c2c844866e30d369	dolgate-1.9.14	doldolma/Dolgate	v1.9.14	apps/mobile	rn085	0.85.0	
+c801608557a6c348	legal-1.8.1	callstackincubator/react-native-legal	react-native-legal@1.8.1	examples/expo-example	rn085	0.85.3	index.js
+c979e3c37758f476	zhiweijz-0.9.1	jingyi0605/zhiweijz	0.9.1	.	control	0.76.5	
+dcb782eb7f2b25d2	compressor-2.0.3	numandev1/react-native-compressor	v2.0.3	examples/bare	rn085	0.85.2	
+e0d2fcf91e519238	stepstep-rn-0.4.1	gnehs/StepStep-RN	0.4.1	.	control	0.74.1	expo-router/entry
+e23b46ca0b959a23	tezos-x-wallet-0.19.0	trilitech/tezos-x-wallet	wallet-v0.19.0	packages/mobile	rn085	0.85.3	index.ts
+e7312a090c38368f	lyricsdisplay-0.1.1	marioded/lyricsdisplay	v0.1.1	apps/mobile	rn085	0.85.2	
+e756710bedde9e49	s3man-1.2.3	rzh0504/s3man	v1.2.3	.	rn085	0.85.3	expo-router/entry
+fc40faf3ca04ace4	cognivia-2.0	Raya46/COGNIVIA	2.0	.	control	0.76.7	expo-router/entry
