@@ -40,6 +40,9 @@ type NormMatchConfig struct {
 	Deps    map[string]map[string][]string
 	// Floor (M35): drop final predictions (incl. dep-implied) whose score is below Floor (0 = off).
 	Floor float64
+	// Floors (M40): per-package override of Floor (e.g. react-native-gesture-handler on RN 0.85, whose app code
+	// keeps only ~2-20% of its unique keys while absent apps score 0).
+	Floors map[string]float64
 	// VsetMargin (M35, < 0 = off): per predicted package also report the version set the bundle cannot
 	// distinguish: every version whose version-selector score is >= the chosen version's score - VsetMargin,
 	// plus (VsetSameKeys) every version whose set of app-matched selector keys equals the chosen version's.
@@ -311,10 +314,14 @@ func NormMatchPairs(pairs [][2]string, rn string, cfg NormMatchConfig, base map[
 	if cfg.Dep > 0 {
 		out = addDeps(out, byPkg, A, cfg)
 	}
-	if cfg.Floor > 0 {
+	if cfg.Floor > 0 || len(cfg.Floors) > 0 {
 		kept := out[:0]
 		for _, r := range out {
-			if r.TotalMatchPercentage/100 >= cfg.Floor {
+			f, ok := cfg.Floors[r.PackageInfo.PackageName]
+			if !ok {
+				f = cfg.Floor
+			}
+			if r.TotalMatchPercentage/100 >= f {
 				kept = append(kept, r)
 			}
 		}
