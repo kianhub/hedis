@@ -42,3 +42,6 @@ Matcher / DB pin / flags: **TBD — wait for Optimizer's M40 cutoff.** PRIMARY `
 
 ## Candidate queue
 Burn list final; queue = pool sorted by sha256(repo@tag), recorded in queue.txt with its sha256 before the first build.
+
+## Amendment A1 (2026-10-16, post-lock, pre-scoring)
+Pool rule added during sourcing, not in the locked text: 5 repos were excluded because their only lockfile was bun or was in a subfolder. `build_oss.sh` installs from the repo root. The 5 repos are react-native-update, loop, bluetooth-state-manager, linkversity and Aegis-Core. bitcoin-abc/marlin-wallet and matchimals were also excluded as possible family overlaps. This happened before the queue lock (f31f4f4), and no app had been built or scored when it was applied.
