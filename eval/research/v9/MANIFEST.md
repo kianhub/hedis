@@ -1,7 +1,7 @@
 # v9 real-app held-out set — MANIFEST (pre-registration; never matched or scored)
 
 ## Status
-**LOCKED 2026-10-16 ~16:55 CT.** Optimizer named the M40 RN 0.85 DEV set (Hedis v2 room, 2026-10-16): no new apps; DEV = blink-beta, breathly, zeus + 7 v8 apps (marlin, imagetopdf, dothething, minmobile, wixrnn, readtrace, ysclaude), all already burned. M40 gets no cutoff until v9 is frozen. Criteria, sizes and exclusions below are final. Drafted 2026-10-15 ~21:15 CT; no builds started; no freeze commit. No matcher run, no scoring.
+**FROZEN 2026-10-16 ~17:20 CT** (split.v9.json sha256 a32b9b14f1c05dba7515355554904b407ee54fddefecd8ecabfa9e59f173125c; rn085 5 / control 4; no matcher run, no scoring). **LOCKED 2026-10-16 ~16:55 CT.** Optimizer named the M40 RN 0.85 DEV set (Hedis v2 room, 2026-10-16): no new apps; DEV = blink-beta, breathly, zeus + 7 v8 apps (marlin, imagetopdf, dothething, minmobile, wixrnn, readtrace, ysclaude), all already burned. M40 gets no cutoff until v9 is frozen. Criteria, sizes and exclusions below are final. Drafted 2026-10-15 ~21:15 CT; no builds started; no freeze commit. No matcher run, no scoring.
 Reason: v8 is **burned** (scored once at M39; rn085 F1 0.373; research/v8/RESULT.md, commit a2aab03). Optimizer is starting **M40** (version-choice improvements for safe-area-context, screens, reanimated, gesture-handler), tuning on **DEV only**, and will widen 0.85 DEV beyond blink/breathly/zeus. v9 must be frozen before anyone scores M40.
 
 ## Hypothesis
