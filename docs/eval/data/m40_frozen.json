@@ -1,0 +1,23 @@
+{
+  "frozen": "2026-10-16 18:22 CT",
+  "branch": "v2",
+  "merged_branches": ["feat/m40-version-select"],
+  "cutoff_oid": "6ad2b1a20000000000000000",
+  "db": "hedis_rel pinned with HEDIS_MAX_OID=6ad2b1a20000000000000000 (2026-10-16 23:22 UTC / 18:22 CT, set after v9 froze at 4ee41d9). No hash/package rows after the M39 cutoff 6ad18000..., so the M40 dev numbers (tuned unpinned) are identical under this pin.",
+  "matcher": "bin/hedis-m40 (feat/m40-version-select) packages -d --norm nsnc --thresholds data/thresholds_m4f_dlr.json --lowuniq 2 --lowdf 2 --dep 0.6 --deps data/deps.json --rootver --floor 0.2 --floors data/floors_m40.json --vset-margin 0.003 --vset-samekeys --unsupported-cov 0.40",
+  "floors": {"react-native-gesture-handler": 0.02},
+  "version_select": "eval/m40/vsel.py --min=2 --date=off --pkgs=react-native-safe-area-context,react-native-screens,react-native-reanimated (keys runs/m40/keys_<rn>.pkl from eval/m40/cache_keys.py)",
+  "fallback": "HEDIS_RN_FALLBACK=nearest",
+  "driver": "MAXOID=6ad2b1a20000000000000000 eval/run_m40.sh <prefix> <apps>",
+  "metric": "eval/oneclass.py <prefix> <partition> --subsha --split=data/split.v3dev.json; 0.85 apps via --apps=",
+  "run_settings": "effort high, model Grok Bot default model",
+  "scores": {
+    "real_dev": {"F1": 0.845, "tp": 106, "fp": 20, "fn": 19, "m39_F1": 0.840},
+    "dev_synth": {"F1": 0.970, "tp": 144, "fp": 4, "fn": 5, "m39_F1": 0.970},
+    "rn085_dev3": {"apps": ["blink-beta-3.0.31", "breathly-ios-2.2-18", "zeus-13.1.3"], "F1": 0.918, "tp": 28, "fp": 3, "fn": 2, "m39_F1": 0.885},
+    "rn085_v8dev7": {"apps": ["marlin-1.3.0", "imagetopdf-1.1", "dothething-1.2.1", "minmobile-1.0.62", "wixrnn-8.8.7", "readtrace-1.0.6", "ysclaude-1.0.9"], "F1": 0.564, "tp": 22, "fp": 20, "fn": 14, "m39_F1": 0.373}
+  },
+  "unsupported_bytecode_apps": [],
+  "tests": "go test ./... pass",
+  "notes": "v8 is dev as of M40. research/v9 was not read, matched or scored."
+}

@@ -7,7 +7,7 @@ M=$1; shift; mkdir -p runs/$M
 export MONGO_CONNECTION_STRING=mongodb://127.0.0.1:27017 HEDIS_PACKAGES_DB=hedis_rel HEDIS_RN_FALLBACK=nearest HEDIS_RN_LOG=runs/$M/rn_fallback.log
 if [ -n "${MAXOID:-}" ]; then export HEDIS_MAX_OID=$MAXOID; else unset HEDIS_MAX_OID; fi
 unset HEDIS_EXCLUDE_RN
-VS=${VSEL:---min=2 --date=off --pkgs=react-native-safe-area-context,react-native-screens,react-native-reanimated,react-native-gesture-handler}
+VS=${VSEL:---min=2 --date=off --pkgs=react-native-safe-area-context,react-native-screens,react-native-reanimated}
 for a in "$@"; do
   [ -f runs/$M/$a.done ] && continue
   rc=0
