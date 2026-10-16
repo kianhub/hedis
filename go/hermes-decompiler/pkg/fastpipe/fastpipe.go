@@ -173,8 +173,17 @@ func run(dir string, timeout time.Duration, name string, args ...string) (string
 }
 
 func (r *Runner) hermesc(env string) string {
-	return filepath.Join(env, "node_modules", "react-native", "sdks", "hermesc", r.cfg.OSHermes, "hermesc")
+	p := filepath.Join(env, "node_modules", "react-native", "sdks", "hermesc", r.cfg.OSHermes, "hermesc")
+	if _, err := os.Stat(p); err != nil {
+		// M39: RN >= 0.83 ships hermesc in the hermes-compiler package, not react-native/sdks
+		if q := filepath.Join(env, "node_modules", "hermes-compiler", "hermesc", r.cfg.OSHermes, "hermesc"); fileExists(q) {
+			return q
+		}
+	}
+	return p
 }
+
+func fileExists(p string) bool { _, err := os.Stat(p); return err == nil }
 
 const bundleScript = `import Metro from 'metro';
 const config = await Metro.loadConfig();
