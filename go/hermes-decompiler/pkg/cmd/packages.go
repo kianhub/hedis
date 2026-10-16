@@ -201,6 +201,11 @@ var (
 						json.Unmarshal(db, &cfg.Deps)
 					}
 				}
+				if floorsFlag != "" {
+					if fb, err := os.ReadFile(floorsFlag); err == nil {
+						json.Unmarshal(fb, &cfg.Floors)
+					}
+				}
 				if thresholdsFlag != "" {
 					if tb, err := os.ReadFile(thresholdsFlag); err == nil {
 						json.Unmarshal(tb, &cfg.Thresholds)
@@ -291,6 +296,11 @@ var (
 					if depsFlag != "" {
 						if db, err := os.ReadFile(depsFlag); err == nil {
 							json.Unmarshal(db, &cfg.Deps)
+						}
+					}
+					if floorsFlag != "" {
+						if fb, err := os.ReadFile(floorsFlag); err == nil {
+							json.Unmarshal(fb, &cfg.Floors)
 						}
 					}
 					if thresholdsFlag != "" {
@@ -507,6 +517,7 @@ var (
 	normMatchFlag      string
 	tieBreakFlag       bool
 	thresholdsFlag     string
+	floorsFlag         string
 	depsFlag           string
 	depFlag            float64
 	lowUniqFlag        int
@@ -542,6 +553,7 @@ func init() {
 	packagesCmd.Flags().Float64Var(&unsupportedCovFlag, "unsupported-cov", pipeline.DefaultUnsupportedMinCov, "with --norm: error+exit 1 when max package nsnc coverage vs DB is below this (0 = off; M38 unsupported RN/bytecode signal)")
 	packagesCmd.Flags().Float64Var(&vsetMarginFlag, "vset-margin", -1, "with --norm: report per package the version set within this score margin of the chosen version (-1 = off)")
 	packagesCmd.Flags().BoolVar(&vsetSameKeysFlag, "vset-samekeys", false, "with --norm --vset-margin: also add versions with the chosen version's exact set of matched keys")
+	packagesCmd.Flags().StringVar(&floorsFlag, "floors", "", "with --norm --floor: JSON {package: floor} per-package floor overrides (M40)")
 	packagesCmd.Flags().StringVar(&thresholdsFlag, "thresholds", "", "with --norm: JSON {package: min score, _global: x} tuned on dev")
 	packagesCmd.Flags().StringVar(&dumpAppFlag, "dump-app", "", "Write filtered app triples (S C1 C2 per line) to this file")
 	packagesCmd.Flags().BoolVar(&dumpOnlyFlag, "dump-only", false, "With --dump-app: exit after dumping (skip DB match)")
