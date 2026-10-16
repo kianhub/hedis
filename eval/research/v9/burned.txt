@@ -1,0 +1,15 @@
+# Families burned for v9 held-out = v8 burned list + v8 held-out + 0.85 DEV.
+mattermost rainbow bluesky inaturalist valora bluewallet leather
+alby karakeep trezor expensify rabby edge eigen chatwoot
+seek tooot converse rocketchat graysky subwallet standardnotes bitpay showtime pillar ecency spacedrive
+alephium minds hexa zeus zingo cozy enuts keeper lxmusic mangareader pixelfed pubky
+jitsi xaman daimo gsy safe jfaudio vega yoroi readany ogam blink breathly bbplayer
+notesnook uniswap
+memmy blixt cherry olas berty jellyfin backpack bcwallet station temple metamask bookcars
+# v8 held-out (burned at M39 scoring)
+dothething imagetopdf marlin minmobile readtrace wixrnn ysclaude appcues gorhom solana
+# 0.85 DEV (M39/M40 tuning)
+blink-beta breathly zeus galoy
+# v8 pool failures (avoid where possible; not strictly burned)
+#avoid: rnrestart paper streamchat rnfirebase
+# M40 DEV (2026-10-16): no new apps; = blink-beta breathly zeus + v8 rn085 apps (all listed above). LOCKED.
