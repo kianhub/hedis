@@ -1,0 +1,12 @@
+step	real_dev	synth	rn085x3	unsupported_rn085
+abl_s00_t35	P 0.242 R 0.440 F1 0.312 (tp 55 fp 172 fn 70)	P 0.233 R 0.671 F1 0.345 (tp 100 fp 330 fn 49)	P 0.024 R 0.067 F1 0.035 (tp 2 fp 83 fn 28)	0/3
+abl_s01_norm	P 0.458 R 0.832 F1 0.591 (tp 104 fp 123 fn 21)	P 0.326 R 0.940 F1 0.484 (tp 140 fp 290 fn 9)	P 0.047 R 0.133 F1 0.070 (tp 4 fp 81 fn 26)	0/3
+abl_s02_rare_thr	P 0.530 R 0.784 F1 0.632 (tp 98 fp 87 fn 27)	P 0.969 R 0.839 F1 0.899 (tp 125 fp 4 fn 24)	P 0.075 R 0.100 F1 0.086 (tp 3 fp 37 fn 27)	0/3
+abl_s03_lowuniq	P 0.553 R 0.840 F1 0.667 (tp 105 fp 85 fn 20)	P 0.972 R 0.940 F1 0.956 (tp 140 fp 4 fn 9)	P 0.075 R 0.100 F1 0.086 (tp 3 fp 37 fn 27)	0/3
+abl_s04_dep	P 0.555 R 0.848 F1 0.671 (tp 106 fp 85 fn 19)	P 0.973 R 0.966 F1 0.970 (tp 144 fp 4 fn 5)	P 0.075 R 0.100 F1 0.086 (tp 3 fp 37 fn 27)	0/3
+abl_s05_rootver	P 0.555 R 0.848 F1 0.671 (tp 106 fp 85 fn 19)	P 0.973 R 0.966 F1 0.970 (tp 144 fp 4 fn 5)	P 0.075 R 0.100 F1 0.086 (tp 3 fp 37 fn 27)	0/3
+abl_s06_floor	P 0.833 R 0.840 F1 0.837 (tp 105 fp 21 fn 20)	P 0.973 R 0.966 F1 0.970 (tp 144 fp 4 fn 5)	P 0.000 R 0.000 F1 0.000 (tp 0 fp 0 fn 30)	0/3
+abl_s07_vset	P 0.833 R 0.840 F1 0.837 (tp 105 fp 21 fn 20)	P 0.973 R 0.966 F1 0.970 (tp 144 fp 4 fn 5)	P 0.000 R 0.000 F1 0.000 (tp 0 fp 0 fn 30)	0/3
+abl_s08_subpath	P 0.840 R 0.840 F1 0.840 (tp 105 fp 20 fn 20)	P 0.973 R 0.966 F1 0.970 (tp 144 fp 4 fn 5)	P 0.000 R 0.000 F1 0.000 (tp 0 fp 0 fn 30)	0/3
+abl_s09_unsupcov	P 0.840 R 0.840 F1 0.840 (tp 105 fp 20 fn 20)	P 0.973 R 0.966 F1 0.970 (tp 144 fp 4 fn 5)	P 0.000 R 0.000 F1 0.000 (tp 0 fp 0 fn 30)	3/3
+abl_s10_rn085	P 0.840 R 0.840 F1 0.840 (tp 105 fp 20 fn 20)	P 0.973 R 0.966 F1 0.970 (tp 144 fp 4 fn 5)	P 0.871 R 0.900 F1 0.885 (tp 27 fp 4 fn 3)	0/3
