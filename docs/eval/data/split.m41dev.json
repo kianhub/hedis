@@ -1,0 +1,122 @@
+{
+ "frozen": "2026-10-16 CT",
+ "note": "dev split for M39-M41 rescoring: real_dev + dev from split.v3dev; real_rn085_dev3 = burned 0.85 dev apps; real_rn085_v8dev = v8 apps (dev since M40); real_rn085_dev10 = both",
+ "real_dev": {
+  "mattermost-rel": {
+   "hbc_sha256": "5007023b0d68f62a83dad74a2465374a6ca67b1df6e4199c22b654120d918c37",
+   "rn": "0.76.9"
+  },
+  "rainbow-rel": {
+   "hbc_sha256": "3c9f2bdfff636bb264f9798f58e869e8e77ab5399f997bc2dead1db3b0200688",
+   "rn": "0.74.3"
+  },
+  "mattermost-2.20.0": {
+   "hbc_sha256": "69dc7623ed4195480fa2e28d7defe68e75450e3b95cfc72e3eeeb8188bd2706c",
+   "rn": "0.74.5"
+  },
+  "bluesky-1.96.0": {
+   "hbc_sha256": "431dce6de6021a2fc8d61a095c543be84fb9a3474246ebb502317529780573b3",
+   "rn": "0.76.3"
+  },
+  "inaturalist-1.0.7": {
+   "hbc_sha256": "49bbe867fc83ee2ec9bb60bdabfd358f10e17c755af87e4be19c4cba61430b4b",
+   "rn": "0.76.9"
+  },
+  "valora-1.110.0": {
+   "hbc_sha256": "495a76d014bf344f220f35343f2442c0ccac09e39c81c3a16687720f56235e49",
+   "rn": "0.76.5"
+  },
+  "bluewallet-7.0.9": {
+   "hbc_sha256": "e3658ed96d87b4bf1544d05c19a689424344585763b8c134242478786509b4b9",
+   "rn": "0.76.6"
+  },
+  "leather-mobile-1.7.0": {
+   "hbc_sha256": "6fe9b6c2936aafcba82154cf5a842f28eba73beea629d6fb51bed8e6e3942084",
+   "rn": "0.74.1"
+  }
+ },
+ "dev": {
+  "synth-00-rn074": "e54450089e5e76cde652af9024fd4b88729209ad45b175d8e3c2c13dff10ded5",
+  "synth-01-rn076": "72a1a83670aa591c6977ff53ca4822416e81a030a20048334de5b4e41ece5ed5",
+  "synth-02-rn074": "b971c120985f8d4fbafb29475aa1873b56da137b7c5a9f371c819cde846d860b",
+  "synth-03-rn076": "773c8b5dc3fb3a4dfa19059590a330ed6e05738cd7c1a0ef4205b19b156e79be",
+  "synth-04-rn074": "fd1725ab1e040261d7c0c99ca577f16ae692537d398be194693ea255a863af55",
+  "mattermost-2.29.1": "1b130377bf700efcdb08df30e0f4a426f4b3f187dbb24db23a4256ded0b3c7e2",
+  "synth-10-rn074": "bfca02df4fe255435b11a3024d5678c63e4dccac818a6eac007299a8c24e38b4",
+  "synth-11-rn076": "647654692d0a5acf68c42714e1ab62d76c9d2ca586324c5dedae0b862db8bd3b",
+  "synth-12-rn074": "dc1fe705ab4365a99ee5aadbc15d51a76af67a7e28c9b40df506a812ca4aba3e",
+  "synth-13-rn076": "68269148da8e68dd37649a23f0a226144506f74640304fea5de4469a8d321461",
+  "synth-14-rn074": "683f7378878e93f928418c0faa0878aba6fef1baaec022b442fd4b3bdd993648",
+  "synth-15-rn076": "6c05bd2f024003a2112f86c5a56ef85b3c189fd8a98214b90f85f517a546829f",
+  "synth-16-rn074": "92d2dcd1690e8e0b6a049b8260f1f055bd6e8c181bbf6570bdf1666c882dea77",
+  "synth-17-rn076": "8ab680f69b06de675e806bd392670ae3d634f1d3bfea27e93d3d8bd77e4f7daf",
+  "synth-18-rn074": "9fba395387f86ead89721248ca3c0c445670fb8be1d4d57558c08fe3a80af563",
+  "synth-19-rn076": "41d414663a7427904b725d545e9da606bafda48a3505fd08a86f18e03f24e985"
+ },
+ "real_rn085_dev3": {
+  "blink-beta-3.0.31": {
+   "rn": "0.85"
+  },
+  "breathly-ios-2.2-18": {
+   "rn": "0.85"
+  },
+  "zeus-13.1.3": {
+   "rn": "0.85"
+  }
+ },
+ "real_rn085_v8dev": {
+  "marlin-1.3.0": {
+   "rn": "0.85"
+  },
+  "imagetopdf-1.1": {
+   "rn": "0.85"
+  },
+  "dothething-1.2.1": {
+   "rn": "0.85"
+  },
+  "minmobile-1.0.62": {
+   "rn": "0.85"
+  },
+  "wixrnn-8.8.7": {
+   "rn": "0.85"
+  },
+  "readtrace-1.0.6": {
+   "rn": "0.85"
+  },
+  "ysclaude-1.0.9": {
+   "rn": "0.85"
+  }
+ },
+ "real_rn085_dev10": {
+  "blink-beta-3.0.31": {
+   "rn": "0.85"
+  },
+  "breathly-ios-2.2-18": {
+   "rn": "0.85"
+  },
+  "zeus-13.1.3": {
+   "rn": "0.85"
+  },
+  "marlin-1.3.0": {
+   "rn": "0.85"
+  },
+  "imagetopdf-1.1": {
+   "rn": "0.85"
+  },
+  "dothething-1.2.1": {
+   "rn": "0.85"
+  },
+  "minmobile-1.0.62": {
+   "rn": "0.85"
+  },
+  "wixrnn-8.8.7": {
+   "rn": "0.85"
+  },
+  "readtrace-1.0.6": {
+   "rn": "0.85"
+  },
+  "ysclaude-1.0.9": {
+   "rn": "0.85"
+  }
+ }
+}

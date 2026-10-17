@@ -1,0 +1,75 @@
+m38f	real_dev	F1 0.840 (tp 105 fp 20 fn 20)
+m38f	dev	F1 0.970 (tp 144 fp 4 fn 5)
+m38f	real_rn085_dev3	Error: [Errno 2] No such file or directory: '/workspace/hedis-eval/data/predictions/m38f_blink-beta-3.0.31.json'
+m38f	real_rn085_v8dev	Error: [Errno 2] No such file or directory: '/workspace/hedis-eval/data/predictions/m38f_marlin-1.3.0.json'
+m38f	real_rn085_dev10	Error: [Errno 2] No such file or directory: '/workspace/hedis-eval/data/predictions/m38f_blink-beta-3.0.31.json'
+m39f	real_dev	F1 0.840 (tp 105 fp 20 fn 20)
+m39f	dev	F1 0.970 (tp 144 fp 4 fn 5)
+m39f	real_rn085_dev3	F1 0.852 (tp 26 fp 5 fn 4)
+m39f	real_rn085_v8dev	F1 0.373 (tp 14 fp 25 fn 22)
+m39f	real_rn085_dev10	F1 0.588 (tp 40 fp 30 fn 26)
+abl_s00_t35	real_dev	F1 0.312 (tp 55 fp 172 fn 70)
+abl_s00_t35	dev	F1 0.345 (tp 100 fp 330 fn 49)
+abl_s00_t35	real_rn085_dev3	F1 0.035 (tp 2 fp 83 fn 28)
+abl_s00_t35	real_rn085_v8dev	Error: [Errno 2] No such file or directory: '/workspace/hedis-eval/data/predictions/abl_s00_t35_marlin-1.3.0.json'
+abl_s00_t35	real_rn085_dev10	Error: [Errno 2] No such file or directory: '/workspace/hedis-eval/data/predictions/abl_s00_t35_marlin-1.3.0.json'
+abl_s01_norm	real_dev	F1 0.591 (tp 104 fp 123 fn 21)
+abl_s01_norm	dev	F1 0.484 (tp 140 fp 290 fn 9)
+abl_s01_norm	real_rn085_dev3	F1 0.070 (tp 4 fp 81 fn 26)
+abl_s01_norm	real_rn085_v8dev	Error: [Errno 2] No such file or directory: '/workspace/hedis-eval/data/predictions/abl_s01_norm_marlin-1.3.0.json'
+abl_s01_norm	real_rn085_dev10	Error: [Errno 2] No such file or directory: '/workspace/hedis-eval/data/predictions/abl_s01_norm_marlin-1.3.0.json'
+abl_s02_rare_thr	real_dev	F1 0.632 (tp 98 fp 87 fn 27)
+abl_s02_rare_thr	dev	F1 0.899 (tp 125 fp 4 fn 24)
+abl_s02_rare_thr	real_rn085_dev3	F1 0.086 (tp 3 fp 37 fn 27)
+abl_s02_rare_thr	real_rn085_v8dev	Error: [Errno 2] No such file or directory: '/workspace/hedis-eval/data/predictions/abl_s02_rare_thr_marlin-1.3.0.json'
+abl_s02_rare_thr	real_rn085_dev10	Error: [Errno 2] No such file or directory: '/workspace/hedis-eval/data/predictions/abl_s02_rare_thr_marlin-1.3.0.json'
+abl_s03_lowuniq	real_dev	F1 0.667 (tp 105 fp 85 fn 20)
+abl_s03_lowuniq	dev	F1 0.956 (tp 140 fp 4 fn 9)
+abl_s03_lowuniq	real_rn085_dev3	F1 0.086 (tp 3 fp 37 fn 27)
+abl_s03_lowuniq	real_rn085_v8dev	Error: [Errno 2] No such file or directory: '/workspace/hedis-eval/data/predictions/abl_s03_lowuniq_marlin-1.3.0.json'
+abl_s03_lowuniq	real_rn085_dev10	Error: [Errno 2] No such file or directory: '/workspace/hedis-eval/data/predictions/abl_s03_lowuniq_marlin-1.3.0.json'
+abl_s04_dep	real_dev	F1 0.671 (tp 106 fp 85 fn 19)
+abl_s04_dep	dev	F1 0.970 (tp 144 fp 4 fn 5)
+abl_s04_dep	real_rn085_dev3	F1 0.086 (tp 3 fp 37 fn 27)
+abl_s04_dep	real_rn085_v8dev	Error: [Errno 2] No such file or directory: '/workspace/hedis-eval/data/predictions/abl_s04_dep_marlin-1.3.0.json'
+abl_s04_dep	real_rn085_dev10	Error: [Errno 2] No such file or directory: '/workspace/hedis-eval/data/predictions/abl_s04_dep_marlin-1.3.0.json'
+abl_s05_rootver	real_dev	F1 0.671 (tp 106 fp 85 fn 19)
+abl_s05_rootver	dev	F1 0.970 (tp 144 fp 4 fn 5)
+abl_s05_rootver	real_rn085_dev3	F1 0.086 (tp 3 fp 37 fn 27)
+abl_s05_rootver	real_rn085_v8dev	Error: [Errno 2] No such file or directory: '/workspace/hedis-eval/data/predictions/abl_s05_rootver_marlin-1.3.0.json'
+abl_s05_rootver	real_rn085_dev10	Error: [Errno 2] No such file or directory: '/workspace/hedis-eval/data/predictions/abl_s05_rootver_marlin-1.3.0.json'
+abl_s06_floor	real_dev	F1 0.837 (tp 105 fp 21 fn 20)
+abl_s06_floor	dev	F1 0.970 (tp 144 fp 4 fn 5)
+abl_s06_floor	real_rn085_dev3	F1 0.000 (tp 0 fp 0 fn 30)
+abl_s06_floor	real_rn085_v8dev	Error: [Errno 2] No such file or directory: '/workspace/hedis-eval/data/predictions/abl_s06_floor_marlin-1.3.0.json'
+abl_s06_floor	real_rn085_dev10	Error: [Errno 2] No such file or directory: '/workspace/hedis-eval/data/predictions/abl_s06_floor_marlin-1.3.0.json'
+abl_s07_vset	real_dev	F1 0.837 (tp 105 fp 21 fn 20)
+abl_s07_vset	dev	F1 0.970 (tp 144 fp 4 fn 5)
+abl_s07_vset	real_rn085_dev3	F1 0.000 (tp 0 fp 0 fn 30)
+abl_s07_vset	real_rn085_v8dev	Error: [Errno 2] No such file or directory: '/workspace/hedis-eval/data/predictions/abl_s07_vset_marlin-1.3.0.json'
+abl_s07_vset	real_rn085_dev10	Error: [Errno 2] No such file or directory: '/workspace/hedis-eval/data/predictions/abl_s07_vset_marlin-1.3.0.json'
+abl_s08_subpath	real_dev	F1 0.840 (tp 105 fp 20 fn 20)
+abl_s08_subpath	dev	F1 0.970 (tp 144 fp 4 fn 5)
+abl_s08_subpath	real_rn085_dev3	F1 0.000 (tp 0 fp 0 fn 30)
+abl_s08_subpath	real_rn085_v8dev	Error: [Errno 2] No such file or directory: '/workspace/hedis-eval/data/predictions/abl_s08_subpath_marlin-1.3.0.json'
+abl_s08_subpath	real_rn085_dev10	Error: [Errno 2] No such file or directory: '/workspace/hedis-eval/data/predictions/abl_s08_subpath_marlin-1.3.0.json'
+abl_s09_unsupcov	real_dev	F1 0.840 (tp 105 fp 20 fn 20)
+abl_s09_unsupcov	dev	F1 0.970 (tp 144 fp 4 fn 5)
+abl_s09_unsupcov	real_rn085_dev3	F1 0.000 (tp 0 fp 0 fn 30)
+abl_s09_unsupcov	real_rn085_v8dev	Error: [Errno 2] No such file or directory: '/workspace/hedis-eval/data/predictions/abl_s09_unsupcov_marlin-1.3.0.json'
+abl_s09_unsupcov	real_rn085_dev10	Error: [Errno 2] No such file or directory: '/workspace/hedis-eval/data/predictions/abl_s09_unsupcov_marlin-1.3.0.json'
+abl_s10_rn085	real_dev	F1 0.840 (tp 105 fp 20 fn 20)
+abl_s10_rn085	dev	F1 0.970 (tp 144 fp 4 fn 5)
+abl_s10_rn085	real_rn085_dev3	F1 0.852 (tp 26 fp 5 fn 4)
+abl_s10_rn085	real_rn085_v8dev	Error: [Errno 2] No such file or directory: '/workspace/hedis-eval/data/predictions/abl_s10_rn085_marlin-1.3.0.json'
+abl_s10_rn085	real_rn085_dev10	Error: [Errno 2] No such file or directory: '/workspace/hedis-eval/data/predictions/abl_s10_rn085_marlin-1.3.0.json'
+m40f_raw	real_dev	F1 0.845 (tp 106 fp 20 fn 19)
+m40f_raw	dev	F1 0.970 (tp 144 fp 4 fn 5)
+m40f_raw	real_rn085_dev3	F1 0.852 (tp 26 fp 5 fn 4)
+m40f_raw	real_rn085_v8dev	F1 0.359 (tp 14 fp 28 fn 22)
+m40f_raw	real_rn085_dev10	F1 0.576 (tp 40 fp 33 fn 26)
+m40f	real_dev	F1 0.845 (tp 106 fp 20 fn 19)
+m40f	dev	F1 0.970 (tp 144 fp 4 fn 5)
+m40f	real_rn085_dev3	F1 0.852 (tp 26 fp 5 fn 4)
+m40f	real_rn085_v8dev	F1 0.436 (tp 17 fp 25 fn 19)
+m40f	real_rn085_dev10	F1 0.619 (tp 43 fp 30 fn 23)

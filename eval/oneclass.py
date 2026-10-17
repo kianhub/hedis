@@ -25,10 +25,20 @@ for f in REL + (SUB if "--subsha" in sys.argv else ()):
     except FileNotFoundError: pass
 indb = {(n, v) for n, v, r in sha}
 tp = fp = fn = 0; cat = collections.Counter(); ex = collections.defaultdict(list)
+def rn_key(v):
+    """'0.85.3' / '0.85' / 'rn085' -> 'rn085' (fp stats key). Fixes M39-M40 bug: split-driven runs mapped every non-0.74 RN to rn076."""
+    v = str(v).strip()
+    if v.startswith("rn"): return v
+    p = v.split(".")
+    return f"rn{int(p[0])}{int(p[1]):02d}"
+def app_rn(a, split_rn=None):
+    if a.startswith("synth") and "-rn0" in a: return a[a.index("-rn0") + 1:]
+    if split_rn: return rn_key(split_rn)
+    return rn_key(open(f"{E_}/runs/apps_rel/{a}.triples").readline().split()[2])
 APPS = next((a.split("=",1)[1].split(",") for a in sys.argv if a.startswith("--apps=")), None)
 for a in APPS or [x for x in split[part] if x.startswith("synth") or part.startswith("real")]:
-    if APPS: rn = "rn0" + open(f"{E_}/runs/apps_rel/{a}.triples").readline().split()[2].split(".")[1]
-    else: rn = ("rn074" if split[part][a]["rn"].startswith("0.74") else "rn076") if part.startswith("real") else ("rn074" if "rn074" in a else "rn076")
+    sp = None if APPS else split[part]
+    rn = app_rn(a, sp[a].get("rn") if isinstance(sp, dict) and isinstance(sp.get(a), dict) else None)
     T = {n: vs for n, vs in json.load(open(f"{E_}/data/groundtruth/{a}.json"))["bundled"].items() if n in UNI}
     Pr = {x["package"]: x["version"] for x in json.load(open(f"{E_}/data/predictions/{P}_{a}.json"))["predictions"] if x["package"] in UNI}
     same = lambda n, v, w: v == w or (sha.get((n, v, rn)) and sha.get((n, v, rn)) == sha.get((n, w, rn)))
