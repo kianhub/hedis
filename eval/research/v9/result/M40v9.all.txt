@@ -1,0 +1,18 @@
+M40v9 real_test one-class(bundle) P 0.674 R 0.879 F1 0.763 (tp 29 fp 14 fn 4)
+{'FP package not bundled': 10, 'FN wrong version': 4}
+  FP package not bundled
+     ('aemobileapp-1.0.3', 'react-native-url-polyfill', '2.0.0')
+     ('engrave-SDDFinalRelease', 'semver', '7.6.0')
+     ('engrave-SDDFinalRelease', 'react-native-url-polyfill', '2.0.0')
+     ('engrave-SDDFinalRelease', 'react-native-gesture-handler', '2.13.4')
+     ('fast-opencv-1.0.1', 'semver', '7.3.6')
+     ('fast-opencv-1.0.1', 'react-native-mmkv', '4.0.1')
+     ('kaku-0.3.1', 'semver', '7.6.0')
+     ('kaku-0.3.1', 'react-native-url-polyfill', '2.0.0')
+     ('quick-base64-3.0.1', 'react-native-url-polyfill', '2.0.0')
+     ('waifu-walls-0.1.1', 'react-native-url-polyfill', '2.0.0')
+  FN wrong version
+     ('engrave-SDDFinalRelease', '@react-navigation/native', '7.0.13', '6.1.18')
+     ('kaku-0.3.1', '@react-navigation/native', '7.1.6', '6.1.18')
+     ('kaku-0.3.1', 'react-native-svg', '15.8.0', '15.3.0')
+     ('waifu-walls-0.1.1', 'react-native-gesture-handler', '2.20.2', '2.17.1')

@@ -1,0 +1,69 @@
+## truth
+aemobileapp-1.0.3 {'react-native-gesture-handler': ['2.17.1'], 'react-native-safe-area-context': ['4.10.5'], 'react-native-screens': ['3.31.1'], 'react-native-reanimated': ['3.10.1']}
+engrave-SDDFinalRelease {'react-native-safe-area-context': ['4.12.0'], 'react-native-screens': ['4.1.0']}
+fast-opencv-1.0.1 {'react-native-safe-area-context': ['5.8.0'], 'react-native-screens': ['4.26.0'], 'react-native-reanimated': ['4.5.1']}
+kaku-0.3.1 {'react-native-safe-area-context': ['4.12.0'], 'react-native-screens': ['4.4.0']}
+quick-base64-3.0.1 none
+secure-webview-0.1.0 none
+system-navigat-3.0.1 none
+trading-charts-1.1.0 {'react-native-safe-area-context': ['5.8.0'], 'react-native-screens': ['4.24.0']}
+waifu-walls-0.1.1 {'react-native-gesture-handler': ['2.20.2'], 'react-native-safe-area-context': ['4.12.0'], 'react-native-screens': ['4.4.0'], 'react-native-reanimated': ['3.16.7']}
+## M40v9 target-4 tp 16 fp 2 fn 1
+  aemobileapp-1.0.3 react-native-gesture-handler truth=['2.17.1'] pred=2.17.1 tp/fp/fn=(1, 0, 0)
+  aemobileapp-1.0.3 react-native-safe-area-context truth=['4.10.5'] pred=5.4.1 tp/fp/fn=(1, 0, 0)
+  aemobileapp-1.0.3 react-native-screens truth=['3.31.1'] pred=3.31.1 tp/fp/fn=(1, 0, 0)
+  aemobileapp-1.0.3 react-native-reanimated truth=['3.10.1'] pred=3.10.1 tp/fp/fn=(1, 0, 0)
+  engrave-SDDFinalRelease react-native-gesture-handler truth=None pred=2.13.4 tp/fp/fn=(0, 1, 0)
+  engrave-SDDFinalRelease react-native-safe-area-context truth=['4.12.0'] pred=5.4.1 tp/fp/fn=(1, 0, 0)
+  engrave-SDDFinalRelease react-native-screens truth=['4.1.0'] pred=4.1.0 tp/fp/fn=(1, 0, 0)
+  fast-opencv-1.0.1 react-native-safe-area-context truth=['5.8.0'] pred=5.9.1 tp/fp/fn=(1, 0, 0)
+  fast-opencv-1.0.1 react-native-screens truth=['4.26.0'] pred=4.26.2 tp/fp/fn=(1, 0, 0)
+  fast-opencv-1.0.1 react-native-reanimated truth=['4.5.1'] pred=4.5.1 tp/fp/fn=(1, 0, 0)
+  kaku-0.3.1 react-native-safe-area-context truth=['4.12.0'] pred=5.4.1 tp/fp/fn=(1, 0, 0)
+  kaku-0.3.1 react-native-screens truth=['4.4.0'] pred=4.5.0 tp/fp/fn=(1, 0, 0)
+  trading-charts-1.1.0 react-native-safe-area-context truth=['5.8.0'] pred=5.9.1 tp/fp/fn=(1, 0, 0)
+  trading-charts-1.1.0 react-native-screens truth=['4.24.0'] pred=4.24.0 tp/fp/fn=(1, 0, 0)
+  waifu-walls-0.1.1 react-native-gesture-handler truth=['2.20.2'] pred=2.17.1 tp/fp/fn=(0, 1, 1)
+  waifu-walls-0.1.1 react-native-safe-area-context truth=['4.12.0'] pred=5.4.1 tp/fp/fn=(1, 0, 0)
+  waifu-walls-0.1.1 react-native-screens truth=['4.4.0'] pred=4.5.0 tp/fp/fn=(1, 0, 0)
+  waifu-walls-0.1.1 react-native-reanimated truth=['3.16.7'] pred=3.16.7 tp/fp/fn=(1, 0, 0)
+## t35v9 target-4 tp 3 fp 13 fn 14
+  aemobileapp-1.0.3 react-native-gesture-handler truth=['2.17.1'] pred=3.2.0 tp/fp/fn=(0, 1, 1)
+  aemobileapp-1.0.3 react-native-safe-area-context truth=['4.10.5'] pred=4.7.3 tp/fp/fn=(0, 1, 1)
+  aemobileapp-1.0.3 react-native-screens truth=['3.31.1'] pred=4.0.0 tp/fp/fn=(0, 1, 1)
+  aemobileapp-1.0.3 react-native-reanimated truth=['3.10.1'] pred=3.7.2 tp/fp/fn=(0, 1, 1)
+  engrave-SDDFinalRelease react-native-gesture-handler truth=None pred=2.1.3 tp/fp/fn=(0, 1, 0)
+  engrave-SDDFinalRelease react-native-safe-area-context truth=['4.12.0'] pred=4.7.3 tp/fp/fn=(0, 1, 1)
+  engrave-SDDFinalRelease react-native-screens truth=['4.1.0'] pred=4.0.0 tp/fp/fn=(1, 0, 0)
+  engrave-SDDFinalRelease react-native-reanimated truth=None pred=1.13.4 tp/fp/fn=(0, 1, 0)
+  fast-opencv-1.0.1 react-native-safe-area-context truth=['5.8.0'] pred=None tp/fp/fn=(0, 0, 1)
+  fast-opencv-1.0.1 react-native-screens truth=['4.26.0'] pred=None tp/fp/fn=(0, 0, 1)
+  fast-opencv-1.0.1 react-native-reanimated truth=['4.5.1'] pred=None tp/fp/fn=(0, 0, 1)
+  kaku-0.3.1 react-native-gesture-handler truth=None pred=2.19.0 tp/fp/fn=(0, 1, 0)
+  kaku-0.3.1 react-native-safe-area-context truth=['4.12.0'] pred=4.7.3 tp/fp/fn=(0, 1, 1)
+  kaku-0.3.1 react-native-screens truth=['4.4.0'] pred=4.4.0 tp/fp/fn=(1, 0, 0)
+  kaku-0.3.1 react-native-reanimated truth=None pred=1.13.4 tp/fp/fn=(0, 1, 0)
+  trading-charts-1.1.0 react-native-safe-area-context truth=['5.8.0'] pred=None tp/fp/fn=(0, 0, 1)
+  trading-charts-1.1.0 react-native-screens truth=['4.24.0'] pred=None tp/fp/fn=(0, 0, 1)
+  waifu-walls-0.1.1 react-native-gesture-handler truth=['2.20.2'] pred=2.19.0 tp/fp/fn=(0, 1, 1)
+  waifu-walls-0.1.1 react-native-safe-area-context truth=['4.12.0'] pred=4.7.3 tp/fp/fn=(0, 1, 1)
+  waifu-walls-0.1.1 react-native-screens truth=['4.4.0'] pred=4.4.0 tp/fp/fn=(1, 0, 0)
+  waifu-walls-0.1.1 react-native-reanimated truth=['3.16.7'] pred=1.13.4 tp/fp/fn=(0, 1, 1)
+## M39v9 target-4 tp 16 fp 1 fn 1
+  aemobileapp-1.0.3 react-native-gesture-handler truth=['2.17.1'] pred=2.17.1 tp/fp/fn=(1, 0, 0)
+  aemobileapp-1.0.3 react-native-safe-area-context truth=['4.10.5'] pred=5.4.1 tp/fp/fn=(1, 0, 0)
+  aemobileapp-1.0.3 react-native-screens truth=['3.31.1'] pred=3.31.1 tp/fp/fn=(1, 0, 0)
+  aemobileapp-1.0.3 react-native-reanimated truth=['3.10.1'] pred=3.10.1 tp/fp/fn=(1, 0, 0)
+  engrave-SDDFinalRelease react-native-safe-area-context truth=['4.12.0'] pred=5.4.1 tp/fp/fn=(1, 0, 0)
+  engrave-SDDFinalRelease react-native-screens truth=['4.1.0'] pred=4.1.0 tp/fp/fn=(1, 0, 0)
+  fast-opencv-1.0.1 react-native-safe-area-context truth=['5.8.0'] pred=5.9.1 tp/fp/fn=(1, 0, 0)
+  fast-opencv-1.0.1 react-native-screens truth=['4.26.0'] pred=4.26.2 tp/fp/fn=(1, 0, 0)
+  fast-opencv-1.0.1 react-native-reanimated truth=['4.5.1'] pred=4.5.1 tp/fp/fn=(1, 0, 0)
+  kaku-0.3.1 react-native-safe-area-context truth=['4.12.0'] pred=5.4.1 tp/fp/fn=(1, 0, 0)
+  kaku-0.3.1 react-native-screens truth=['4.4.0'] pred=4.5.0 tp/fp/fn=(1, 0, 0)
+  trading-charts-1.1.0 react-native-safe-area-context truth=['5.8.0'] pred=5.9.1 tp/fp/fn=(1, 0, 0)
+  trading-charts-1.1.0 react-native-screens truth=['4.24.0'] pred=4.24.0 tp/fp/fn=(1, 0, 0)
+  waifu-walls-0.1.1 react-native-gesture-handler truth=['2.20.2'] pred=2.17.1 tp/fp/fn=(0, 1, 1)
+  waifu-walls-0.1.1 react-native-safe-area-context truth=['4.12.0'] pred=5.4.1 tp/fp/fn=(1, 0, 0)
+  waifu-walls-0.1.1 react-native-screens truth=['4.4.0'] pred=4.5.0 tp/fp/fn=(1, 0, 0)
+  waifu-walls-0.1.1 react-native-reanimated truth=['3.16.7'] pred=3.16.7 tp/fp/fn=(1, 0, 0)

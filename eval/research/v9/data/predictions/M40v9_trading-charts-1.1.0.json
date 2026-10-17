@@ -1,0 +1,89 @@
+{
+ "app": "trading-charts-1.1.0",
+ "method": "M40v9",
+ "rn_detected": "0.85",
+ "timings": {
+  "total_s": 23.333904949
+ },
+ "predictions": [
+  {
+   "package": "@shopify/flash-list",
+   "version": "2.3.2",
+   "score": 0.9073634204275517,
+   "matched_fos": 382,
+   "total_fos": 3563,
+   "version_set": [
+    "2.3.2",
+    "2.3.3"
+   ]
+  },
+  {
+   "package": "react-native-screens",
+   "version": "4.24.0",
+   "score": 0.8507462686567159,
+   "matched_fos": 114,
+   "total_fos": 3269,
+   "version_set": [
+    "4.24.0"
+   ]
+  },
+  {
+   "package": "@react-navigation/native",
+   "version": "7.3.16",
+   "score": 0.7301324503311224,
+   "matched_fos": 441,
+   "total_fos": 3772,
+   "version_set": [
+    "7.3.9",
+    "7.3.10",
+    "7.3.11",
+    "7.3.12",
+    "7.3.13",
+    "7.3.14",
+    "7.3.15",
+    "7.3.16"
+   ]
+  },
+  {
+   "package": "react-native-safe-area-context",
+   "version": "5.9.1",
+   "score": 0.6499999999999999,
+   "matched_fos": 13,
+   "total_fos": 3145,
+   "version_set": [
+    "5.5.0",
+    "5.5.1",
+    "5.5.2",
+    "5.6.0",
+    "5.6.1",
+    "5.6.2",
+    "5.7.0",
+    "5.8.0",
+    "5.8.1",
+    "5.9.0",
+    "5.9.1"
+   ]
+  },
+  {
+   "package": "axios",
+   "version": "1.20.0",
+   "score": 0.5250501002003958,
+   "matched_fos": 262,
+   "total_fos": 602,
+   "version_set": [
+    "1.20.0"
+   ]
+  },
+  {
+   "package": "react-freeze",
+   "version": "1.0.4",
+   "score": 0.47185958293398156,
+   "matched_fos": 2,
+   "total_fos": 61,
+   "version_set": [
+    "1.0.4"
+   ]
+  }
+ ],
+ "m40_log": []
+}

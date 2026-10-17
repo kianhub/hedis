@@ -1,0 +1,135 @@
+{
+ "app": "fast-opencv-1.0.1",
+ "method": "M40v9",
+ "rn_detected": "0.85",
+ "timings": {
+  "total_s": 26.539009131
+ },
+ "predictions": [
+  {
+   "package": "react-native-screens",
+   "version": "4.26.2",
+   "score": 0.961538461538462,
+   "matched_fos": 150,
+   "total_fos": 3290,
+   "version_set": [
+    "4.26.0",
+    "4.26.1",
+    "4.26.2"
+   ]
+  },
+  {
+   "package": "semver",
+   "version": "7.3.6",
+   "score": 0.9591836734693877,
+   "matched_fos": 48,
+   "total_fos": 226,
+   "version_set": [
+    "2.3.2",
+    "5.7.2",
+    "6.3.1",
+    "7.3.6",
+    "7.3.7",
+    "7.3.8",
+    "7.4.0",
+    "7.5.1",
+    "7.5.2",
+    "7.5.3",
+    "7.5.4",
+    "7.6.0",
+    "7.6.1",
+    "7.6.2",
+    "7.6.3",
+    "7.7.0",
+    "7.7.1",
+    "7.7.2",
+    "7.7.3",
+    "7.7.4",
+    "7.8.0",
+    "7.8.1",
+    "7.8.2",
+    "7.8.3",
+    "7.8.4",
+    "7.8.5"
+   ]
+  },
+  {
+   "package": "react-native-safe-area-context",
+   "version": "5.9.1",
+   "score": 0.85,
+   "matched_fos": 17,
+   "total_fos": 3145,
+   "version_set": [
+    "5.5.0",
+    "5.5.1",
+    "5.5.2",
+    "5.6.0",
+    "5.6.1",
+    "5.6.2",
+    "5.7.0",
+    "5.8.0",
+    "5.8.1",
+    "5.9.0",
+    "5.9.1"
+   ]
+  },
+  {
+   "package": "react-native-reanimated",
+   "version": "4.5.1",
+   "score": 0.7614213197969495,
+   "matched_fos": 300,
+   "total_fos": 4997,
+   "version_set": [
+    "4.5.1",
+    "4.5.2"
+   ]
+  },
+  {
+   "package": "@react-navigation/native",
+   "version": "7.3.8",
+   "score": 0.6499999999999955,
+   "matched_fos": 390,
+   "total_fos": 3768,
+   "version_set": [
+    "7.3.0",
+    "7.3.1",
+    "7.3.2",
+    "7.3.3",
+    "7.3.4",
+    "7.3.5",
+    "7.3.6",
+    "7.3.7",
+    "7.3.8"
+   ]
+  },
+  {
+   "package": "react-freeze",
+   "version": "1.0.4",
+   "score": 0.47185958293398156,
+   "matched_fos": 2,
+   "total_fos": 61,
+   "version_set": [
+    "1.0.4"
+   ]
+  },
+  {
+   "package": "react-native-mmkv",
+   "version": "4.0.1",
+   "score": 0.20987654320987675,
+   "matched_fos": 17,
+   "total_fos": 3211,
+   "version_set": [
+    "4.0.0",
+    "4.0.1",
+    "4.1.0",
+    "4.1.1",
+    "4.1.2",
+    "4.2.0",
+    "4.3.0",
+    "4.3.1",
+    "4.3.2"
+   ]
+  }
+ ],
+ "m40_log": []
+}

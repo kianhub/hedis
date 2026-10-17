@@ -1,0 +1,9 @@
+aemobileapp-1.0.3 ok
+engrave-SDDFinalRelease ok
+fast-opencv-1.0.1 FAIL rc0 
+kaku-0.3.1 ok
+quick-base64-3.0.1 FAIL rc0 
+secure-webview-0.1.0 FAIL rc0 
+system-navigat-3.0.1 FAIL rc0 
+trading-charts-1.1.0 FAIL rc0 
+waifu-walls-0.1.1 ok

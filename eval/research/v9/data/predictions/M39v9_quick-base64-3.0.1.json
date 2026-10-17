@@ -1,0 +1,22 @@
+{
+ "app": "quick-base64-3.0.1",
+ "method": "M39v9",
+ "rn_detected": "0.85",
+ "timings": {
+  "total_s": 22.91338303
+ },
+ "predictions": [
+  {
+   "package": "react-native-url-polyfill",
+   "version": "2.0.0",
+   "score": 0.26907630522088416,
+   "matched_fos": 67,
+   "total_fos": 3384,
+   "version_set": [
+    "1.3.0",
+    "2.0.0",
+    "3.0.0"
+   ]
+  }
+ ]
+}

@@ -1,0 +1,6 @@
+M39v9 real_test one-class(bundle) P 0.786 R 1.000 F1 0.880 (tp 11 fp 3 fn 0)
+{'FP package not bundled': 3}
+  FP package not bundled
+     ('fast-opencv-1.0.1', 'semver', '7.3.6')
+     ('fast-opencv-1.0.1', 'react-native-mmkv', '4.0.1')
+     ('quick-base64-3.0.1', 'react-native-url-polyfill', '2.0.0')
